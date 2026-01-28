@@ -15,6 +15,9 @@ dotenv.config({ path: path.resolve(process.cwd(), envFile) });
 
 const baseURL = process.env.BASE_URL;
 
+console.log('Loading env file:', envFile);
+console.log('Resolved path:', path.resolve(process.cwd(), envFile));
+
 if (!baseURL) {
   throw new Error(
     'BASE_URL is not defined. Please set it in your .env.<envName> file.'
