@@ -20,6 +20,12 @@ public class Item
 	public void setPrice(double price) { this.price = price; }
 	
 	@Override
+	public String toString() 
+	{
+	    return "Item{name='" + name + "', price=" + price + "}";
+	}
+	
+	@Override
 	public boolean equals(Object o)
 	{
 		if (this == o) return true;
@@ -27,12 +33,12 @@ public class Item
 		
 		Item item =(Item) o;
 		return Double.compare(item.price, price) == 0 &&
-			   Objects.equals(name, item.name);
+			   Objects.equals(name.toLowerCase(), item.name.toLowerCase());
 	}
 	
 	@Override
 	public int hashCode() 
 	{
-		return Objects.hash(name, price);
+		return Objects.hash(name.toLowerCase(), price);
 	}
 }

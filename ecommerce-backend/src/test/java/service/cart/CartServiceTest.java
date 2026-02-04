@@ -7,7 +7,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import cart.CartService;
+import cart_logic.CartService;
+import ecommerce.exceptions.CartItemNotFoundException;
 import ecommerce.exceptions.QuantityZeroOrNegativeException;
 import ecommerce.model.CartItem;
 import ecommerce.model.Item;
@@ -88,16 +89,96 @@ class CartServiceTest
     }
 	
 	@Test
-    @DisplayName("AC-CART-04: Update quantity changes cart total")
-    void updateQuantity_updatesCartTotal() 
+    @DisplayName("AC-CART-04: Adding existing Item into the Cart should increment quantity")
+    void addItem_incrementItemQuantityIfExists() throws Exception 
     {
-		assert(false);
+		Item item1 = new Item("Espresso", 4.99);
+		Item item2 = new Item("Machiato", 3.99);
+		Item item3 = new Item("Cappuccino", 6.99);
+		
+		cartService.addItemWithQuantity(item1, 2);
+		cartService.addItemWithQuantity(item2, 1);
+		cartService.addItemWithQuantity(item3, 3);
+		
+		// Check if current quantity is 1 for Item2
+        CartItem resultCartItem2 = cartService.getCartItem(item2);
+        assertEquals(resultCartItem2.getQuantity(), 1, "Expected 1, but was " + resultCartItem2.getQuantity());
+        
+        // Re-add the same item "Machiato" and check if it incremented quality
+        // Item4 should have the same values as Item2 aside from quantity
+        Item item4 = new Item("Machiato", 3.99);
+        cartService.addItemWithQuantity(item4, 3);
+        
+        CartItem resultCartItem4 = cartService.getCartItem(item4);
+        assertEquals(resultCartItem4.getQuantity(), 4, "Expected 4, but was " + resultCartItem4.getQuantity());
+    }
+	
+	@Test
+    @DisplayName("AC-CART-05: Update quantity of an Item in Cart")
+    void updateQuantity_updatesCartTotal() throws Exception
+    {
+		Item item1 = new Item("Espresso", 4.99);
+		cartService.addItemWithQuantity(item1, 2);
+		
+		// assert initial value
+		CartItem cartitem1 = cartService.getCartItem(item1);
+		assertEquals(cartitem1.getItem().getName(), "Espresso");
+        assertEquals(cartitem1.getItem().getPrice(), 4.99);
+        assertEquals(cartitem1.getQuantity(), 2);
+        
+        // Update then assert
+        cartService.updateQuantity(item1, 5);
+        cartitem1 = cartService.getCartItem(item1);
+        assertEquals(cartitem1.getItem().getName(), "Espresso");
+        assertEquals(cartitem1.getItem().getPrice(), 4.99);
+        assertEquals(cartitem1.getQuantity(), 5);
+    }
+	
+	@Test
+    @DisplayName("AC-CART-06: Do not update an item quantity with a negative quantity or non-existent item")
+    void updateQuantity_edgeCases() throws Exception
+    {
+		Item item1 = new Item("Espresso", 4.99);
+		cartService.addItemWithQuantity(item1, 2);
+		
+		// Assert 0 or negatives
+		assertThrows(QuantityZeroOrNegativeException.class, () -> {
+        	cartService.updateQuantity(item1, 0);
+        });
+		
+		assertThrows(QuantityZeroOrNegativeException.class, () -> {
+        	cartService.updateQuantity(item1, -1);
+        });
+        
+        assertThrows(QuantityZeroOrNegativeException.class, () -> {
+        	cartService.updateQuantity(item1, -100);
+        });
+        
+        // Assert non-existent item
+        assertThrows(CartItemNotFoundException.class, () -> {
+        	cartService.updateQuantity(new Item("Machiato", 4.99), 3);
+        });
     }
 
     @Test
-    @DisplayName("AC-CART-05: Remove item removes it from cart")
-    void removeItem_removesItemFromCart() 
+    @DisplayName("AC-CART-06: Remove item from cart")
+    void removeItem_removesItemFromCart() throws Exception 
     {
-    	assert(false);
+    	Item item1 = new Item("Espresso", 4.99);
+		Item item2 = new Item("Machiato", 3.99);
+		Item item3 = new Item("Cappuccino", 6.99);
+		
+		cartService.addItemWithQuantity(item1, 2);
+		cartService.addItemWithQuantity(item2, 1);
+		cartService.addItemWithQuantity(item3, 3);
+		
+		// Assert Item exists in Cart
+		CartItem cartItem2 = cartService.getCartItem(item2);
+		assert(cartItem2 != null);
+		
+		// Assert removal
+		cartService.removeItemFromCart(item2);
+		cartItem2 = cartService.getCartItem(item2);
+		assert(cartItem2 == null);
     }
 }
