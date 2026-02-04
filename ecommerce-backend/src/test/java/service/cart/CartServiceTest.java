@@ -161,7 +161,7 @@ class CartServiceTest
     }
 
     @Test
-    @DisplayName("AC-CART-06: Remove item from cart")
+    @DisplayName("AC-CART-07: Remove item from cart")
     void removeItem_removesItemFromCart() throws Exception 
     {
     	Item item1 = new Item("Espresso", 4.99);
