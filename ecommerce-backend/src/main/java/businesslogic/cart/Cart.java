@@ -1,4 +1,4 @@
-package cart_logic;
+package businesslogic.cart;
 
 import java.util.HashMap;
 import java.util.Map;

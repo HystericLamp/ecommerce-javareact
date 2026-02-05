@@ -7,7 +7,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import cart_logic.CartService;
+import businesslogic.cart.CartService;
 import ecommerce.exceptions.CartItemNotFoundException;
 import ecommerce.exceptions.QuantityZeroOrNegativeException;
 import ecommerce.model.CartItem;

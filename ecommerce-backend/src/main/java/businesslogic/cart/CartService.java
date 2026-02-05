@@ -1,4 +1,4 @@
-package cart_logic;
+package businesslogic.cart;
 
 import ecommerce.exceptions.CartItemNotFoundException;
 import ecommerce.exceptions.QuantityZeroOrNegativeException;
