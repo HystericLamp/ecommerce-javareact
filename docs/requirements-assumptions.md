@@ -31,12 +31,18 @@ This section captures interpreted requirements and assumptions based on availabl
 ---
 
 ## Checkout
-**Requirement:**
+
+### Requirements
 - Users can complete checkout using a payment provider
+- Orders are created before payment confirmation
+- Payment status is tracked
 
-**Assumptions:**
+### Assumptions
 - Guest checkout is allowed
-- Only one payment method is supported
+- Single payment provider
+- Single currency
 
-**Open Questions:**
-- Should failed payments allow retry?
+### Decisions
+- Failed payments can be retried
+- Each retry creates a new payment attempt for the same order
+

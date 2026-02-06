@@ -1,4 +1,4 @@
-package service.cart;
+package businesslogic.cart.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
