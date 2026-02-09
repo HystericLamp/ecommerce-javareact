@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import ecommerce.exceptions.CartItemNotFoundException;
-import ecommerce.model.CartItem;
+import ecommerce.model.LineItem;
 import ecommerce.model.Item;
 
 public class Cart
@@ -91,7 +91,7 @@ public class Cart
 	 * @param item
 	 * @return <b>CartItem</b> with <b>Item</b> and quantity
 	 */
-	public CartItem getCartItem(Item item)
+	public LineItem getCartItem(Item item)
 	{
 		Integer quantity = cartItems.get(item);
 		
@@ -100,7 +100,7 @@ public class Cart
 	        return null;
 	    }
 	    
-	    return new CartItem(item, quantity);
+	    return new LineItem(item, quantity);
 	}
 	
 	public int getCartTotalQuantity()

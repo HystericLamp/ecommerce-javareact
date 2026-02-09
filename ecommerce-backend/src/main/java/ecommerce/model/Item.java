@@ -1,13 +1,14 @@
 package ecommerce.model;
 
+import java.math.BigDecimal;
 import java.util.Objects;
 
 public class Item
 {
 	private String name;
-	private double price;
+	private BigDecimal price;
 	
-	public Item(String name, double price)
+	public Item(String name, BigDecimal price)
 	{
 		this.name = name;
 		this.price = price;
@@ -16,8 +17,8 @@ public class Item
 	// Getters & Setters
 	public String getName(){ return name; }
 	public void setName(String name){ this.name = name; }
-	public double getPrice(){ return price; }
-	public void setPrice(double price) { this.price = price; }
+	public BigDecimal getPrice(){ return price; }
+	public void setPrice(BigDecimal price) { this.price = price; }
 	
 	@Override
 	public String toString() 
@@ -32,8 +33,9 @@ public class Item
 		if (!(o instanceof Item)) return false;
 		
 		Item item =(Item) o;
-		return Double.compare(item.price, price) == 0 &&
-			   Objects.equals(name.toLowerCase(), item.name.toLowerCase());
+		
+		return price.compareTo(item.price) == 0 &&
+			   name.equalsIgnoreCase(item.name);
 	}
 	
 	@Override

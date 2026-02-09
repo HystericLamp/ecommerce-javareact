@@ -2,7 +2,7 @@ package businesslogic.cart;
 
 import ecommerce.exceptions.CartItemNotFoundException;
 import ecommerce.exceptions.QuantityZeroOrNegativeException;
-import ecommerce.model.CartItem;
+import ecommerce.model.LineItem;
 import ecommerce.model.Item;
 
 /**
@@ -88,7 +88,7 @@ public class CartService
 	 * @param item
 	 * @return
 	 */
-	public CartItem getCartItem(Item item)
+	public LineItem getCartItem(Item item)
 	{
 		return cart.getCartItem(item);
 	}

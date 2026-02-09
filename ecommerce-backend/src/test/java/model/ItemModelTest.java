@@ -2,6 +2,8 @@ package model;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.math.BigDecimal;
+
 import org.junit.jupiter.api.Test;
 
 import ecommerce.model.Item;
@@ -14,7 +16,7 @@ public class ItemModelTest
 	@Test
 	void instantaiteItem()
 	{
-		Item item = new Item("Espresso", 4.99);
+		Item item = new Item("Espresso", new BigDecimal("4.99"));
 		
 		assertEquals("Espresso", item.getName());
 		assertEquals(4.99, item.getPrice());
