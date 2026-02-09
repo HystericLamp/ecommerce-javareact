@@ -1,46 +1,24 @@
 package businesslogic.checkout;
 
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
 
-import ecommerce.model.LineItem;
-import ecommerce.model.Order;
+import ecommerce.model.DraftOrder;
 
 public class CheckoutService
 {
-	private Order order;
+	private DraftOrder draftOrder;
 	
-	public CheckoutService(Order order) 
+	public CheckoutService(DraftOrder draftOrder) 
 	{
-		this.order = order;
+		this.draftOrder = draftOrder;
 	}
 	
-	public Order getOrder()
+	public DraftOrder getOrder()
 	{
-		return this.order;
+		return this.draftOrder;
 	}
 	
 	public void updateOrderItemQuantity(String itemName, int quantity)
 	{
 		
-	}
-	
-	public List<BigDecimal> getItemTotals()
-	{
-		List<BigDecimal> itemTotals = new ArrayList<BigDecimal>();
-		List<LineItem> cartItems = order.getCartItems();
-		
-		for (LineItem item : cartItems)
-		{
-			itemTotals.add(item.getItemTotal());
-		}
-		
-		return itemTotals;
-	}
-	
-	public BigDecimal getOrderTotal()
-	{
-		return order.getCartSum();
 	}
 }

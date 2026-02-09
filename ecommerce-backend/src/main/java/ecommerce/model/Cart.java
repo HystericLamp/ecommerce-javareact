@@ -1,11 +1,11 @@
-package businesslogic.cart;
+package ecommerce.model;
 
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import ecommerce.exceptions.CartItemNotFoundException;
-import ecommerce.model.LineItem;
-import ecommerce.model.Item;
 
 public class Cart
 {
@@ -13,7 +13,7 @@ public class Cart
 	
 	public Cart()
 	{
-		cartItems = new HashMap<Item, LineItem>();
+		cartItems = new LinkedHashMap<Item, LineItem>();
 	}
 	
 	/**
@@ -98,5 +98,10 @@ public class Cart
 	public LineItem getCartItem(Item item)
 	{
 		return cartItems.get(item);
+	}
+	
+	public Collection<LineItem> getAllItems()
+	{
+		return cartItems.values();
 	}
 }

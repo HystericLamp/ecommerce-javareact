@@ -3,6 +3,7 @@ package businesslogic.cart;
 import ecommerce.exceptions.CartItemNotFoundException;
 import ecommerce.exceptions.QuantityZeroOrNegativeException;
 import ecommerce.model.LineItem;
+import ecommerce.model.Cart;
 import ecommerce.model.Item;
 
 /**
