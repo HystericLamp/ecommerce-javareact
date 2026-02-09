@@ -9,11 +9,11 @@ import ecommerce.model.Item;
 
 public class Cart
 {
-	Map<Item, Integer> cartItems;
+	Map<Item, LineItem> cartItems;
 	
 	public Cart()
 	{
-		cartItems = new HashMap<Item, Integer>();
+		cartItems = new HashMap<Item, LineItem>();
 	}
 	
 	/**
@@ -26,7 +26,9 @@ public class Cart
 	 */
 	public void addItem(Item item)
 	{
-		cartItems.merge(item, 1, Integer::sum);
+		cartItems.compute(item, (k, v) ->
+			v == null ? new LineItem(item, 1) : new LineItem(item, v.getQuantity() + 1)
+		);
 	}
 	
 	/**
@@ -40,7 +42,9 @@ public class Cart
 	 */
 	public void addItemWithQuantity(Item item, int quantity)
 	{
-		cartItems.merge(item, quantity, Integer::sum);
+		cartItems.compute(item, (k, v) ->
+			v == null ? new LineItem(item, quantity) : new LineItem(item, v.getQuantity() + quantity)
+		);
 	}
 	
 	/**
@@ -55,7 +59,7 @@ public class Cart
 	 */
 	public void updateQuantity(Item item, int quantity) throws CartItemNotFoundException
 	{
-		Integer updated = cartItems.replace(item, quantity);
+		LineItem updated = cartItems.replace(item, new LineItem(item, quantity));
 		
 	    if (updated == null) 
 	    {
@@ -93,18 +97,6 @@ public class Cart
 	 */
 	public LineItem getCartItem(Item item)
 	{
-		Integer quantity = cartItems.get(item);
-		
-	    if (quantity == null) 
-	    {
-	        return null;
-	    }
-	    
-	    return new LineItem(item, quantity);
-	}
-	
-	public int getCartTotalQuantity()
-	{
-		return cartItems.values().stream().mapToInt(i -> i).sum();
+		return cartItems.get(item);
 	}
 }

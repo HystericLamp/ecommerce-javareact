@@ -18,15 +18,26 @@ public class LineItem
 	public Item getItem() { return item; }
 	public void setItem(Item item) { this.item = item; }
 	public int getQuantity() { return quantity; }
-	public void setQuantity(int quantity) { this.quantity = quantity; }
 	
+	public void setQuantity(int quantity) 
+	{
+		if (quantity <= 0) 
+		{
+			throw new IllegalArgumentException("Cannot set quantity of " + item.getName() + " to or below 0");
+		}
+		
+		this.quantity = quantity; 
+	}
+	
+	/**
+	 * <p>
+	 * Calculates the total cost of the <b>Item</b>'s price multiplied by its quantity
+	 * </p>
+	 * 
+	 * @return
+	 */
 	public BigDecimal getItemTotal() 
 	{
-		BigDecimal itemPrice = item.getPrice();
-		BigDecimal itemQuantity = BigDecimal.valueOf(this.quantity);
-		
-		BigDecimal itemTotal = itemPrice.multiply(itemQuantity);
-		
-		return itemTotal.setScale(2, RoundingMode.HALF_UP);
+		return item.getPrice().multiply(BigDecimal.valueOf(quantity));
 	}
 }

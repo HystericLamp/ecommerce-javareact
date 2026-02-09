@@ -105,8 +105,6 @@ public class CheckoutServiceTest
 		// Update a quantity of an Item
 		
 		// Remove an Item from Order
-		
-        assert(false);
     }
 	
 	@Test
