@@ -88,25 +88,30 @@ public class CheckoutServiceTest
 		LineItem itemC = _draftOrder.getLineItem(item("Item C", "2.99"));
 		LineItem itemD = _draftOrder.getLineItem(item("Item D", "9.99"));
 		
+		assert(itemA != null);
 		assertEquals("Item A", itemA.getItem().getName());
 		assertEquals("4.99", itemA.getItem().getPrice().toPlainString());
 		assertEquals(2, itemA.getQuantity());
 		
+		assert(itemB != null);
 		assertEquals("Item B", itemB.getItem().getName());
 		assertEquals("6.99", itemB.getItem().getPrice().toPlainString());
 		assertEquals(4, itemB.getQuantity());
 		
+		assert(itemC != null);
 		assertEquals("Item C", itemC.getItem().getName());
 		assertEquals("2.99", itemC.getItem().getPrice().toPlainString());
 		assertEquals(6, itemC.getQuantity());
 		
+		assert(itemD != null);
 		assertEquals("Item D", itemD.getItem().getName());
 		assertEquals("9.99", itemD.getItem().getPrice().toPlainString());
 		assertEquals(3, itemD.getQuantity());
 		
 		// Update a quantity of an Item
 		Item itemToChange = new Item("Item C", new BigDecimal("2.99"));
-		_draftOrder.updateQuantity(itemToChange, 1);
+		checkService.updateOrderItemQuantity(itemToChange, 1);
+		_draftOrder = checkService.getOrder();
 		
 		LineItem resultItem = _draftOrder.getLineItem(itemC.getItem());
 		assertEquals("Item C", resultItem.getItem().getName());
