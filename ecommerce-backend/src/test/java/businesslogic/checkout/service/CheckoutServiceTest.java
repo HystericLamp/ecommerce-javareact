@@ -114,6 +114,11 @@ public class CheckoutServiceTest
 		assertEquals(1, resultItem.getQuantity());
 		
 		// Remove an Item from Order
+		Item itemToRemove = new Item("Item C", new BigDecimal("2.99"));
+		_draftOrder.removeItem(itemToRemove);
+		
+		LineItem resultRemovedItem = _draftOrder.getLineItem(item("Item C", "2.99"));
+		assertEquals(null, resultRemovedItem);
     }
 	
 	@Test

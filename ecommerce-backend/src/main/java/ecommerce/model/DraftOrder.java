@@ -3,6 +3,7 @@ package ecommerce.model;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,7 +24,11 @@ public class DraftOrder
 	public LineItem getLineItem(Item item)
 	{
 		return items.get(item);
-		
+	}
+	
+	public final Collection<LineItem> getAllLineItems()
+	{
+		return this.items.values();
 	}
 	
 	public void updateQuantity(Item item, int quantity) 
