@@ -44,27 +44,6 @@ public class DraftOrder
     {
         items.remove(item);
     }
-    
-    public List<BigDecimal> getItemTotals()
-    {
-    	List<LineItem> lineItems = new ArrayList<LineItem>(items.values());
-    	
-    	List<BigDecimal> lineItemAmounts = new ArrayList<BigDecimal>();
-    	for (LineItem lineItem : lineItems)
-    	{
-    		lineItemAmounts.add(lineItem.getItemTotal());
-    	}
-    	
-    	return lineItemAmounts;
-    }
-
-    public BigDecimal getTotal() 
-    {
-        return items.values().stream()
-            .map(LineItem::getItemTotal)
-            .reduce(BigDecimal.ZERO, BigDecimal::add)
-            .setScale(2, RoundingMode.HALF_UP);
-    }
 
     public Order finalizeOrder() 
     {

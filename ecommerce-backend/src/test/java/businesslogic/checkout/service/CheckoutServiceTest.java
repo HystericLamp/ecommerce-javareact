@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Test;
 
 import businesslogic.checkout.CheckoutService;
 import ecommerce.model.LineItem;
+import ecommerce.exceptions.QuantityZeroOrNegativeException;
 import ecommerce.model.Cart;
 import ecommerce.model.DraftOrder;
 import ecommerce.model.Item;
@@ -20,6 +21,7 @@ import ecommerce.model.Order;
 public class CheckoutServiceTest
 {
 	private CheckoutService checkService;
+	private Cart cart;
 	
 	// Helper
 	private Item item(String name, String price)
@@ -30,63 +32,59 @@ public class CheckoutServiceTest
 	@BeforeEach
 	void setUp()
 	{
-		Cart cart = new Cart();
-		List<LineItem> cartItems = new ArrayList<LineItem>();
+		checkService = new CheckoutService();
+		cart = new Cart();
 		cart.addItemWithQuantity(item("Item A", "4.99"), 2);
 		cart.addItemWithQuantity(item("Item B", "6.99"), 4);
 		cart.addItemWithQuantity(item("Item C", "2.99"), 6);
 		cart.addItemWithQuantity(item("Item D", "9.99"), 3);
-		
-		DraftOrder draftOrder = new DraftOrder(cart);
-		checkService = new CheckoutService(draftOrder);
 	}
 	
 	@Test
     @DisplayName("AC-CHECKOUT-01: Get Summary of Order")
     void checkout_getOrder() 
 	{
-		// Get Order with all Items from Cart in checkService
-		DraftOrder _draftOrder = checkService.getOrder();
+		DraftOrder draftOrder = new DraftOrder(cart);
 		
 		// List all Items and quantities
-		LineItem itemA = _draftOrder.getLineItem(item("Item A", "4.99"));
+		LineItem itemA = draftOrder.getLineItem(item("Item A", "4.99"));
 		assertEquals("Item A", itemA.getItem().getName());
 		assertEquals("4.99", itemA.getItem().getPrice().toPlainString());
 		
-		LineItem itemB = _draftOrder.getLineItem(item("Item B", "6.99"));
+		LineItem itemB = draftOrder.getLineItem(item("Item B", "6.99"));
 		assertEquals("Item B", itemB.getItem().getName());
 		assertEquals("6.99", itemB.getItem().getPrice().toPlainString());
 		
-		LineItem itemC = _draftOrder.getLineItem(item("Item C", "2.99"));
+		LineItem itemC = draftOrder.getLineItem(item("Item C", "2.99"));
 		assertEquals("Item C", itemC.getItem().getName());
 		assertEquals("2.99", itemC.getItem().getPrice().toPlainString());
 		
-		LineItem itemD = _draftOrder.getLineItem(item("Item D", "9.99"));
+		LineItem itemD = draftOrder.getLineItem(item("Item D", "9.99"));
 		assertEquals("Item D", itemD.getItem().getName());
 		assertEquals("9.99", itemD.getItem().getPrice().toPlainString());
 		
 		// Gather totals for each item then amount total for all items
-		List<BigDecimal> itemTotals = _draftOrder.getItemTotals();
+		List<BigDecimal> itemTotals = checkService.getItemTotals(draftOrder);
 		assertEquals("9.98", itemTotals.get(0).toPlainString());
 		assertEquals("27.96", itemTotals.get(1).toPlainString());
 		assertEquals("17.94", itemTotals.get(2).toPlainString());
 		assertEquals("29.97", itemTotals.get(3).toPlainString());
 		
-		assertEquals("85.85", _draftOrder.getTotal().toPlainString());
+		assertEquals("85.85", checkService.getTotal(draftOrder).toPlainString());
     }
 	
 	@Test
     @DisplayName("AC-CHECKOUT-02: Update Order")
-    void checkout_updateOrder() 
+    void checkout_updateOrder() throws QuantityZeroOrNegativeException 
 	{
 		// Make an Order with all Items from Cart
-		DraftOrder _draftOrder = checkService.getOrder();
+		DraftOrder draftOrder = new DraftOrder(cart);
 		
 		// List all Items and quantities
-		LineItem itemA = _draftOrder.getLineItem(item("Item A", "4.99"));
-		LineItem itemB = _draftOrder.getLineItem(item("Item B", "6.99"));
-		LineItem itemC = _draftOrder.getLineItem(item("Item C", "2.99"));
-		LineItem itemD = _draftOrder.getLineItem(item("Item D", "9.99"));
+		LineItem itemA = draftOrder.getLineItem(item("Item A", "4.99"));
+		LineItem itemB = draftOrder.getLineItem(item("Item B", "6.99"));
+		LineItem itemC = draftOrder.getLineItem(item("Item C", "2.99"));
+		LineItem itemD = draftOrder.getLineItem(item("Item D", "9.99"));
 		
 		assert(itemA != null);
 		assertEquals("Item A", itemA.getItem().getName());
@@ -110,19 +108,18 @@ public class CheckoutServiceTest
 		
 		// Update a quantity of an Item
 		Item itemToChange = new Item("Item C", new BigDecimal("2.99"));
-		checkService.updateOrderItemQuantity(itemToChange, 1);
-		_draftOrder = checkService.getOrder();
+		draftOrder = checkService.updateOrderItemQuantity(draftOrder, itemToChange, 1);
 		
-		LineItem resultItem = _draftOrder.getLineItem(itemC.getItem());
+		LineItem resultItem = draftOrder.getLineItem(itemC.getItem());
 		assertEquals("Item C", resultItem.getItem().getName());
 		assertEquals("2.99", resultItem.getItem().getPrice().toPlainString());
 		assertEquals(1, resultItem.getQuantity());
 		
 		// Remove an Item from Order
 		Item itemToRemove = new Item("Item C", new BigDecimal("2.99"));
-		_draftOrder.removeItem(itemToRemove);
+		draftOrder = checkService.removeItemFromOrder(draftOrder, itemToRemove);
 		
-		LineItem resultRemovedItem = _draftOrder.getLineItem(item("Item C", "2.99"));
+		LineItem resultRemovedItem = draftOrder.getLineItem(item("Item C", "2.99"));
 		assertEquals(null, resultRemovedItem);
     }
 	
