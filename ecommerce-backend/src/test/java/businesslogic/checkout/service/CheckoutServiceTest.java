@@ -1,6 +1,10 @@
 package businesslogic.checkout.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -10,6 +14,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import com.stripe.exception.StripeException;
+import com.stripe.model.PaymentIntent;
+
 import businesslogic.checkout.CheckoutService;
 import ecommerce.model.LineItem;
 import ecommerce.exceptions.QuantityZeroOrNegativeException;
@@ -17,6 +24,9 @@ import ecommerce.model.Cart;
 import ecommerce.model.DraftOrder;
 import ecommerce.model.Item;
 import ecommerce.model.Order;
+import infrastructure.payment.PaymentProcessor;
+import infrastructure.payment.StripePaymentProcessor;
+import infrastructure.service.StripeService;
 
 public class CheckoutServiceTest
 {
@@ -125,13 +135,19 @@ public class CheckoutServiceTest
 	
 	@Test
     @DisplayName("AC-CHECKOUT-03: Process Successful Payment")
-    void checkout_processSuccessfulPayment() 
+    void checkout_processSuccessfulPayment() throws StripeException 
 	{
 		// With an Order make a call to payment provider with total
+		DraftOrder draftOrder = new DraftOrder(cart);
+		
+		// Mocked payment processor
+		PaymentProcessor paymentProcessor = mock(PaymentProcessor.class);
+	    when(paymentProcessor.createPayment(anyLong(), anyString())).thenReturn("pi_123");
+	    when(paymentProcessor.confirmPayment("pi_123")).thenReturn(true);
 		
 		// Assert a successful payment
-		
-        assert(false);
+		boolean result = checkService.makePayment(draftOrder, "usd", paymentProcessor);
+		assert(result);
     }
 	
 	@Test
