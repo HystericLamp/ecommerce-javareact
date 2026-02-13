@@ -154,11 +154,13 @@ public class CheckoutServiceTest
     @DisplayName("AC-CHECKOUT-04: Failed Payment")
     void checkout_failedPayment() 
 	{
-		// With an Order make a call to payment provider with total
+		PaymentProcessor paymentProcessor = mock(PaymentProcessor.class);
+		when(paymentProcessor.refundPayment(anyString())).thenReturn(true);
+		
 		
 		// Assert a failed payment
-		
-        assert(false);
+		boolean result = checkService.refundPayment("pi_123", paymentProcessor);
+        assert(result);
     }
 	
 	@Test
@@ -166,13 +168,23 @@ public class CheckoutServiceTest
     void checkout_retryPaymentAfterFail() 
 	{
 		// With an Order make a call to payment provider with total
+		DraftOrder draftOrder = new DraftOrder(cart);
+		
+		PaymentProcessor paymentProcessor = mock(PaymentProcessor.class);
+	    when(paymentProcessor.createPayment(anyLong(), anyString())).thenReturn("pi_123");
+	    when(paymentProcessor.confirmPayment("pi_123")).thenReturn(false);
 		
 		// Assert a failed payment
+	    boolean result = checkService.makePayment(draftOrder, "usd", paymentProcessor);
+		assert(!result);
 		
 		// Redo payment process
+		paymentProcessor = mock(PaymentProcessor.class);
+	    when(paymentProcessor.createPayment(anyLong(), anyString())).thenReturn("pi_123");
+	    when(paymentProcessor.confirmPayment("pi_123")).thenReturn(true);
 		
 		// Assert successful payment
-		
-        assert(false);
+	    result = checkService.makePayment(draftOrder, "usd", paymentProcessor);
+	    assert(result);
     }
 }

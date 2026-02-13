@@ -75,7 +75,6 @@ public class CheckoutService
 	
 	public boolean refundPayment(String paymentID, PaymentProcessor paymentProcessor)
 	{
-		// TODO: Not sure what to do with the output yet
 		return paymentProcessor.refundPayment(paymentID);
 	}
 }
