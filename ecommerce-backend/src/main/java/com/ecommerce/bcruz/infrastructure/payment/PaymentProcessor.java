@@ -1,4 +1,4 @@
-package infrastructure.payment;
+package com.ecommerce.bcruz.infrastructure.payment;
 
 public interface PaymentProcessor
 {

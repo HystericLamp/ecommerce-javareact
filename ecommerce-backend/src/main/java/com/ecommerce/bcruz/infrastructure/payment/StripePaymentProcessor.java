@@ -1,11 +1,10 @@
-package infrastructure.payment;
+package com.ecommerce.bcruz.infrastructure.payment;
 
 import org.springframework.stereotype.Service;
 
+import com.ecommerce.bcruz.infrastructure.service.StripeService;
 import com.stripe.exception.StripeException;
 import com.stripe.model.PaymentIntent;
-
-import infrastructure.service.StripeService;
 
 @Service
 public class StripePaymentProcessor implements PaymentProcessor

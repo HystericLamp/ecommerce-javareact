@@ -1,13 +1,14 @@
-package infrastructure.service;
+package com.ecommerce.bcruz.infrastructure.service;
 
 import org.springframework.stereotype.Service;
 
+import com.ecommerce.bcruz.config.StripeConfig;
 import com.stripe.Stripe;
 import com.stripe.exception.StripeException;
 import com.stripe.model.PaymentIntent;
 import com.stripe.param.PaymentIntentCreateParams;
 
-import config.StripeConfig;
+import jakarta.annotation.PostConstruct;
 
 @Service
 public class StripeService
@@ -17,6 +18,11 @@ public class StripeService
 	public StripeService(StripeConfig stripeConfig)
 	{
 		this.stripeConfig = stripeConfig;
+	}
+	
+	@PostConstruct
+	void init()
+	{
 		Stripe.apiKey = stripeConfig.getSecretKey();
 	}
 	

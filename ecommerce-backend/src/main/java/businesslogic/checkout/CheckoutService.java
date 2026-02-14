@@ -5,11 +5,12 @@ import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.ecommerce.bcruz.infrastructure.payment.PaymentProcessor;
+
 import ecommerce.exceptions.QuantityZeroOrNegativeException;
 import ecommerce.model.DraftOrder;
 import ecommerce.model.Item;
 import ecommerce.model.LineItem;
-import infrastructure.payment.PaymentProcessor;
 
 public class CheckoutService
 {	

@@ -1,4 +1,4 @@
-package config;
+package com.ecommerce.bcruz.config;
 
 import jakarta.validation.constraints.NotBlank;
 import org.springframework.validation.annotation.Validated;

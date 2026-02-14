@@ -14,6 +14,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import com.ecommerce.bcruz.infrastructure.payment.PaymentProcessor;
+import com.ecommerce.bcruz.infrastructure.payment.StripePaymentProcessor;
+import com.ecommerce.bcruz.infrastructure.service.StripeService;
 import com.stripe.exception.StripeException;
 import com.stripe.model.PaymentIntent;
 
@@ -24,9 +27,6 @@ import ecommerce.model.Cart;
 import ecommerce.model.DraftOrder;
 import ecommerce.model.Item;
 import ecommerce.model.Order;
-import infrastructure.payment.PaymentProcessor;
-import infrastructure.payment.StripePaymentProcessor;
-import infrastructure.service.StripeService;
 
 public class CheckoutServiceTest
 {

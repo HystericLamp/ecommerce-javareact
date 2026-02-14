@@ -13,4 +13,4 @@
 | AC-CHECKOUT-04 | Failed Payment | P0 | ??? |  | WIP |
 | AC-CHECKOUT-05 | Retry Payment | P0 | ??? |  | WIP |
 | AC-PAYMENT-INTEGRATION-01 | Process Successful Payment | P0 | SRC | TEST | WIP |
-| AC-PAYMENT-INTEGRATION-02 | Failed Payment | P0 | ??? | ??? | WIP |
+| AC-PAYMENT-INTEGRATION-02 | Refund Payment | P0 | ??? | ??? | WIP |
