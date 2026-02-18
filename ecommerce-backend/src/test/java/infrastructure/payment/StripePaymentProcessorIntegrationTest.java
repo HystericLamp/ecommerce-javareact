@@ -73,6 +73,7 @@ public class StripePaymentProcessorIntegrationTest
 	{
 		PaymentIntent intent = stripeService.createPaymentIntent(1000L, "usd");
 		
+		// Needed to get success/fail status
 		PaymentIntent confirmed = PaymentIntent.retrieve(intent.getId())
 				  .confirm(
 						  PaymentIntentConfirmParams.builder()

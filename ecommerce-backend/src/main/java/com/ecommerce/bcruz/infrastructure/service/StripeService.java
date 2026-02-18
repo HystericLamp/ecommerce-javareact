@@ -7,6 +7,7 @@ import com.stripe.Stripe;
 import com.stripe.exception.StripeException;
 import com.stripe.model.PaymentIntent;
 import com.stripe.param.PaymentIntentCreateParams;
+import com.stripe.param.PaymentIntentCreateParams.AutomaticPaymentMethods.AllowRedirects;
 
 import jakarta.annotation.PostConstruct;
 
@@ -35,6 +36,7 @@ public class StripeService
 													PaymentIntentCreateParams.AutomaticPaymentMethods
 														.builder()
 														.setEnabled(true)
+														.setAllowRedirects(AllowRedirects.NEVER)
 														.build()
 											)
 											.build();
