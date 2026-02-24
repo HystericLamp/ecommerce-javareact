@@ -1,9 +1,22 @@
-import React from "react";
+import { useCart } from "../../features/cart/context/CartContext";
 
-const Cart = () => {
-    return (
-        <h1>Cart Page</h1>
-    );
-};
+export default function Cart() {
+  const { cart } = useCart();
 
-export default Cart;
+  return (
+    <div>
+      <h1>Cart</h1>
+
+      {cart.length === 0 ? (
+        <p>Your cart is empty</p>
+      ) : (
+        cart.map(item => (
+          <div key={item.id}>
+            <h3>{item.name}</h3>
+            <p>${item.price}</p>
+          </div>
+        ))
+      )}
+    </div>
+  );
+}
