@@ -16,6 +16,8 @@ export function CartProvider({ children }) {
 
   function addToCart(product) {
     setCart(prev => [...prev, product]);
+
+    // Temporary
     console.log("Added to cart:", product);
   }
 
