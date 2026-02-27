@@ -7,12 +7,6 @@ const Home = () => {
     return (
         <div>
             <h1>Home Page</h1>
-
-            <div>
-                <button onClick={() => navigate("/shop")}>
-                    Shop
-                </button>
-            </div>
         </div>
     );
 };

@@ -1,5 +1,6 @@
 import { Routes, Route } from "react-router-dom";
 import { CartProvider } from "../features/cart/context/CartContext";
+import Navbar from "../components/Navbar";
 
 const pages = import.meta.glob("./pages/*.jsx", { eager: true });
 
@@ -8,6 +9,8 @@ function App() {
 
   return (
     <CartProvider>
+      <Navbar />
+
       <Routes>
         {/* Default route for "/" */}
         {Home && <Route index element={<Home />} />}

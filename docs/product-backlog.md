@@ -139,3 +139,17 @@ So that I have a pleasant and seamless shopping experience
 **Given** The user is looking at the site   
 **When** user wants to go to a different page  
 **Then** user is sent to desired site page  
+
+---
+
+## US-12 - Browse Shop
+As a customer  
+I want to see all available shop items  
+So that I can browse all available items to buy  
+
+**Acceptance Criteria**:  
+**Given** The user is at the site  
+**When** the user opens the menu  
+**Then** show all available items for purchase  
+
+---
