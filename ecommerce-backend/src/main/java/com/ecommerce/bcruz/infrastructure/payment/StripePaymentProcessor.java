@@ -23,8 +23,7 @@ public class StripePaymentProcessor implements PaymentProcessor
 		{
 			PaymentIntent intent = stripeService.createPaymentIntent(amount, currencyType);
 			
-			// Returns PaymentIntent ID
-			return intent.getId();
+			return intent.getClientSecret();
 		} 
 		catch (StripeException e)
 		{

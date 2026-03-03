@@ -7,7 +7,6 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -15,10 +14,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import com.ecommerce.bcruz.infrastructure.payment.PaymentProcessor;
-import com.ecommerce.bcruz.infrastructure.payment.StripePaymentProcessor;
-import com.ecommerce.bcruz.infrastructure.service.StripeService;
 import com.stripe.exception.StripeException;
-import com.stripe.model.PaymentIntent;
 
 import businesslogic.checkout.CheckoutService;
 import ecommerce.model.LineItem;
@@ -26,7 +22,6 @@ import ecommerce.exceptions.QuantityZeroOrNegativeException;
 import ecommerce.model.Cart;
 import ecommerce.model.DraftOrder;
 import ecommerce.model.Item;
-import ecommerce.model.Order;
 
 public class CheckoutServiceTest
 {

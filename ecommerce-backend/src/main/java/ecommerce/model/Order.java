@@ -13,6 +13,15 @@ public class Order
 	
 	public Order(Collection<LineItem> cartItems)
 	{
+		this.setOrderID(orderID);
+		this.items = cartItems.stream()
+					 .map(li -> new LineItem(li.getItem(), li.getQuantity()))
+					 .toList();
+	}
+	
+	public Order(int orderID, Collection<LineItem> cartItems)
+	{
+		this.setOrderID(orderID);
 		this.items = cartItems.stream()
 					 .map(li -> new LineItem(li.getItem(), li.getQuantity()))
 					 .toList();
@@ -40,4 +49,7 @@ public class Order
 	            .reduce(BigDecimal.ZERO, BigDecimal::add)
 	            .setScale(2, RoundingMode.HALF_UP);
 	}
+
+	public int getOrderID(){ return orderID; }
+	public void setOrderID(int orderID){ this.orderID = orderID; }
 }
