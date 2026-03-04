@@ -1,11 +1,11 @@
-package ecommerce.model;
+package com.ecommerce.bcruz.models;
 
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import ecommerce.exceptions.CartItemNotFoundException;
+import com.ecommerce.bcruz.exceptions.CartItemNotFoundException;
 
 public class Cart
 {

@@ -1,10 +1,10 @@
-package businesslogic.cart;
+package com.ecommerce.bcruz.businesslogic.cart;
 
-import ecommerce.exceptions.CartItemNotFoundException;
-import ecommerce.exceptions.QuantityZeroOrNegativeException;
-import ecommerce.model.LineItem;
-import ecommerce.model.Cart;
-import ecommerce.model.Item;
+import com.ecommerce.bcruz.exceptions.CartItemNotFoundException;
+import com.ecommerce.bcruz.exceptions.QuantityZeroOrNegativeException;
+import com.ecommerce.bcruz.models.Cart;
+import com.ecommerce.bcruz.models.Item;
+import com.ecommerce.bcruz.models.LineItem;
 
 /**
  * <p>

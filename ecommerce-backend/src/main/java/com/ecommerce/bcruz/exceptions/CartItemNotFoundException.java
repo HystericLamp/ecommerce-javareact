@@ -1,4 +1,4 @@
-package ecommerce.exceptions;
+package com.ecommerce.bcruz.exceptions;
 
 /**
  * <p>

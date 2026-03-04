@@ -1,4 +1,4 @@
-package model;
+package com.ecommerce.bcruz.model;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -6,7 +6,7 @@ import java.math.BigDecimal;
 
 import org.junit.jupiter.api.Test;
 
-import ecommerce.model.Item;
+import com.ecommerce.bcruz.models.Item;
 
 /**
  * Just making this to test my development environment

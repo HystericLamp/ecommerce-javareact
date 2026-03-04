@@ -1,4 +1,4 @@
-package businesslogic.checkout.service;
+package com.ecommerce.bcruz.businesslogic.checkout.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -13,15 +13,14 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import com.ecommerce.bcruz.businesslogic.checkout.CheckoutService;
+import com.ecommerce.bcruz.exceptions.QuantityZeroOrNegativeException;
 import com.ecommerce.bcruz.infrastructure.payment.PaymentProcessor;
+import com.ecommerce.bcruz.models.Cart;
+import com.ecommerce.bcruz.models.DraftOrder;
+import com.ecommerce.bcruz.models.Item;
+import com.ecommerce.bcruz.models.LineItem;
 import com.stripe.exception.StripeException;
-
-import businesslogic.checkout.CheckoutService;
-import ecommerce.model.LineItem;
-import ecommerce.exceptions.QuantityZeroOrNegativeException;
-import ecommerce.model.Cart;
-import ecommerce.model.DraftOrder;
-import ecommerce.model.Item;
 
 public class CheckoutServiceTest
 {

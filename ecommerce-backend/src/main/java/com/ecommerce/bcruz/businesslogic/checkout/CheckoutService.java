@@ -1,16 +1,15 @@
-package businesslogic.checkout;
+package com.ecommerce.bcruz.businesslogic.checkout;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.ecommerce.bcruz.exceptions.QuantityZeroOrNegativeException;
 import com.ecommerce.bcruz.infrastructure.payment.PaymentProcessor;
-
-import ecommerce.exceptions.QuantityZeroOrNegativeException;
-import ecommerce.model.DraftOrder;
-import ecommerce.model.Item;
-import ecommerce.model.LineItem;
+import com.ecommerce.bcruz.models.DraftOrder;
+import com.ecommerce.bcruz.models.Item;
+import com.ecommerce.bcruz.models.LineItem;
 
 public class CheckoutService
 {	

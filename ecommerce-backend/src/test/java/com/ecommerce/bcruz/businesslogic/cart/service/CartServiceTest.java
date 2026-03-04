@@ -1,4 +1,4 @@
-package businesslogic.cart.service;
+package com.ecommerce.bcruz.businesslogic.cart.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -10,11 +10,11 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import businesslogic.cart.CartService;
-import ecommerce.exceptions.CartItemNotFoundException;
-import ecommerce.exceptions.QuantityZeroOrNegativeException;
-import ecommerce.model.LineItem;
-import ecommerce.model.Item;
+import com.ecommerce.bcruz.businesslogic.cart.CartService;
+import com.ecommerce.bcruz.exceptions.CartItemNotFoundException;
+import com.ecommerce.bcruz.exceptions.QuantityZeroOrNegativeException;
+import com.ecommerce.bcruz.models.Item;
+import com.ecommerce.bcruz.models.LineItem;
 
 class CartServiceTest 
 {
