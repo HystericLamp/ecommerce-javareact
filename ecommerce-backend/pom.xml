@@ -80,6 +80,14 @@
 		    <version>3.51.2.0</version>
 		    <scope>compile</scope>
 		</dependency>
+		
+		<!-- Source: https://mvnrepository.com/artifact/org.hibernate.orm/hibernate-community-dialects -->
+		<dependency>
+		    <groupId>org.hibernate.orm</groupId>
+		    <artifactId>hibernate-community-dialects</artifactId>
+		    <version>7.2.6.Final</version>
+		    <scope>compile</scope>
+		</dependency>
 	</dependencies>
 
 	<build>
