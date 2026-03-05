@@ -1,4 +1,4 @@
-package com.ecommerce.bcruz.businesslogic.checkout;
+package com.ecommerce.bcruz.service;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;

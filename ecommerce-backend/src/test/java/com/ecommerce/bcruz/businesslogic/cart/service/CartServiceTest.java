@@ -10,10 +10,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import com.ecommerce.bcruz.businesslogic.cart.CartService;
 import com.ecommerce.bcruz.exceptions.CartItemNotFoundException;
 import com.ecommerce.bcruz.exceptions.QuantityZeroOrNegativeException;
 import com.ecommerce.bcruz.models.Product;
+import com.ecommerce.bcruz.service.CartService;
 import com.ecommerce.bcruz.models.LineProduct;
 
 class CartServiceTest 

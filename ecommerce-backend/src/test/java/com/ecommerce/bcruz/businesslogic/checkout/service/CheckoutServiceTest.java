@@ -13,12 +13,12 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import com.ecommerce.bcruz.businesslogic.checkout.CheckoutService;
 import com.ecommerce.bcruz.exceptions.QuantityZeroOrNegativeException;
 import com.ecommerce.bcruz.infrastructure.payment.PaymentProcessor;
 import com.ecommerce.bcruz.models.Cart;
 import com.ecommerce.bcruz.models.DraftOrder;
 import com.ecommerce.bcruz.models.Product;
+import com.ecommerce.bcruz.service.CheckoutService;
 import com.ecommerce.bcruz.models.LineProduct;
 import com.stripe.exception.StripeException;
 

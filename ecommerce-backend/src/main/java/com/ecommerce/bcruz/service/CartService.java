@@ -1,4 +1,4 @@
-package com.ecommerce.bcruz.businesslogic.cart;
+package com.ecommerce.bcruz.service;
 
 import com.ecommerce.bcruz.exceptions.CartItemNotFoundException;
 import com.ecommerce.bcruz.exceptions.QuantityZeroOrNegativeException;
