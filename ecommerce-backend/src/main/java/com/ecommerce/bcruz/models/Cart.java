@@ -9,11 +9,11 @@ import com.ecommerce.bcruz.exceptions.CartItemNotFoundException;
 
 public class Cart
 {
-	Map<Item, LineItem> cartItems;
+	Map<Product, LineProduct> cartItems;
 	
 	public Cart()
 	{
-		cartItems = new LinkedHashMap<Item, LineItem>();
+		cartItems = new LinkedHashMap<Product, LineProduct>();
 	}
 	
 	/**
@@ -24,10 +24,10 @@ public class Cart
 	 * 
 	 * @param item
 	 */
-	public void addItem(Item item)
+	public void addItem(Product item)
 	{
 		cartItems.compute(item, (k, v) ->
-			v == null ? new LineItem(item, 1) : new LineItem(item, v.getQuantity() + 1)
+			v == null ? new LineProduct(item, 1) : new LineProduct(item, v.getQuantity() + 1)
 		);
 	}
 	
@@ -40,10 +40,10 @@ public class Cart
 	 * @param item
 	 * @param quantity
 	 */
-	public void addItemWithQuantity(Item item, int quantity)
+	public void addItemWithQuantity(Product item, int quantity)
 	{
 		cartItems.compute(item, (k, v) ->
-			v == null ? new LineItem(item, quantity) : new LineItem(item, v.getQuantity() + quantity)
+			v == null ? new LineProduct(item, quantity) : new LineProduct(item, v.getQuantity() + quantity)
 		);
 	}
 	
@@ -57,9 +57,9 @@ public class Cart
 	 * @param quantity
 	 * @throws CartItemNotFoundException
 	 */
-	public void updateQuantity(Item item, int quantity) throws CartItemNotFoundException
+	public void updateQuantity(Product item, int quantity) throws CartItemNotFoundException
 	{
-		LineItem updated = cartItems.replace(item, new LineItem(item, quantity));
+		LineProduct updated = cartItems.replace(item, new LineProduct(item, quantity));
 		
 	    if (updated == null) 
 	    {
@@ -69,7 +69,7 @@ public class Cart
 	    }
 	}
 	
-	public void removeItem(Item item)
+	public void removeItem(Product item)
 	{
 		cartItems.remove(item);
 	}
@@ -82,7 +82,7 @@ public class Cart
 	 * @param item
 	 * @return true if item exists in cart, false otherwise
 	 */
-	public Boolean hasCartItem(Item item)
+	public Boolean hasCartItem(Product item)
 	{
 		return cartItems.containsKey(item);
 	}
@@ -95,12 +95,12 @@ public class Cart
 	 * @param item
 	 * @return <b>CartItem</b> with <b>Item</b> and quantity
 	 */
-	public LineItem getCartItem(Item item)
+	public LineProduct getCartItem(Product item)
 	{
 		return cartItems.get(item);
 	}
 	
-	public Collection<LineItem> getAllItems()
+	public Collection<LineProduct> getAllItems()
 	{
 		return cartItems.values();
 	}

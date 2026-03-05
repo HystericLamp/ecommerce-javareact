@@ -9,33 +9,33 @@ import java.util.List;
 public class Order
 {
 	private int orderID;
-	private final List<LineItem> items;
+	private final List<LineProduct> products;
 	
-	public Order(Collection<LineItem> cartItems)
+	public Order(Collection<LineProduct> cartItems)
 	{
 		this.setOrderID(orderID);
-		this.items = cartItems.stream()
-					 .map(li -> new LineItem(li.getItem(), li.getQuantity()))
+		this.products = cartItems.stream()
+					 .map(li -> new LineProduct(li.getProduct(), li.getQuantity()))
 					 .toList();
 	}
 	
-	public Order(int orderID, Collection<LineItem> cartItems)
+	public Order(int orderID, Collection<LineProduct> cartItems)
 	{
 		this.setOrderID(orderID);
-		this.items = cartItems.stream()
-					 .map(li -> new LineItem(li.getItem(), li.getQuantity()))
+		this.products = cartItems.stream()
+					 .map(li -> new LineProduct(li.getProduct(), li.getQuantity()))
 					 .toList();
 	}
 	
-	public List<LineItem> getCartItems() { return this.items; }
+	public List<LineProduct> getCartItems() { return this.products; }
 	
-	public BigDecimal getItemTotal(Item item)
+	public BigDecimal getItemTotal(Product product)
 	{
-		for (LineItem lineItem : items)
+		for (LineProduct lineProduct : products)
 		{
-			if (lineItem.getItem().equals(item))
+			if (lineProduct.getProduct().equals(product))
 			{
-				return lineItem.getItem().getPrice().multiply(BigDecimal.valueOf(lineItem.getQuantity()));
+				return lineProduct.getProduct().getPrice().multiply(BigDecimal.valueOf(lineProduct.getQuantity()));
 			}
 		}
 		
@@ -44,8 +44,8 @@ public class Order
 	
 	public BigDecimal getCartSum()
 	{
-		return items.stream()
-	            .map(LineItem::getItemTotal)
+		return products.stream()
+	            .map(LineProduct::getItemTotal)
 	            .reduce(BigDecimal.ZERO, BigDecimal::add)
 	            .setScale(2, RoundingMode.HALF_UP);
 	}

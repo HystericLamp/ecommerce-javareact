@@ -8,8 +8,8 @@ import java.util.List;
 import com.ecommerce.bcruz.exceptions.QuantityZeroOrNegativeException;
 import com.ecommerce.bcruz.infrastructure.payment.PaymentProcessor;
 import com.ecommerce.bcruz.models.DraftOrder;
-import com.ecommerce.bcruz.models.Item;
-import com.ecommerce.bcruz.models.LineItem;
+import com.ecommerce.bcruz.models.Product;
+import com.ecommerce.bcruz.models.LineProduct;
 
 public class CheckoutService
 {	
@@ -17,10 +17,10 @@ public class CheckoutService
 	
 	public List<BigDecimal> getItemTotals(DraftOrder draftOrder)
     {
-    	List<LineItem> lineItems = new ArrayList<LineItem>(draftOrder.getAllLineItems());
+    	List<LineProduct> lineItems = new ArrayList<LineProduct>(draftOrder.getAllLineItems());
     	
     	List<BigDecimal> lineItemAmounts = new ArrayList<BigDecimal>();
-    	for (LineItem lineItem : lineItems)
+    	for (LineProduct lineItem : lineItems)
     	{
     		lineItemAmounts.add(lineItem.getItemTotal());
     	}
@@ -31,12 +31,12 @@ public class CheckoutService
     public BigDecimal getTotal(DraftOrder draftOrder) 
     {
         return draftOrder.getAllLineItems().stream()
-            .map(LineItem::getItemTotal)
+            .map(LineProduct::getItemTotal)
             .reduce(BigDecimal.ZERO, BigDecimal::add)
             .setScale(2, RoundingMode.HALF_UP);
     }
 	
-	public DraftOrder updateOrderItemQuantity(DraftOrder draftOrder, Item item, int quantity) throws QuantityZeroOrNegativeException
+	public DraftOrder updateOrderItemQuantity(DraftOrder draftOrder, Product item, int quantity) throws QuantityZeroOrNegativeException
 	{
 		if (quantity <= 0)
 		{
@@ -58,7 +58,7 @@ public class CheckoutService
 	 * @param item
 	 * @return
 	 */
-	public DraftOrder removeItemFromOrder(DraftOrder draftOrder, Item item)
+	public DraftOrder removeItemFromOrder(DraftOrder draftOrder, Product item)
 	{
 		draftOrder.removeItem(item);
 		return draftOrder;

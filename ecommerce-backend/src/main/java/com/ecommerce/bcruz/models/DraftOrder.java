@@ -1,52 +1,48 @@
 package com.ecommerce.bcruz.models;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 
 public class DraftOrder
 {
-	private final Map<Item, LineItem> items = new LinkedHashMap<Item, LineItem>();
+	private final Map<Product, LineProduct> products = new LinkedHashMap<Product, LineProduct>();
 	
 	public DraftOrder(Cart cart)
 	{
-		for (LineItem lineItem : cart.getAllItems())
+		for (LineProduct lineProduct : cart.getAllItems())
 		{
-			items.put(lineItem.getItem(), 
-					  new LineItem(lineItem.getItem(), lineItem.getQuantity()));
+			products.put(lineProduct.getProduct(), 
+					  new LineProduct(lineProduct.getProduct(), lineProduct.getQuantity()));
 		}
 	}
 	
-	public LineItem getLineItem(Item item)
+	public LineProduct getLineItem(Product product)
 	{
-		return items.get(item);
+		return products.get(product);
 	}
 	
-	public final Collection<LineItem> getAllLineItems()
+	public final Collection<LineProduct> getAllLineItems()
 	{
-		return this.items.values();
+		return this.products.values();
 	}
 	
-	public void updateQuantity(Item item, int quantity) 
+	public void updateQuantity(Product product, int quantity) 
 	{
-        LineItem lineItem = items.get(item);
+        LineProduct lineItem = products.get(product);
         
         if (lineItem == null) throw new IllegalArgumentException();
         
         lineItem.setQuantity(quantity);
     }
 
-    public void removeItem(Item item) 
+    public void removeItem(Product product) 
     {
-        items.remove(item);
+        products.remove(product);
     }
 
     public Order finalizeOrder() 
     {
-        return new Order(items.values());
+        return new Order(products.values());
     }
 }
