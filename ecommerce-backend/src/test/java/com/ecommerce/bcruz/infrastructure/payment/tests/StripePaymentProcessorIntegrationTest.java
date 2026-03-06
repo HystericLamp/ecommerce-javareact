@@ -1,4 +1,4 @@
-package com.ecommerce.bcruz.infrastructure.payment;
+package com.ecommerce.bcruz.infrastructure.payment.tests;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;

@@ -11,9 +11,9 @@ import com.ecommerce.bcruz.models.DraftOrder;
 import com.ecommerce.bcruz.models.Product;
 import com.ecommerce.bcruz.models.LineProduct;
 
-public class CheckoutService
+public class OrderService
 {	
-	public CheckoutService() {}
+	public OrderService() {}
 	
 	public List<BigDecimal> getItemTotals(DraftOrder draftOrder)
     {
@@ -50,8 +50,8 @@ public class CheckoutService
 	
 	/**
 	 * <p>
-	 * Removes an <b>Item</b> from the <b>Order</b>.
-	 * If <b>Item</b> does not exist in <b>Order</b> then nothing happens.
+	 * Removes a <b>Product</b> from the <b>Order</b>.
+	 * If <b>Product</b> does not exist in <b>Order</b> then nothing happens.
 	 * </p>
 	 * 
 	 * @param draftOrder

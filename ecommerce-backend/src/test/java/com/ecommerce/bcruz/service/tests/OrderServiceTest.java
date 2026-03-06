@@ -1,4 +1,4 @@
-package com.ecommerce.bcruz.businesslogic.checkout.service;
+package com.ecommerce.bcruz.service.tests;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -18,13 +18,13 @@ import com.ecommerce.bcruz.infrastructure.payment.PaymentProcessor;
 import com.ecommerce.bcruz.models.Cart;
 import com.ecommerce.bcruz.models.DraftOrder;
 import com.ecommerce.bcruz.models.Product;
-import com.ecommerce.bcruz.service.CheckoutService;
+import com.ecommerce.bcruz.service.OrderService;
 import com.ecommerce.bcruz.models.LineProduct;
 import com.stripe.exception.StripeException;
 
-public class CheckoutServiceTest
+public class OrderServiceTest
 {
-	private CheckoutService checkService;
+	private OrderService checkService;
 	private Cart cart;
 	
 	// Helper
@@ -36,7 +36,7 @@ public class CheckoutServiceTest
 	@BeforeEach
 	void setUp()
 	{
-		checkService = new CheckoutService();
+		checkService = new OrderService();
 		cart = new Cart();
 		cart.addItemWithQuantity(item("Item A", "4.99"), 2);
 		cart.addItemWithQuantity(item("Item B", "6.99"), 4);
