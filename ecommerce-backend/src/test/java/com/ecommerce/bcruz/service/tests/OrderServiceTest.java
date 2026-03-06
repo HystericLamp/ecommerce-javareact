@@ -24,7 +24,7 @@ import com.stripe.exception.StripeException;
 
 public class OrderServiceTest
 {
-	private OrderService checkService;
+	private OrderService orderService;
 	private Cart cart;
 	
 	// Helper
@@ -36,7 +36,7 @@ public class OrderServiceTest
 	@BeforeEach
 	void setUp()
 	{
-		checkService = new OrderService();
+		orderService = new OrderService();
 		cart = new Cart();
 		cart.addItemWithQuantity(item("Item A", "4.99"), 2);
 		cart.addItemWithQuantity(item("Item B", "6.99"), 4);
@@ -68,13 +68,13 @@ public class OrderServiceTest
 		assertEquals("9.99", itemD.getProduct().getPrice().toPlainString());
 		
 		// Gather totals for each item then amount total for all items
-		List<BigDecimal> itemTotals = checkService.getItemTotals(draftOrder);
+		List<BigDecimal> itemTotals = orderService.getItemTotals(draftOrder);
 		assertEquals("9.98", itemTotals.get(0).toPlainString());
 		assertEquals("27.96", itemTotals.get(1).toPlainString());
 		assertEquals("17.94", itemTotals.get(2).toPlainString());
 		assertEquals("29.97", itemTotals.get(3).toPlainString());
 		
-		assertEquals("85.85", checkService.getTotal(draftOrder).toPlainString());
+		assertEquals("85.85", orderService.getTotal(draftOrder).toPlainString());
     }
 	
 	@Test
@@ -112,7 +112,7 @@ public class OrderServiceTest
 		
 		// Update a quantity of an Item
 		Product itemToChange = new Product("Item C", new BigDecimal("2.99"));
-		draftOrder = checkService.updateOrderItemQuantity(draftOrder, itemToChange, 1);
+		draftOrder = orderService.updateOrderItemQuantity(draftOrder, itemToChange, 1);
 		
 		LineProduct resultItem = draftOrder.getLineItem(itemC.getProduct());
 		assertEquals("Item C", resultItem.getProduct().getName());
@@ -121,7 +121,7 @@ public class OrderServiceTest
 		
 		// Remove an Item from Order
 		Product itemToRemove = new Product("Item C", new BigDecimal("2.99"));
-		draftOrder = checkService.removeItemFromOrder(draftOrder, itemToRemove);
+		draftOrder = orderService.removeItemFromOrder(draftOrder, itemToRemove);
 		
 		LineProduct resultRemovedItem = draftOrder.getLineItem(item("Item C", "2.99"));
 		assertEquals(null, resultRemovedItem);
@@ -140,7 +140,7 @@ public class OrderServiceTest
 	    when(paymentProcessor.confirmPayment("pi_123")).thenReturn(true);
 		
 		// Assert a successful payment
-		boolean result = checkService.makePayment(draftOrder, "usd", paymentProcessor);
+		boolean result = orderService.makePayment(draftOrder, "usd", paymentProcessor);
 		assert(result);
     }
 	
@@ -153,7 +153,7 @@ public class OrderServiceTest
 		
 		
 		// Assert a failed payment
-		boolean result = checkService.refundPayment("pi_123", paymentProcessor);
+		boolean result = orderService.refundPayment("pi_123", paymentProcessor);
         assert(result);
     }
 	
@@ -169,7 +169,7 @@ public class OrderServiceTest
 	    when(paymentProcessor.confirmPayment("pi_123")).thenReturn(false);
 		
 		// Assert a failed payment
-	    boolean result = checkService.makePayment(draftOrder, "usd", paymentProcessor);
+	    boolean result = orderService.makePayment(draftOrder, "usd", paymentProcessor);
 		assert(!result);
 		
 		// Redo payment process
@@ -178,7 +178,7 @@ public class OrderServiceTest
 	    when(paymentProcessor.confirmPayment("pi_123")).thenReturn(true);
 		
 		// Assert successful payment
-	    result = checkService.makePayment(draftOrder, "usd", paymentProcessor);
+	    result = orderService.makePayment(draftOrder, "usd", paymentProcessor);
 	    assert(result);
     }
 }

@@ -17,7 +17,7 @@ import com.ecommerce.bcruz.infrastructure.payment.PaymentProcessor;
 
 @WebMvcTest(PaymentController.class)
 @AutoConfigureMockMvc
-public class PaymentControllerTests
+public class PaymentControllerTest
 {
 	@Autowired
 	private MockMvc mockMvc;
