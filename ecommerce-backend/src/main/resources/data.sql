@@ -1,15 +1,21 @@
-INSERT INTO users (name, email, password, role)
+DELETE FROM order_items;
+DELETE FROM orders;
+DELETE FROM products;
+DELETE FROM categories;
+DELETE FROM users;
+
+INSERT INTO users (name, email, password)
 VALUES 
-('Admin', 'admin@shop.com', 'password1', 'ADMIN'),
-('Member', 'member@shop.com', 'password2', 'MEMBER');
+('Member1', 'member1@shop.com', '$2a$10$9Z.ib4DQLsPZHD1FT.ruE.RvHSwN0HveoVru9S2hodCgsb75HeeLW'),
+('Member2', 'member2@shop.com', '$2a$10$9/qqgkCcALFKrlV/.8UA6e/KmW2LZHK8Y2eVgzQcdjYebkiIcyVyu');
 
-INSERT INTO categories (name) VALUES
-("Coffee"),
-("Brew Gear"),
-("Accessories"),
-("Snacks");
+INSERT INTO categories (id, name) VALUES
+(1, "Coffee"),
+(2, "Brew Gear"),
+(3, "Accessories"),
+(4, "Snacks");
 
-INSERT INTO products (name, description, price, stock)
+INSERT INTO products (name, description, price, stock, category_id)
 VALUES 
 ("Ethiopian Sunrise",
  "Single-origin light roast with floral and citrus notes. 12oz bag.",

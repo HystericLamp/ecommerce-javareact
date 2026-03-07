@@ -14,4 +14,6 @@
 | AC-CHECKOUT-05 | Retry Payment | P0 | businesslogic.checkout.CheckoutService | businesslogic.checkout.CheckoutServiceTest | DONE |
 | AC-PAYMENT-INTEGRATION-01 | Process Successful Payment | P1 | com.ecommerce.bcruz.infrastructure.StripePaymentProcessor | infrastructure.payment.StripePaymentProcessorIntegrationTest.java | DONE |
 | AC-PAYMENT-INTEGRATION-02 | Refund Payment | P1 | com.ecommerce.bcruz.infrastructure.StripePaymentProcessor | infrastructure.payment.StripePaymentProcessorIntegrationTest.java | DONE |
-| AC-PRODUCT-MENU-01 | Get all product information | P0 | com.ecommerce.bcruz.service.ProductService.java | service.tests.ProductServiceTest.java | DONE |
+| AC-PRODUCT-MENU-01 | Get all product information | P0 | com.ecommerce.bcruz.service.ProductService & com.ecommerce.bcruz.service.ProductController | service.tests.ProductServiceTest.java & service.tests.ProductControllerTest.java | DONE |
+| AC-USER-01 | Register new Member | P0 |  |  | WIP |
+| AC-USER-02 | Unsure | P0 |  |  | WIP |
