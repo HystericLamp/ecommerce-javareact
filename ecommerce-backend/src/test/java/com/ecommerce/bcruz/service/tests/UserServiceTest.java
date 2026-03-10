@@ -22,7 +22,7 @@ public class UserServiceTest
 	void setUp()
 	{
 		userRepository = mock(UserRepository.class);
-		userService = new UserService(userRepository, null);
+		userService = new UserService(userRepository);
 	}
 	
 	@Test

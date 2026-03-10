@@ -1,5 +1,8 @@
 package com.ecommerce.bcruz.auth.tests;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Optional;
@@ -10,9 +13,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import com.ecommerce.bcruz.dto.AuthResponse;
 import com.ecommerce.bcruz.models.User;
 import com.ecommerce.bcruz.repositories.UserRepository;
-import com.ecommerce.bcruz.service.UserService;
+import com.ecommerce.bcruz.service.AuthService;
 
 @SpringBootTest
 public class AuthTest
@@ -23,12 +27,12 @@ public class AuthTest
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 	
-	private UserService userService;
+	private AuthService authService;
 	
 	@BeforeEach
 	void setUp()
 	{
-		userService = new UserService(userRepository, passwordEncoder);
+		authService = new AuthService(userRepository, passwordEncoder);
 	}
 	
 	@Test
@@ -53,7 +57,17 @@ public class AuthTest
 	@Test
 	void testLogin() 
 	{
-	    boolean result = userService.login("member1@shop.com", "password1");
-	    assertTrue(result);
+	    AuthResponse response = authService.login("member1@shop.com", "password1");
+
+	    assertNotNull(response);
+	    assertEquals("member1@shop.com", response.getEmail());
+	}
+	
+	@Test
+	void testLoginInvalidPassword()
+	{
+	    assertThrows(RuntimeException.class, () -> {
+	        authService.login("member1@shop.com", "wrongpassword");
+	    });
 	}
 }

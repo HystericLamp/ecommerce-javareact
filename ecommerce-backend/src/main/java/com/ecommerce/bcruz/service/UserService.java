@@ -12,12 +12,10 @@ import com.ecommerce.bcruz.repositories.UserRepository;
 public class UserService
 {
 	private final UserRepository userRepository;
-	private final PasswordEncoder passwordEncoder;
 	
-	public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder)
+	public UserService(UserRepository userRepository)
 	{
 		this.userRepository = userRepository;
-		this.passwordEncoder = passwordEncoder;
 	}
 	
 	public User registerNewUser(User newUser)
@@ -59,19 +57,5 @@ public class UserService
 		}
 		
 		return false;
-	}
-	
-	public boolean login(String email, String password)
-	{	
-		Optional<User> userOptional = userRepository.findByEmail(email);
-		
-		if(!(userOptional.isPresent()))
-		{
-			return false;
-		}
-		
-		User user = userOptional.get();
-		
-		return passwordEncoder.matches(password, user.getPassword());
 	}
 }
