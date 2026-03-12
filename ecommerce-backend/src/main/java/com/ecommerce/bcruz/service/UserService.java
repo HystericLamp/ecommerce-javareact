@@ -1,5 +1,6 @@
 package com.ecommerce.bcruz.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -18,44 +19,44 @@ public class UserService
 		this.userRepository = userRepository;
 	}
 	
-	public User registerNewUser(User newUser)
+	public User createUser(User newUser)
 	{
 		return userRepository.save(newUser);
 	}
 	
-	public User updateUser(Long id, String name, String email)
+	public User getUserById(Long id)
 	{
-		Optional<User> optionalUser = userRepository.findById(id);
-		if(optionalUser.isPresent())
-		{
-			User existingUser = optionalUser.get();
-			existingUser.setName(name);
-			existingUser.setEmail(email);
-			
-			userRepository.save(existingUser);
-			
-			return existingUser;
-		}
-		
-		return null;
+		return userRepository.findById(id)
+	            .orElseThrow(() -> new RuntimeException("User not found"));
 	}
 	
-	public boolean deleteUserById(Long id)
+	public List<User> getAllUsers()
 	{
-		if(id == null)
-		{
-			return false;
-		}
-		
-		Optional<User> optionalUser = userRepository.findById(id);
-		if(optionalUser.isPresent())
-		{
-			User existingUser = optionalUser.get();
-			userRepository.delete(existingUser);
-			
-			return true;
-		}
-		
-		return false;
+		return userRepository.findAll();
+	}
+	
+	public User getUserByEmail(String email)
+	{
+		return userRepository.findByEmail(email)
+	            .orElseThrow(() -> new RuntimeException("User not found"));
+	}
+	
+	public User updateUser(Long id, User updatedUser)
+	{
+		User existingUser = userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        existingUser.setName(updatedUser.getName());
+        existingUser.setEmail(updatedUser.getEmail());
+
+        return userRepository.save(existingUser);
+	}
+	
+	public void deleteUserById(Long id)
+	{
+		User user = userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        userRepository.delete(user);
 	}
 }

@@ -1,12 +1,10 @@
 package com.ecommerce.bcruz.controller.tests;
 
-import static org.mockito.Mockito.mock;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;

@@ -39,7 +39,7 @@ public class UserServiceTest
 			return u;
 		});
 		
-		User registeredUser = userService.registerNewUser(newUser);
+		User registeredUser = userService.createUser(newUser);
 		
 		assertEquals(3L, registeredUser.getId());
         assertEquals("Peter", registeredUser.getName());
@@ -65,7 +65,7 @@ public class UserServiceTest
 			return u;
 		});
 		
-		User updatedUser = userService.updateUser(3L, "Peter", "Better@email.com");
+		User updatedUser = userService.updateUser(3L, user);
 		
 		assertEquals(3L, updatedUser.getId());
         assertEquals("Peter", updatedUser.getName());
@@ -83,9 +83,8 @@ public class UserServiceTest
 
         when(userRepository.findById(1L)).thenReturn(Optional.of(user));
 
-        boolean result = userService.deleteUserById(1L);
+        userService.deleteUserById(1L);
 
-        assertTrue(result);
         verify(userRepository).delete(user);
     }
 }
