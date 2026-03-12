@@ -4,8 +4,7 @@ target/
 .mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
-bcruzdatabase.db
-test-database.db
+*.db
 
 ### STS ###
 .apt_generated
