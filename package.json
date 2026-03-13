@@ -1,0 +1,10 @@
+{
+  "devDependencies": {
+    "concurrently": "^9.2.1"
+  },
+  "scripts": {
+    "dev": "concurrently \"npm run frontend\" \"npm run backend\"",
+    "frontend": "cd ecommerce-front && npm run dev",
+    "backend": "cd ecommerce-backend && mvnw.cmd spring-boot:run -Dspring-boot.run.profiles=dev"
+  }
+}
