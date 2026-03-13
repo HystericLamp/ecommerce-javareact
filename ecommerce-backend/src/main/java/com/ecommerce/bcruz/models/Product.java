@@ -28,6 +28,8 @@ public class Product
     @JoinColumn(name = "category_id", nullable = false)
 	private Category category;
 	
+	public Product() {}
+	
 	public Product(String name, BigDecimal price)
 	{
 		this.name = name;
