@@ -1,29 +1,38 @@
-import { useCart } from "../../features/cart/context/CartContext";
-
-const products = [
-  { id: 1, name: "Espresso", price: 4.99 },
-  { id: 2, name: "Machiato", price: 4.50 },
-  { id: 3, name: "Cappuchino", price: 6.99 },
-  { id: 4, name: "Latte", price: 6.50 },
-  { id: 5, name: "Frappuchino", price: 5.50 },
-  { id: 6, name: "Tea", price: 3.99 }
-];
+import React from "react"; 
+import { useState, useEffect } from "react";
 
 export default function Shop() {
-  const { addToCart } = useCart();
+  const [products, setProducts] = useState([]);
+
+  useEffect(() => {
+    fetch("http://localhost:8080/api/products/getAllProducts")
+      .then((res) => res.json())
+      .then((data) => {
+        setProducts(data);
+      })
+      .catch((err) => console.error("Error fetching products:", err));
+  }, []);
 
   return (
     <div>
-      <h1>Shop</h1>
-      {products.map(product => (
-        <div key={product.id}>
-          <h3>{product.name}</h3>
-          <p>${product.price}</p>
-          <button onClick={() => addToCart(product)}>
-            Add to Cart
-          </button>
-        </div>
-      ))}
+      <h1>Shop Products</h1>
+      
+      <div style={{ display: "flex", flexWrap: "wrap", gap: "20px" }}>
+        {products.map((product) => (
+          <div
+            key={product.id}
+            style={{
+              border: "1px solid #ccc",
+              padding: "15px",
+              width: "200px",
+            }}
+          >
+            <h3>{product.name}</h3>
+            <p>{product.description}</p>
+            <strong>${product.price}</strong>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
