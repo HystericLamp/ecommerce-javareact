@@ -8,7 +8,7 @@ function App() {
   const Home = pages["./pages/Home.jsx"]?.default;
 
   return (
-    <CartProvider>
+    <>
       <Navbar />
 
       <Routes>
@@ -29,7 +29,7 @@ function App() {
         {/* 404 catch-all route */}
         <Route path="*" element={<h1>404 - Page Not Found</h1>} />
       </Routes>
-    </CartProvider>
+    </>
   );
 }
 
