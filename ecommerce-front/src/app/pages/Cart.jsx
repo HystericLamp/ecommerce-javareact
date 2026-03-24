@@ -21,8 +21,23 @@ export default function Cart() {
       <h1 className="text-3xl font-semibold mb-6">Your Cart</h1>
 
       {cart.length === 0 ? (
-        <div className="text-center py-20 text-muted-foreground">
-          Your cart is empty 🛒
+        <div className="text-center py-20 space-y-6">
+          <div className="text-5xl">🛒</div>
+
+          <div className="space-y-2">
+            <p className="text-xl font-medium">Your cart is empty</p>
+            <p className="text-sm text-muted-foreground">
+              Start adding items to see them here.
+            </p>
+          </div>
+
+          <Button
+            variant="outline"
+            className="max-w-xs mx-auto"
+            onClick={() => navigate("/shop")}
+          >
+            Browse Products
+          </Button>
         </div>
       ) : (
         <div className="space-y-6">
