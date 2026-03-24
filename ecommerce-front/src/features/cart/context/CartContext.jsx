@@ -14,19 +14,41 @@ export function CartProvider({ children }) {
     localStorage.setItem("cart", JSON.stringify(cart));
   }, [cart]);
 
-  function addToCart(product) {
-    setCart(prev => [...prev, product]);
+  const addToCart = (product) => {
+    setCart((prev) => {
+      const existing = prev.find((item) => item.id === product.id);
 
-    // Temporary
-    console.log("Added to cart:", product);
-  }
+      if (existing) {
+        return prev.map((item) =>
+          item.id === product.id
+            ? { ...item, quantity: item.quantity + 1 }
+            : item
+        );
+      }
+
+      console.log("Item added!!");
+      return [...prev, { ...product, quantity: 1 }];
+    });
+  };
+
+  const updateQuantity = (id, newQty) => {
+    setCart((prev) =>
+      newQty <= 0
+        ? prev.filter((item) => item.id !== id)
+        : prev.map((item) =>
+            item.id === id
+              ? { ...item, quantity: newQty }
+              : item
+          )
+    );
+  };
 
   function removeFromCart(id) {
     setCart(prev => prev.filter(item => item.id !== id));
   }
 
   return (
-    <CartContext.Provider value={{ cart, addToCart, removeFromCart }}>
+    <CartContext.Provider value={{ cart, addToCart, updateQuantity, removeFromCart }}>
       {children}
     </CartContext.Provider>
   );
