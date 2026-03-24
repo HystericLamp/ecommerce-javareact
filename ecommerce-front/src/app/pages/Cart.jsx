@@ -1,3 +1,5 @@
+import { useNavigate } from "react-router-dom";
+
 import { useCart } from "../../features/cart/context/CartContext";
 
 import { Button } from "@/components/ui/button";
@@ -7,6 +9,7 @@ import { Trash2 } from "lucide-react";
 
 export default function Cart() {
   const { cart, removeFromCart, updateQuantity } = useCart();
+  const navigate = useNavigate();
 
   const total = cart.reduce(
     (acc, item) => acc + item.price * item.quantity,
@@ -84,13 +87,29 @@ export default function Cart() {
           <Separator />
 
           {/* Summary */}
+          <div className="flex justify-between text-sm text-muted-foreground">
+            <span>Items</span>
+            <span>{cart.length}</span>
+          </div>
           <div className="flex justify-between items-center">
             <h2 className="text-xl font-semibold">Total</h2>
             <p className="text-xl font-bold">${total.toFixed(2)}</p>
           </div>
 
-          <Button className="w-full text-lg py-6">
+          <Button
+            className="w-full text-lg py-6"
+            disabled={cart.length === 0}
+            onClick={() => navigate("/checkout")}
+          >
             Proceed to Checkout
+          </Button>
+
+          <Button
+            variant="outline"
+            className="w-full"
+            onClick={() => navigate("/shop")}
+          >
+            Continue Shopping
           </Button>
         </div>
       )}
