@@ -28,27 +28,6 @@ public class OrderDEPRECATED
 	}
 	
 	public List<LineProduct> getCartItems() { return this.products; }
-	
-	public BigDecimal getItemTotal(Product product)
-	{
-		for (LineProduct lineProduct : products)
-		{
-			if (lineProduct.getProduct().equals(product))
-			{
-				return lineProduct.getProduct().getPrice().multiply(BigDecimal.valueOf(lineProduct.getQuantity()));
-			}
-		}
-		
-		return null;
-	}
-	
-	public BigDecimal getCartSum()
-	{
-		return products.stream()
-	            .map(LineProduct::getItemTotal)
-	            .reduce(BigDecimal.ZERO, BigDecimal::add)
-	            .setScale(2, RoundingMode.HALF_UP);
-	}
 
 	public int getOrderID(){ return orderID; }
 	public void setOrderID(int orderID){ this.orderID = orderID; }

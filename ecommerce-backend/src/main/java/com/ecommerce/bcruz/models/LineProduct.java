@@ -28,16 +28,4 @@ public class LineProduct
 		
 		this.quantity = quantity; 
 	}
-	
-	/**
-	 * <p>
-	 * Calculates the total cost of the <b>Product</b>'s price multiplied by its quantity
-	 * </p>
-	 * 
-	 * @return
-	 */
-	public BigDecimal getItemTotal() 
-	{
-		return product.getPrice().multiply(BigDecimal.valueOf(quantity));
-	}
 }

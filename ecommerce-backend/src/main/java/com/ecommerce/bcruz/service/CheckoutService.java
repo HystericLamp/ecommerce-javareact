@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 import com.ecommerce.bcruz.dto.CartItem;
 import com.ecommerce.bcruz.dto.CheckoutRequest;
 import com.ecommerce.bcruz.models.DraftOrder;
+import com.ecommerce.bcruz.models.DraftOrderItem;
+import com.ecommerce.bcruz.models.DraftOrderStatus;
 import com.ecommerce.bcruz.models.LineProduct;
 import com.ecommerce.bcruz.models.Order;
 import com.ecommerce.bcruz.models.OrderItem;
@@ -22,49 +24,46 @@ public class CheckoutService
 {
 	private final ProductRepository productRepository;
 	private final DraftOrderRepository draftOrderRepository;
-	private final OrderRepository orderRepository;
 	
 	public CheckoutService(ProductRepository productRepository, 
-						   DraftOrderRepository draftOrderRepository, 
-						   OrderRepository orderRepository)
+						   DraftOrderRepository draftOrderRepository)
 	{
 		this.productRepository = productRepository;
 		this.draftOrderRepository = draftOrderRepository;
-		this.orderRepository = orderRepository;
 	}
 	
-	public Order createDraftOrder(CheckoutRequest request, Long userId)
+	public DraftOrder createDraftOrder(CheckoutRequest request, Long userId)
 	{
-		List<OrderItem> orderItems = new ArrayList<OrderItem>();
-		long total = 0L;
-		
-		for (CartItem item : request.getItemProducts())
-		{
-			Product product = productRepository.findById(item.getProductId())
+		List<DraftOrderItem> items = new ArrayList<>();
+        long total = 0;
+
+        for (CartItem cartItem : request.getItemProducts()) {
+
+            Product product = productRepository.findById(cartItem.getProductId())
                     .orElseThrow(() -> new RuntimeException("Product not found"));
-			
-			long price = product.getPrice().longValue();
-			
-			OrderItem orderItem = new OrderItem();
-            orderItem.setProductId(product.getId());
-            orderItem.setProductName(product.getName());
-            orderItem.setPriceAtPurchase(price);
-            orderItem.setQuantity(item.getQuantity());
 
-            orderItems.add(orderItem);
+            long price = product.getPrice();
 
-            total += price * item.getQuantity();
-		}
-		
-		Order order = new Order();
-        order.setUserId(userId);
-        order.setTotalAmountInCents(total);
-        order.setCurrency("usd");
-        order.setStatus(OrderStatus.PENDING);
+            DraftOrderItem item = new DraftOrderItem();
+            item.setProductId(product.getId());
+            item.setProductName(product.getName());
+            item.setPriceAtCheckout(price);
+            item.setQuantity(cartItem.getQuantity());
 
-        order.setItems(orderItems);
-        orderItems.forEach(i -> i.setOrder(order));
+            items.add(item);
 
-        return orderRepository.save(order);
+            total += price * cartItem.getQuantity();
+        }
+
+        DraftOrder draftOrder = new DraftOrder();
+        draftOrder.setUserId(userId);
+        draftOrder.setTotalAmountInCents(total);
+        draftOrder.setCurrency("usd");
+        draftOrder.setStatus(DraftOrderStatus.PENDING);
+
+        draftOrder.setItems(items);
+        items.forEach(i -> i.setDraftOrder(draftOrder));
+
+        return draftOrderRepository.save(draftOrder);
 	}
 }

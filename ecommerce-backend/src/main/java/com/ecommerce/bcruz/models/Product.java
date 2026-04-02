@@ -1,6 +1,5 @@
 package com.ecommerce.bcruz.models;
 
-import java.math.BigDecimal;
 import java.util.Objects;
 
 import jakarta.persistence.Entity;
@@ -21,7 +20,7 @@ public class Product
 	
 	private String name;
 	private String description;
-	private BigDecimal price;
+	private Long price;
 	private Integer stock;
 	
 	@ManyToOne
@@ -30,13 +29,13 @@ public class Product
 	
 	public Product() {}
 	
-	public Product(String name, BigDecimal price)
+	public Product(String name, Long price)
 	{
 		this.name = name;
 		this.price = price;
 	}
 	
-	public Product(String name, String description, BigDecimal price, Integer stock, Category category)
+	public Product(String name, String description, Long price, Integer stock, Category category)
 	{
 		this.name = name;
 		this.description = description;
@@ -51,8 +50,8 @@ public class Product
 	public void setName(String name){ this.name = name; }
 	public String getDescription(){ return description; }
 	public void setDescription(String description) { this.description = description; }
-	public BigDecimal getPrice(){ return price; }
-	public void setPrice(BigDecimal price) { this.price = price; }
+	public Long getPrice(){ return price; }
+	public void setPrice(Long price) { this.price = price; }
 	public Integer getStock() { return stock; }
 	public void setStock(Integer stock) { this.stock = stock; }
 	public Category getCategory() { return category; }
