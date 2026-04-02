@@ -1,6 +1,6 @@
 package com.ecommerce.bcruz.controller;
 
-public class OrderController
+public class WebhookController
 {
-
+	
 }

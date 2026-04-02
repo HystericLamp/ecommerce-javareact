@@ -22,11 +22,35 @@ CREATE TABLE IF NOT EXISTS products (
   	FOREIGN KEY (category_id) REFERENCES categories(id)
 );
 
+CREATE TABLE IF NOT EXISTS draft_orders (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER NOT NULL,
+    total INTEGER NOT NULL CHECK (total >= 0),
+    currency TEXT NOT NULL,
+    status TEXT NOT NULL, -- PENDING, COMPLETED, EXPIRED
+    payment_intent_id TEXT,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id)
+);
+
+CREATE TABLE IF NOT EXISTS draft_order_items (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    draft_order_id INTEGER NOT NULL,
+    product_id INTEGER NOT NULL,
+    quantity INTEGER NOT NULL CHECK (quantity > 0),
+    price_at_checkout INTEGER NOT NULL,
+    FOREIGN KEY (draft_order_id) REFERENCES draft_orders(id),
+    FOREIGN KEY (product_id) REFERENCES products(id)
+);
+
 CREATE TABLE IF NOT EXISTS orders (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     user_id INTEGER NOT NULL,
     total INTEGER NOT NULL CHECK (total >= 0),
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    status TEXT DEFAULT 'PENDING',
+    payment_intent_id TEXT,
+    currency TEXT DEFAULT 'usd',
     FOREIGN KEY (user_id) REFERENCES users(id)
 );
 

@@ -1,55 +1,63 @@
 package com.ecommerce.bcruz.models;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+
+@Entity
+@Table(name = "orders")
 public class Order
 {
-	private int orderID;
-	private final List<LineProduct> products;
-	
-	public Order(Collection<LineProduct> cartItems)
-	{
-		this.setOrderID(orderID);
-		this.products = cartItems.stream()
-					 .map(li -> new LineProduct(li.getProduct(), li.getQuantity()))
-					 .toList();
-	}
-	
-	public Order(int orderID, Collection<LineProduct> cartItems)
-	{
-		this.setOrderID(orderID);
-		this.products = cartItems.stream()
-					 .map(li -> new LineProduct(li.getProduct(), li.getQuantity()))
-					 .toList();
-	}
-	
-	public List<LineProduct> getCartItems() { return this.products; }
-	
-	public BigDecimal getItemTotal(Product product)
-	{
-		for (LineProduct lineProduct : products)
-		{
-			if (lineProduct.getProduct().equals(product))
-			{
-				return lineProduct.getProduct().getPrice().multiply(BigDecimal.valueOf(lineProduct.getQuantity()));
-			}
-		}
-		
-		return null;
-	}
-	
-	public BigDecimal getCartSum()
-	{
-		return products.stream()
-	            .map(LineProduct::getItemTotal)
-	            .reduce(BigDecimal.ZERO, BigDecimal::add)
-	            .setScale(2, RoundingMode.HALF_UP);
-	}
+	@Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-	public int getOrderID(){ return orderID; }
-	public void setOrderID(int orderID){ this.orderID = orderID; }
+    @Column(name = "user_id", nullable = false)
+    private Long userId;
+
+    @Column(name = "total", nullable = false)
+    private Long total;
+
+    @Column(name = "created_at", insertable = false, updatable = false)
+    private LocalDateTime createdAt;
+
+    @Column(name = "status")
+    private String status;
+
+    @Column(name = "payment_intent_id")
+    private String paymentIntentId;
+
+    @Column(name = "currency")
+    private String currency;
+
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<OrderItem> items = new ArrayList<>();
+
+    public Order() {}
+
+	public Long getId() { return id; }
+	public void setId(Long id) { this.id = id; }
+	public Long getUserId() { return userId; }
+	public void setUserId(Long userId) { this.userId = userId; }
+	public Long getTotalAmountInCents() { return total; }
+	public void setTotalAmountInCents(Long total) { this.total = total; }
+	public LocalDateTime getCreatedAt() { return createdAt; }
+	public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
+	public String getStatus() { return status; }
+	public void setStatus(OrderStatus status) { this.status = status.toString(); }
+	public String getPaymentIntentId() { return paymentIntentId; }
+	public void setPaymentIntentId(String paymentIntentId) { this.paymentIntentId = paymentIntentId; }
+	public String getCurrency() { return currency; }
+	public void setCurrency(String currency) { this.currency = currency; }
+	public List<OrderItem> getItems() { return items; }
+	public void setItems(List<OrderItem> items) { this.items = items; }
 }

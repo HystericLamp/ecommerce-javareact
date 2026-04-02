@@ -24,7 +24,7 @@ public class PaymentController
 	@PostMapping("/create/{orderId}")
 	public ResponseEntity<Map<String, String>> createPayment(
 			@PathVariable Long orderId) throws Exception
-	{
+	{	
 		// Temporary until DB is made
 		Long amountInCents = 5000L;
 		String currency = "usd";

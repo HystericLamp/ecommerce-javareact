@@ -5,12 +5,15 @@ import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.stereotype.Service;
+
 import com.ecommerce.bcruz.exceptions.QuantityZeroOrNegativeException;
 import com.ecommerce.bcruz.infrastructure.payment.PaymentProcessor;
 import com.ecommerce.bcruz.models.DraftOrder;
 import com.ecommerce.bcruz.models.Product;
 import com.ecommerce.bcruz.models.LineProduct;
 
+@Service
 public class OrderService
 {	
 	public OrderService() {}
