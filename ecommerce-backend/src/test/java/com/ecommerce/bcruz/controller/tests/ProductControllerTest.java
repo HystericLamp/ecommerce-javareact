@@ -1,7 +1,6 @@
 package com.ecommerce.bcruz.controller.tests;
 
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,9 +32,9 @@ public class ProductControllerTest
 	private ProductService productService;
 	
 	// Helper
-	private Product product(String name, String desc, String price, Integer stock, String category)
+	private Product product(String name, String desc, Long price, Integer stock, String category)
 	{
-		return new Product(name, desc, new BigDecimal(price), stock, new Category(category));
+		return new Product(name, desc, price, stock, new Category(category));
 	}
 	
 	@Test
@@ -43,11 +42,11 @@ public class ProductControllerTest
 	void menu_getAllProductsApi() throws Exception
 	{
 		List<Product> products = new ArrayList<Product>();
-		products.add(product("name1", "desc1", "1000", 1, "category1"));
-		products.add(product("name2", "desc2", "2000", 2, "category2"));
-		products.add(product("name3", "desc3", "3000", 3, "category3"));
-		products.add(product("name4", "desc4", "4000", 4, "category4"));
-		products.add(product("name5", "desc5", "5000", 5, "category5"));
+		products.add(product("name1", "desc1", 1000L, 1, "category1"));
+		products.add(product("name2", "desc2", 2000L, 2, "category2"));
+		products.add(product("name3", "desc3", 3000L, 3, "category3"));
+		products.add(product("name4", "desc4", 4000L, 4, "category4"));
+		products.add(product("name5", "desc5", 5000L, 5, "category5"));
 
         Mockito.when(productService.getAllProducts()).thenReturn(products);
 

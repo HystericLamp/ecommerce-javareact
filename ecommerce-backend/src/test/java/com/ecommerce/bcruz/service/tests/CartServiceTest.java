@@ -30,7 +30,7 @@ class CartServiceTest
     @DisplayName("AC-CART-01: Add item to cart sets default quantity to 1")
     void addItem_setsDefaultQuantityToOne() 
 	{
-        Product item = new Product("Espresso", new BigDecimal("4.99"));
+        Product item = new Product("Espresso", 499L);
         
         cartService.addItem(item);
         
@@ -49,8 +49,8 @@ class CartServiceTest
     @DisplayName("AC-CART-02: Add item to cart with quantity")
     void addItem_addToCartWithQuantity() throws Exception 
     {
-		Product item1 = new Product("Espresso", new BigDecimal("4.99"));
-		Product item2 = new Product("Machiato", new BigDecimal("3.99"));
+		Product item1 = new Product("Espresso", 499L);
+		Product item2 = new Product("Machiato", 399L);
 		
 		cartService.addItemWithQuantity(item1, 2);
 		cartService.addItemWithQuantity(item2, 100);
@@ -76,7 +76,7 @@ class CartServiceTest
     @DisplayName("AC-CART-03: Do not add an item with 0 or negative quantity")
     void addItem_doNotAddItemWithZeroOrNegativeQuantity() 
     {
-		Product item = new Product("Espresso", new BigDecimal("4.99"));
+		Product item = new Product("Espresso", 499L);
         
         assertThrows(QuantityZeroOrNegativeException.class, () -> {
         	cartService.addItemWithQuantity(item, 0);
@@ -95,9 +95,9 @@ class CartServiceTest
     @DisplayName("AC-CART-04: Adding existing Item into the Cart should increment quantity")
     void addItem_incrementItemQuantityIfExists() throws Exception 
     {
-		Product item1 = new Product("Espresso", new BigDecimal("4.99"));
-		Product item2 = new Product("Machiato", new BigDecimal("3.99"));
-		Product item3 = new Product("Cappuccino", new BigDecimal("6.99"));
+		Product item1 = new Product("Espresso", 499L);
+		Product item2 = new Product("Machiato", 399L);
+		Product item3 = new Product("Cappuccino", 699L);
 		
 		cartService.addItemWithQuantity(item1, 2);
 		cartService.addItemWithQuantity(item2, 1);
@@ -109,7 +109,7 @@ class CartServiceTest
         
         // Re-add the same item "Machiato" and check if it incremented quality
         // Item4 should have the same values as Item2 aside from quantity
-        Product item4 = new Product("Machiato", new BigDecimal("3.99"));
+        Product item4 = new Product("Machiato", 399L);
         cartService.addItemWithQuantity(item4, 3);
         
         LineProduct resultCartItem4 = cartService.getCartItem(item4);
@@ -120,7 +120,7 @@ class CartServiceTest
     @DisplayName("AC-CART-05: Update quantity of an Item in Cart")
     void updateQuantity_updatesCartTotal() throws Exception
     {
-		Product item1 = new Product("Espresso", new BigDecimal("4.99"));
+		Product item1 = new Product("Espresso", 499L);
 		cartService.addItemWithQuantity(item1, 2);
 		
 		// assert initial value
@@ -141,7 +141,7 @@ class CartServiceTest
     @DisplayName("AC-CART-06: Do not update an item quantity with a negative quantity or non-existent item")
     void updateQuantity_edgeCases() throws Exception
     {
-		Product item1 = new Product("Espresso", new BigDecimal("4.99"));
+		Product item1 = new Product("Espresso", 499L);
 		cartService.addItemWithQuantity(item1, 2);
 		
 		// Assert 0 or negatives
@@ -159,7 +159,7 @@ class CartServiceTest
         
         // Assert non-existent item
         assertThrows(CartItemNotFoundException.class, () -> {
-        	cartService.updateQuantity(new Product("Machiato", new BigDecimal("4.99")), 3);
+        	cartService.updateQuantity(new Product("Machiato", 499L), 3);
         });
     }
 
@@ -167,9 +167,9 @@ class CartServiceTest
     @DisplayName("AC-CART-07: Remove item from cart")
     void removeItem_removesItemFromCart() throws Exception 
     {
-    	Product item1 = new Product("Espresso", new BigDecimal("4.99"));
-		Product item2 = new Product("Machiato", new BigDecimal("3.99"));
-		Product item3 = new Product("Cappuccino", new BigDecimal("6.99"));
+    	Product item1 = new Product("Espresso", 499L);
+		Product item2 = new Product("Machiato", 399L);
+		Product item3 = new Product("Cappuccino", 699L);
 		
 		cartService.addItemWithQuantity(item1, 2);
 		cartService.addItemWithQuantity(item2, 1);

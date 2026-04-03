@@ -23,9 +23,9 @@ public class ProductServiceTest
 	private ProductRepository productRepository;
 	
 	// Helper
-	private Product product(String name, String desc, String price, Integer stock, String category)
+	private Product product(String name, String desc, Long price, Integer stock, String category)
 	{
-		return new Product(name, desc, new BigDecimal(price), stock, new Category(category));
+		return new Product(name, desc, price, stock, new Category(category));
 	}
 	
 	@BeforeEach
@@ -40,11 +40,11 @@ public class ProductServiceTest
 	void menu_getAllProducts()
 	{
 		List<Product> productRepoResult = new ArrayList<Product>();
-		productRepoResult.add(product("name1", "desc1", "1000", 1, "category1"));
-		productRepoResult.add(product("name2", "desc2", "2000", 2, "category2"));
-		productRepoResult.add(product("name3", "desc3", "3000", 3, "category3"));
-		productRepoResult.add(product("name4", "desc4", "4000", 4, "category4"));
-		productRepoResult.add(product("name5", "desc5", "5000", 5, "category5"));
+		productRepoResult.add(product("name1", "desc1", 1000L, 1, "category1"));
+		productRepoResult.add(product("name2", "desc2", 2000L, 2, "category2"));
+		productRepoResult.add(product("name3", "desc3", 3000L, 3, "category3"));
+		productRepoResult.add(product("name4", "desc4", 4000L, 4, "category4"));
+		productRepoResult.add(product("name5", "desc5", 5000L, 5, "category5"));
 		
 		when(productRepository.findAll()).thenReturn(productRepoResult);
 		

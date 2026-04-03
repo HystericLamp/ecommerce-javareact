@@ -28,9 +28,9 @@ public class OrderServiceTest
 	private Cart cart;
 	
 	// Helper
-	private Product item(String name, String price)
+	private Product product(String name, Long price)
 	{
-		return new Product(name, new BigDecimal(price));
+		return new Product(name, price);
 	}
 	
 	@BeforeEach
@@ -38,10 +38,10 @@ public class OrderServiceTest
 	{
 		orderService = new OrderService();
 		cart = new Cart();
-		cart.addItemWithQuantity(item("Item A", "4.99"), 2);
-		cart.addItemWithQuantity(item("Item B", "6.99"), 4);
-		cart.addItemWithQuantity(item("Item C", "2.99"), 6);
-		cart.addItemWithQuantity(item("Item D", "9.99"), 3);
+		cart.addItemWithQuantity(product("Item A", 4.99), 2);
+		cart.addItemWithQuantity(product("Item B", 6.99), 4);
+		cart.addItemWithQuantity(product("Item C", 2.99), 6);
+		cart.addItemWithQuantity(product("Item D", 9.99), 3);
 	}
 	
 	@Test
@@ -51,19 +51,19 @@ public class OrderServiceTest
 		DraftOrder draftOrder = new DraftOrder(cart);
 		
 		// List all Items and quantities
-		LineProduct itemA = draftOrder.getLineItem(item("Item A", "4.99"));
+		LineProduct itemA = draftOrder.getLineItem(Product("Item A", "4.99"));
 		assertEquals("Item A", itemA.getProduct().getName());
 		assertEquals("4.99", itemA.getProduct().getPrice().toPlainString());
 		
-		LineProduct itemB = draftOrder.getLineItem(item("Item B", "6.99"));
+		LineProduct itemB = draftOrder.getLineItem(Product("Item B", "6.99"));
 		assertEquals("Item B", itemB.getProduct().getName());
 		assertEquals("6.99", itemB.getProduct().getPrice().toPlainString());
 		
-		LineProduct itemC = draftOrder.getLineItem(item("Item C", "2.99"));
+		LineProduct itemC = draftOrder.getLineItem(Product("Item C", "2.99"));
 		assertEquals("Item C", itemC.getProduct().getName());
 		assertEquals("2.99", itemC.getProduct().getPrice().toPlainString());
 		
-		LineProduct itemD = draftOrder.getLineItem(item("Item D", "9.99"));
+		LineProduct itemD = draftOrder.getLineItem(Product("Item D", "9.99"));
 		assertEquals("Item D", itemD.getProduct().getName());
 		assertEquals("9.99", itemD.getProduct().getPrice().toPlainString());
 		
@@ -85,10 +85,10 @@ public class OrderServiceTest
 		DraftOrder draftOrder = new DraftOrder(cart);
 		
 		// List all Items and quantities
-		LineProduct itemA = draftOrder.getLineItem(item("Item A", "4.99"));
-		LineProduct itemB = draftOrder.getLineItem(item("Item B", "6.99"));
-		LineProduct itemC = draftOrder.getLineItem(item("Item C", "2.99"));
-		LineProduct itemD = draftOrder.getLineItem(item("Item D", "9.99"));
+		LineProduct itemA = draftOrder.getLineItem(Product("Item A", "4.99"));
+		LineProduct itemB = draftOrder.getLineItem(Product("Item B", "6.99"));
+		LineProduct itemC = draftOrder.getLineItem(Product("Item C", "2.99"));
+		LineProduct itemD = draftOrder.getLineItem(Product("Item D", "9.99"));
 		
 		assert(itemA != null);
 		assertEquals("Item A", itemA.getProduct().getName());
@@ -123,7 +123,7 @@ public class OrderServiceTest
 		Product itemToRemove = new Product("Item C", new BigDecimal("2.99"));
 		draftOrder = orderService.removeItemFromOrder(draftOrder, itemToRemove);
 		
-		LineProduct resultRemovedItem = draftOrder.getLineItem(item("Item C", "2.99"));
+		LineProduct resultRemovedItem = draftOrder.getLineItem(Product("Item C", "2.99"));
 		assertEquals(null, resultRemovedItem);
     }
 	
