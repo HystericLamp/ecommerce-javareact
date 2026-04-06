@@ -32,6 +32,51 @@ public class CheckoutService
 		this.draftOrderRepository = draftOrderRepository;
 	}
 	
+	/**
+	 * For guests
+	 * @param request
+	 * @return
+	 */
+	public DraftOrder createDraftOrder(CheckoutRequest request)
+	{
+		List<DraftOrderItem> items = new ArrayList<>();
+        long total = 0;
+
+        for (CartItem cartItem : request.getItemProducts()) {
+
+            Product product = productRepository.findById(cartItem.getProductId())
+                    .orElseThrow(() -> new RuntimeException("Product not found"));
+
+            long price = product.getPrice();
+
+            DraftOrderItem item = new DraftOrderItem();
+            item.setProductId(product.getId());
+            item.setProductName(product.getName());
+            item.setPriceAtCheckout(price);
+            item.setQuantity(cartItem.getQuantity());
+
+            items.add(item);
+
+            total += price * cartItem.getQuantity();
+        }
+
+        DraftOrder draftOrder = new DraftOrder();
+        draftOrder.setTotalAmountInCents(total);
+        draftOrder.setCurrency("usd");
+        draftOrder.setStatus(DraftOrderStatus.PENDING);
+
+        draftOrder.setItems(items);
+        items.forEach(i -> i.setDraftOrder(draftOrder));
+
+        return draftOrderRepository.save(draftOrder);
+	}
+	
+	/**
+	 * For customers
+	 * @param request
+	 * @param userId
+	 * @return
+	 */
 	public DraftOrder createDraftOrder(CheckoutRequest request, Long userId)
 	{
 		List<DraftOrderItem> items = new ArrayList<>();

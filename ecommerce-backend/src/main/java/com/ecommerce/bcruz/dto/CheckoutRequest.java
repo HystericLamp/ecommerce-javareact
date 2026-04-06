@@ -7,5 +7,5 @@ public class CheckoutRequest
 	private List<CartItem> itemProducts;
 
 	public List<CartItem> getItemProducts() { return itemProducts; }
-	public void setProducts(List<CartItem> itemProducts) { this.itemProducts = itemProducts; }
+	public void setItemProducts(List<CartItem> itemProducts) { this.itemProducts = itemProducts; }
 }

@@ -1,8 +1,5 @@
 package com.ecommerce.bcruz.models;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-
 public class LineProduct
 {
 	private Product product;
