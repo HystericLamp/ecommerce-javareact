@@ -134,7 +134,6 @@ As a customer
 I want to navigate through site to browse products  
 So that I have a pleasant and seamless shopping experience   
 
-## Site - Navigation
 **Acceptance Criteria**:  
 **Given** The user is looking at the site   
 **When** user wants to go to a different page  
@@ -153,3 +152,25 @@ So that I can browse all available items to buy
 **Then** show all available items for purchase  
 
 ---
+
+## Epic-04: User Personalization
+
+## US-13 - Login as an Existing User
+As a customer  
+I want to login to my personal shopping account  
+So that I have a personalized shopping experience    
+
+**Acceptance Criteria**:  
+**Given** The user is looking at the login   
+**When** user inputs their user credentials    
+**Then** user is logged in with a welcome message  
+
+## US-14 - Register a New User
+As a customer  
+I want to create my own shopping account  
+So that I can build my own personalized shopping experience  
+
+**Acceptance Criteria**:  
+**Given** The user clicks "register"  
+**When** user fills their user credentials  
+**Then** new user is created with a welcome message  
