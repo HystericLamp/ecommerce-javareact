@@ -1,5 +1,7 @@
 package com.ecommerce.bcruz.infrastructure.payment;
 
+import java.util.Map;
+
 import org.springframework.stereotype.Service;
 
 import com.ecommerce.bcruz.infrastructure.service.StripeService;
@@ -17,13 +19,11 @@ public class StripePaymentProcessor implements PaymentProcessor
 	}
 	
 	@Override
-	public String createPayment(long amount, String currencyType)
+	public PaymentIntent createPayment(long amount, String currencyType, Map<String, String> metadata)
 	{
 		try
 		{
-			PaymentIntent intent = stripeService.createPaymentIntent(amount, currencyType);
-			
-			return intent.getClientSecret();
+			return stripeService.createPaymentIntent(amount, currencyType, metadata);
 		} 
 		catch (StripeException e)
 		{

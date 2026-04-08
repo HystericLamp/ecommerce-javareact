@@ -3,12 +3,16 @@ package com.ecommerce.bcruz.service.tests;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -17,17 +21,22 @@ import org.junit.jupiter.api.Test;
 
 import com.ecommerce.bcruz.dto.CartItem;
 import com.ecommerce.bcruz.dto.CheckoutRequest;
+import com.ecommerce.bcruz.dto.PaymentResult;
+import com.ecommerce.bcruz.infrastructure.payment.PaymentProcessor;
+import com.ecommerce.bcruz.infrastructure.payment.StripePaymentProcessor;
 import com.ecommerce.bcruz.models.DraftOrder;
 import com.ecommerce.bcruz.models.DraftOrderStatus;
 import com.ecommerce.bcruz.models.Product;
 import com.ecommerce.bcruz.repositories.DraftOrderRepository;
 import com.ecommerce.bcruz.repositories.ProductRepository;
 import com.ecommerce.bcruz.service.CheckoutService;
+import com.stripe.model.PaymentIntent;
 
 public class CheckoutServiceTest
 {
 	private ProductRepository productRepository;
 	private DraftOrderRepository draftOrderRepository;
+	private PaymentProcessor paymentProcessor;
 	private CheckoutService checkoutService;
 	
 	// Helper
@@ -52,55 +61,12 @@ public class CheckoutServiceTest
 	{
 		productRepository = mock(ProductRepository.class);
 		draftOrderRepository = mock(DraftOrderRepository.class);
-		checkoutService = new CheckoutService(productRepository, draftOrderRepository);
+		paymentProcessor = mock(StripePaymentProcessor.class);
+		checkoutService = new CheckoutService(productRepository, draftOrderRepository, paymentProcessor);
 	}
 	
 	@Test
-    @DisplayName("AC-CHECKOUT-01: Get Summary of Order as guest")
-	void checkout_getOrderGuest()
-	{
-		// Test Data
-		List<CartItem> itemProducts = new ArrayList<CartItem>();
-		itemProducts.add(new CartItem(1L, 1));
-		itemProducts.add(new CartItem(2L, 2));
-		itemProducts.add(new CartItem(3L, 3));
-		itemProducts.add(new CartItem(4L, 4));
-		
-		CheckoutRequest request = new CheckoutRequest();
-		request.setItemProducts(itemProducts);
-		
-		// Mock Products
-		when(productRepository.findById(1L))
-        .thenReturn(Optional.of(createProduct(1L, "P1", 100)));
-
-		when(productRepository.findById(2L))
-		        .thenReturn(Optional.of(createProduct(2L, "P2", 200)));
-		
-		when(productRepository.findById(3L))
-		        .thenReturn(Optional.of(createProduct(3L, "P3", 300)));
-		
-		when(productRepository.findById(4L))
-		        .thenReturn(Optional.of(createProduct(4L, "P4", 400)));
-
-	    // Mock save
-	    when(draftOrderRepository.save(any(DraftOrder.class)))
-	            .thenAnswer(invocation -> invocation.getArgument(0));
-
-	    // Execute
-	    DraftOrder result = checkoutService.createDraftOrder(request);
-
-	    // Assert
-	    assertNotNull(result);
-	    assertEquals(4, result.getItems().size());
-
-	    // total = 100*1 + 200*2 + 300*3 + 400*4 = 3000
-	    assertEquals(3000, result.getTotalAmountInCents());
-	    assertEquals("usd", result.getCurrency());
-	    assertEquals(DraftOrderStatus.PENDING, result.getStatus());
-	}
-	
-	@Test
-    @DisplayName("AC-CHECKOUT-01: Get Summary of Order as a User")
+    @DisplayName("AC-CHECKOUT-01: Get Summary of Order")
 	void checkout_getOrderUser()
 	{
 		// Test Data
@@ -136,10 +102,52 @@ public class CheckoutServiceTest
 	    // Assert
 	    assertNotNull(result);
 	    assertEquals(4, result.getItems().size());
+	    assertEquals(22L, result.getUserId());
 
 	    // total = 100*1 + 200*2 + 300*3 + 400*4 = 3000
 	    assertEquals(3000, result.getTotalAmountInCents());
 	    assertEquals("usd", result.getCurrency());
 	    assertEquals(DraftOrderStatus.PENDING, result.getStatus());
 	}
+	
+	@Test
+    void testCreateDraftOrderAndPayment() 
+	{
+        // Arrange
+        Long userId = 1L;
+        CheckoutRequest request = new CheckoutRequest();
+        DraftOrder draftOrder = new DraftOrder();
+        draftOrder.setId(123L);
+        draftOrder.setCurrency("USD");
+        draftOrder.setTotalAmountInCents(5000L);
+
+        PaymentIntent intent = new PaymentIntent();
+        intent.setId("pi_12345");
+        intent.setClientSecret("secret_abc");
+
+        CheckoutService spyService = spy(checkoutService);
+        doReturn(draftOrder).when(spyService).createDraftOrder(request, userId);
+
+        when(paymentProcessor.createPayment(
+                draftOrder.getTotalAmountInCents(),
+                draftOrder.getCurrency(),
+                Map.of("draftOrderId", draftOrder.getId().toString())
+        )).thenReturn(intent);
+
+        // Act
+        PaymentResult result = spyService.createDraftOrderAndPayment(request, userId);
+
+        // Assert
+        assertNotNull(result);
+        assertEquals(draftOrder.getId(), result.getDraftOrderId());
+        assertEquals(intent.getClientSecret(), result.getClientSecret());
+
+        // Verify interactions
+        verify(draftOrderRepository).save(draftOrder);
+        verify(paymentProcessor).createPayment(
+                draftOrder.getTotalAmountInCents(),
+                draftOrder.getCurrency(),
+                Map.of("draftOrderId", draftOrder.getId().toString())
+        );
+    }
 }

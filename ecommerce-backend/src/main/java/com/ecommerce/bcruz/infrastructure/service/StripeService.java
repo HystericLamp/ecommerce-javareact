@@ -1,5 +1,7 @@
 package com.ecommerce.bcruz.infrastructure.service;
 
+import java.util.Map;
+
 import org.springframework.stereotype.Service;
 
 import com.ecommerce.bcruz.config.StripeConfig;
@@ -27,11 +29,12 @@ public class StripeService
 		Stripe.apiKey = stripeConfig.getSecretKey();
 	}
 	
-	public PaymentIntent createPaymentIntent(long amount, String currency) throws StripeException
+	public PaymentIntent createPaymentIntent(long amount, String currency, Map<String, String> metadata) throws StripeException
 	{
 		PaymentIntentCreateParams params = PaymentIntentCreateParams.builder()
 											.setAmount(amount)
 											.setCurrency(currency)
+											.putAllMetadata(metadata)
 											.setAutomaticPaymentMethods(
 													PaymentIntentCreateParams.AutomaticPaymentMethods
 														.builder()

@@ -29,8 +29,7 @@ public class PaymentController
 		Long amountInCents = 5000L;
 		String currency = "usd";
 		
-		String clientSecret = paymentProcessor.createPayment(amountInCents, currency);
 		
-		return ResponseEntity.ok(Map.of("clientSecret", clientSecret));
+		return null;
 	}
 }
