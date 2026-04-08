@@ -28,7 +28,7 @@ public class PaymentControllerTest
 	@Test
 	void shouldCreatePaymentIntent() throws Exception
 	{
-		when(paymentProcessor.createPayment(5000L, "usd"))
+		when(paymentProcessor.createPayment(5000L, "usd", null))
 			.thenReturn("test_client_secret");
 		
 		mockMvc.perform(post("/api/payments/create/1"))

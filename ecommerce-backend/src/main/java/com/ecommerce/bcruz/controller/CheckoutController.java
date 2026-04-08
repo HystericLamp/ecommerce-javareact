@@ -25,6 +25,12 @@ public class CheckoutController
 		this.checkoutService = checkoutService;
 	}
 	
+	/**
+	 * Create draft order without starting payment
+     * Useful for multi-step checkout, saving cart, or guest sessions
+	 * @param request
+	 * @return
+	 */
 	@PostMapping("/draft")
     public ResponseEntity<?> createDraftOrder(@RequestBody CheckoutRequest request) 
 	{
@@ -40,6 +46,11 @@ public class CheckoutController
         ));
     }
 	
+	/**
+	 * Full checkout flow: create draft order AND start payment
+	 * @param request
+	 * @return
+	 */
 	@PostMapping("/checkout")
     public ResponseEntity<?> checkout(@RequestBody CheckoutRequest request) 
 	{

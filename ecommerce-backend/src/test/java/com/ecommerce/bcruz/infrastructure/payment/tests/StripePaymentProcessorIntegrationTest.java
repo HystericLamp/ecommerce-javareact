@@ -47,7 +47,7 @@ public class StripePaymentProcessorIntegrationTest
 	@DisplayName("AC-PAYMENT-INTEGRATION-01: Process Successful Payment")
 	void StripeIntegration_CreateAndRetrievePaymentIntent() throws Exception
 	{
-		PaymentIntent created = stripeService.createPaymentIntent(1500L, "usd");
+		PaymentIntent created = stripeService.createPaymentIntent(1500L, "usd", null);
 		assertNotNull(created.getId());
 		assertEquals(1500L, created.getAmount());
 		assertEquals("usd", created.getCurrency());
@@ -71,7 +71,7 @@ public class StripePaymentProcessorIntegrationTest
 	@DisplayName("AC-PAYMENT-INTEGRATION-02: Refund Payment")
 	void StripeIntegration_RefundPayment() throws Exception
 	{
-		PaymentIntent intent = stripeService.createPaymentIntent(1000L, "usd");
+		PaymentIntent intent = stripeService.createPaymentIntent(1000L, "usd", null);
 		
 		// Needed to get success/fail status
 		PaymentIntent confirmed = PaymentIntent.retrieve(intent.getId())
