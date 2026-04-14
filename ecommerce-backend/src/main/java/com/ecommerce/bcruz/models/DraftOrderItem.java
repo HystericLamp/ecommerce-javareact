@@ -32,7 +32,7 @@ public class DraftOrderItem
 	public void setProductId(Long productId) { this.productId = productId; }
 	public String getProductName() { return productName; }
 	public void setProductName(String productName) { this.productName = productName; }
-	public Long setPriceAtCheckout() { return priceAtPurchase; }
+	public Long getPriceAtCheckout() { return priceAtPurchase; }
 	public void setPriceAtCheckout(Long priceAtPurchase) { this.priceAtPurchase = priceAtPurchase; }
 	public Integer getQuantity() { return quantity; }
 	public void setQuantity(Integer quantity) { this.quantity = quantity; }
