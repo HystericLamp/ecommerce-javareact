@@ -1,7 +1,5 @@
 package com.ecommerce.bcruz.controller;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -11,13 +9,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ecommerce.bcruz.exceptions.DuplicateDraftOrderException;
-import com.ecommerce.bcruz.models.DraftOrder;
-import com.ecommerce.bcruz.models.DraftOrderStatus;
-import com.ecommerce.bcruz.models.Order;
-import com.ecommerce.bcruz.models.OrderItem;
-import com.ecommerce.bcruz.models.OrderStatus;
-import com.ecommerce.bcruz.repositories.DraftOrderRepository;
-import com.ecommerce.bcruz.repositories.OrderRepository;
 import com.ecommerce.bcruz.service.WebhookService;
 import com.stripe.exception.SignatureVerificationException;
 import com.stripe.model.Event;
@@ -44,15 +35,13 @@ public class WebhookController
 	{
         Event event = Webhook.constructEvent(payload, sigHeader, endpointSecret);
 
-        if ("payment_intent.succeeded".equals(event.getType())) {
-
+        if ("payment_intent.succeeded".equals(event.getType())) 
+        {
             PaymentIntent intent = (PaymentIntent) event.getDataObjectDeserializer()
                     .getObject()
                     .orElse(null);
-
             try
 			{
-            	System.out.println("About to go to handleSuccessfulPayment()");
 				webhookService.handleSuccessfulPayment(intent);
 			} 
             catch (DuplicateDraftOrderException e)
