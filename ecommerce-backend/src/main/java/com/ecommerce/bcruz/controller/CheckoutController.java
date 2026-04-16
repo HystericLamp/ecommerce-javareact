@@ -34,10 +34,10 @@ public class CheckoutController
 	@PostMapping("/draft")
     public ResponseEntity<?> createDraftOrder(@RequestBody CheckoutRequest request) 
 	{
-
-        Long userId = 1L; // Replace later
-
-        DraftOrder draftOrder = checkoutService.createDraftOrder(request, userId);
+        DraftOrder draftOrder = checkoutService.createDraftOrder(
+	    		request, 
+	    		request.getUserId()
+        );
 
         return ResponseEntity.ok(Map.of(
                 "draftOrderId", draftOrder.getId(),
@@ -54,9 +54,10 @@ public class CheckoutController
 	@PostMapping("/checkout")
     public ResponseEntity<?> checkout(@RequestBody CheckoutRequest request) 
 	{
-		Long userId = 1L; // Replace later
-
-	    PaymentResult result = checkoutService.createDraftOrderAndPayment(request, userId);
+	    PaymentResult result = checkoutService.createDraftOrderAndPayment(
+	    		request, 
+	    		request.getUserId()
+	    );
 
 	    return ResponseEntity.ok(Map.of(
 	            "draftOrderId", result.getDraftOrderId(),

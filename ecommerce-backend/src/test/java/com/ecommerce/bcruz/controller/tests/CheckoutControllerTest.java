@@ -2,6 +2,7 @@ package com.ecommerce.bcruz.controller.tests;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.when;
 
 import org.junit.jupiter.api.DisplayName;
@@ -41,6 +42,7 @@ public class CheckoutControllerTest
 	void checkout_shouldCreateDraftOrder() throws Exception
 	{
 		CheckoutRequest request = new CheckoutRequest();
+		request.setUserId(1L);
 		
 		DraftOrder draftOrder = new DraftOrder();
         draftOrder.setId(55L);
@@ -64,6 +66,7 @@ public class CheckoutControllerTest
     void checkout_shouldCheckoutAndReturnClientSecret() throws Exception 
 	{
         CheckoutRequest request = new CheckoutRequest();
+        request.setUserId(1L);
 
         PaymentResult result = new PaymentResult();
         result.setDraftOrderId(200L);
@@ -79,4 +82,25 @@ public class CheckoutControllerTest
                 .andExpect(jsonPath("$.draftOrderId").value(200L))
                 .andExpect(jsonPath("$.clientSecret").value("secret_123"));
     }
+	
+	@Test
+	@DisplayName("Create a Draft Order and Save as a Guest")
+	void checkout_shouldCreateDraftOrder_guest() throws Exception 
+	{
+	    CheckoutRequest request = new CheckoutRequest();
+
+	    DraftOrder draftOrder = new DraftOrder();
+	    draftOrder.setId(55L);
+	    draftOrder.setTotalAmountInCents(5000L);
+	    draftOrder.setCurrency("usd");
+
+	    when(checkoutService.createDraftOrder(any(), isNull()))
+	            .thenReturn(draftOrder);
+
+	    mockMvc.perform(MockMvcRequestBuilders.post("/api/shop/draft")
+	            .contentType(MediaType.APPLICATION_JSON)
+	            .content(objectMapper.writeValueAsString(request)))
+	            .andExpect(status().isOk())
+	            .andExpect(jsonPath("$.draftOrderId").value(55L));
+	}
 }
