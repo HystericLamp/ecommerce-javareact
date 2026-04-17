@@ -15,24 +15,14 @@ public class StripeConfig {
 
     @NotBlank
     private String publishableKey;
+    
+    @NotBlank
+    private String webhookSecret;
 
-    public String getSecretKey() 
-    {
-        return secretKey;
-    }
-
-    public void setSecretKey(String secretKey) 
-    {
-        this.secretKey = secretKey;
-    }
-
-    public String getPublishableKey() 
-    {
-        return publishableKey;
-    }
-
-    public void setPublishableKey(String publishableKey) 
-    {
-        this.publishableKey = publishableKey;
-    }
+    public String getSecretKey() { return secretKey; }
+    public void setSecretKey(String secretKey) { this.secretKey = secretKey; }
+    public String getPublishableKey() { return publishableKey; }
+    public void setPublishableKey(String publishableKey) { this.publishableKey = publishableKey; }
+    public String getWebhookSecret() { return webhookSecret; }
+    public void setWebhookSecret(String webhookSecret) { this.webhookSecret = webhookSecret; }
 }
