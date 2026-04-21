@@ -4,7 +4,7 @@ export default function Checkout() {
   const { cart, removeFromCart } = useCart();
 
   // Calculate total
-  const total = cart.reduce((sum, item) => sum + item.price, 0);
+  const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
 
   return (
     <div>
@@ -17,8 +17,8 @@ export default function Checkout() {
           <ul>
             {cart.map((item) => (
               <li key={item.id}>
-                <h3>{item.name}</h3>
-                <p>${(item.price / 100).toFixed(2)}</p>
+                <h3>{item.quantity} {item.name}</h3>
+                <p>${(item.price * item.quantity).toFixed(2)}</p>
                 <button onClick={() => removeFromCart(item.id)}>
                   Remove
                 </button>
