@@ -61,9 +61,29 @@ export default function Cart() {
 
                   {/* Quantity Controls */}
                   <div className="flex items-center gap-2 mt-3">
-                    <Button variant="outline" size="sm">-</Button>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => {
+                        if (item.quantity === 1) {
+                          removeFromCart(item.id);
+                        } else {
+                          updateQuantity(item.id, item.quantity - 1);
+                        }
+                      }}
+                    >
+                      -
+                    </Button>
+
                     <span className="px-3 font-medium">{item.quantity}</span>
-                    <Button variant="outline" size="sm">+</Button>
+
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                    >
+                      +
+                    </Button>
                   </div>
                 </CardContent>
 

@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import { useCart } from "../../features/cart/context/CartContext";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -5,6 +6,7 @@ import { Separator } from "@/components/ui/separator";
 
 export default function Checkout() {
   const { cart, removeFromCart } = useCart();
+  const navigate = useNavigate();
 
   // Calculate total
   const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);

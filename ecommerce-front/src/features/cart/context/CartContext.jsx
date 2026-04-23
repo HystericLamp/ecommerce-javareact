@@ -26,7 +26,6 @@ export function CartProvider({ children }) {
         );
       }
 
-      console.log("Item added!!");
       return [...prev, { ...product, quantity: 1 }];
     });
   };
