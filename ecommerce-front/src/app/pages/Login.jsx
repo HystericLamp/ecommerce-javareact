@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import { useState, useContext } from "react";
 import { login } from "../../api/auth";
 import { AuthContext } from "../../context/AuthContext";
@@ -8,6 +9,7 @@ import { Input } from "@/components/ui/input";
 
 function Login() {
   const { loginUser } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -70,7 +72,6 @@ function Login() {
             />
           </div>
 
-          {/* Button */}
           <Button type="submit" className="w-full">
             Login
           </Button>
