@@ -57,7 +57,7 @@ export default function Register() {
         console.error(err);
         setError("Registration failed");
     }
-    };
+  };
 
   return (
     <div className="flex items-center justify-center min-h-[70vh]">
