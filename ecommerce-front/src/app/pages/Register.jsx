@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+import { API, API_URL } from "../../config/api";
+
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -22,20 +24,40 @@ export default function Register() {
     setForm((prev) => ({ ...prev, [field]: value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (form.password !== form.confirmPassword) {
-      setError("Passwords do not match");
-      return;
+        setError("Passwords do not match");
+        return;
     }
 
-    // TODO: call your API here
-    console.log("Registering:", form);
+    try {
+        const response = await fetch(`${API.USERS}/newUser`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+            name: form.name,
+            email: form.email,
+            password: form.password,
+        }),
+        });
 
-    // simulate success
-    navigate("/login");
-  };
+        if (!response.ok) {
+        throw new Error("Failed to register user");
+        }
+
+        const data = await response.json();
+        console.log("User created:", data);
+
+        navigate("/login");
+    } catch (err) {
+        console.error(err);
+        setError("Registration failed");
+    }
+    };
 
   return (
     <div className="flex items-center justify-center min-h-[70vh]">
