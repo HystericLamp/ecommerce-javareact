@@ -2,6 +2,7 @@ package com.ecommerce.bcruz.models;
 
 import java.util.Objects;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -18,9 +19,16 @@ public class Product
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
+	@Column(name = "name", nullable = false)
 	private String name;
+	
+	@Column(name = "description", nullable = true)
 	private String description;
+	
+	@Column(name = "price", nullable = false)
 	private Long price;
+	
+	@Column(name = "stock", nullable = false)
 	private Integer stock;
 	
 	@ManyToOne
