@@ -34,19 +34,19 @@ export default function Register() {
 
     try {
         const response = await fetch(`${API.USERS}/newUser`, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-            name: form.name,
-            email: form.email,
-            password: form.password,
-        }),
+          method: "POST",
+          headers: {
+              "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+              name: form.name,
+              email: form.email,
+              password: form.password,
+          }),
         });
 
         if (!response.ok) {
-        throw new Error("Failed to register user");
+          throw new Error("Failed to register user");
         }
 
         const data = await response.json();

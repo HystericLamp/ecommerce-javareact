@@ -1,7 +1,5 @@
 package com.ecommerce.bcruz.service;
 
-import java.util.Optional;
-
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -24,11 +22,11 @@ public class AuthService
 	public AuthResponse login(String email, String password)
 	{	
 		User user = userRepository.findByEmail(email)
-	            .orElseThrow(() -> new RuntimeException("Invalid credentials"));
+	            .orElseThrow(() -> new RuntimeException("Email does not exist"));
 		
 		if(!passwordEncoder.matches(password, user.getPassword())) 
 		{
-	        throw new RuntimeException("Invalid credentials");
+	        throw new RuntimeException("Wrong Password");
 	    }
 		
 		return new AuthResponse(

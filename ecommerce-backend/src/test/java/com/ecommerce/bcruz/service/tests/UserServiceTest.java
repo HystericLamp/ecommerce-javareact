@@ -8,6 +8,7 @@ import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.ecommerce.bcruz.models.User;
 import com.ecommerce.bcruz.repositories.UserRepository;
@@ -17,12 +18,14 @@ public class UserServiceTest
 {
 	private UserService userService;
 	private UserRepository userRepository;
+	private PasswordEncoder passwordEncoder;
 	
 	@BeforeEach
 	void setUp()
 	{
 		userRepository = mock(UserRepository.class);
-		userService = new UserService(userRepository);
+		passwordEncoder = mock(PasswordEncoder.class);
+		userService = new UserService(userRepository, passwordEncoder);
 	}
 	
 	@Test
@@ -36,6 +39,7 @@ public class UserServiceTest
 		when(userRepository.save(any(User.class))).thenAnswer(invocation -> {
 			User u = invocation.getArgument(0);
 			u.setId(3L);
+			u.setPassword("encodedPassword");
 			return u;
 		});
 		
@@ -43,7 +47,9 @@ public class UserServiceTest
 		
 		assertEquals(3L, registeredUser.getId());
         assertEquals("Peter", registeredUser.getName());
-
+        assertEquals("encodedPassword", registeredUser.getPassword());
+        
+        verify(passwordEncoder, times(1)).encode(newPassword);
         verify(userRepository, times(1)).save(newUser);
 	}
 	
