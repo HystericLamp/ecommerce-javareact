@@ -22,6 +22,7 @@ function Login() {
       const token = await login(email, password);
       loginUser(token);
       alert("Logged in!");
+      navigate("/shop")
     } catch (err) {
       alert("Invalid credentials");
     }
