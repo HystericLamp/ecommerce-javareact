@@ -16,7 +16,6 @@ public class DotenvEnvironmentPostProcessor implements EnvironmentPostProcessor
 	public void postProcessEnvironment(ConfigurableEnvironment environment, SpringApplication application)
 	{
 		Dotenv dotenv = Dotenv.configure().ignoreIfMissing().load();
-		System.out.println("DOTENV POST PROCESSOR RUNNING");
 		
         Properties props = new Properties();
         

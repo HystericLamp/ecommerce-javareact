@@ -22,12 +22,14 @@ public class UserService
 		this.passwordEncoder = passwordEncoder;
 	}
 	
-	public User createUser(User newUser)
+	public User createUser(User newUser) 
 	{
-		String encodedPassword = passwordEncoder.encode(newUser.getPassword());
-		newUser.setPassword(encodedPassword);
-		
-		return userRepository.save(newUser);
+	    String encodedPassword =
+	        passwordEncoder.encode(newUser.getPassword());
+
+	    newUser.setPassword(encodedPassword);
+
+	    return userRepository.save(newUser);
 	}
 	
 	public User getUserById(Long id)

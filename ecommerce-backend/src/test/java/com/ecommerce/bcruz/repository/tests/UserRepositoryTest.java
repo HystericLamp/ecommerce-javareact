@@ -33,15 +33,16 @@ public class UserRepositoryTest
 	}
 	
 	@Test
-	void shouldFailWhenManuallyInsertingDuplicateViaJdbc() throws Exception 
+	void shouldRejectDuplicateEmailIgnoringCase() 
 	{
-	    User u1 = new User("A", "test@test.com", "pass");
-	    User u2 = new User("B", "test@test.com", "pass");
-
-	    userRepository.saveAndFlush(u1);
+	    userRepository.saveAndFlush(
+	        new User("Alice", "test@test.com", "pass")
+	    );
 
 	    assertThrows(Exception.class, () -> {
-	        userRepository.saveAndFlush(u2);
+	        userRepository.saveAndFlush(
+	            new User("Bob", "Test@Test.com", "pass")
+	        );
 	    });
 	}
 }
