@@ -110,7 +110,9 @@ export default function Cart() {
             {/* Summary */}
             <div className="flex justify-between text-sm text-muted-foreground">
               <span>Items</span>
-              <span>{cart.length}</span>
+              <span>
+                {cart.reduce((total, item) => total + item.quantity, 0)}
+              </span>
             </div>
             <div className="flex justify-between items-center">
               <h2 className="text-xl font-semibold text-foreground">Total</h2>

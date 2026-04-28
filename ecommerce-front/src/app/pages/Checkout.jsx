@@ -69,7 +69,9 @@ export default function Checkout() {
 
               <div className="flex justify-between text-sm text-muted-foreground">
                 <span>Items</span>
-                <span>{cart.length}</span>
+                <span>
+                  {cart.reduce((total, item) => total + item.quantity, 0)}
+                </span>
               </div>
 
               <div className="flex justify-between items-center">
