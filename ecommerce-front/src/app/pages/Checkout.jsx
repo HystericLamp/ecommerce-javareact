@@ -1,15 +1,44 @@
 import { useNavigate } from "react-router-dom";
 import { useCart } from "../../features/cart/context/CartContext";
+import { useAuth } from "../../context/AuthContext";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 
 export default function Checkout() {
   const { cart, removeFromCart } = useCart();
+  const { user } = useAuth();
   const navigate = useNavigate();
 
   // Calculate total
   const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+
+  const handleCheckout = async () => {
+    if (!user) {
+      navigate("/login");
+      return;
+    }
+
+    const payload = {
+      userId: user.id,
+      itemProducts: cart.map(item => ({
+        id: item.id,
+        quantity: item.quantity
+      }))
+    };
+
+    const response = await fetch("/api/shop/checkout", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(payload)
+    });
+
+    const data = await response.json();
+
+    console.log(data);
+  };
 
   return (
     <div className="max-w-5xl mx-auto space-y-8">
@@ -85,7 +114,7 @@ export default function Checkout() {
 
               <Button
                 className="w-full text-lg py-6"
-                onClick={() => console.log("Proceed to payment")}
+                onClick={handleCheckout}
               >
                 Place Order
               </Button>
