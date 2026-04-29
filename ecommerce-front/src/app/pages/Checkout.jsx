@@ -14,13 +14,8 @@ export default function Checkout() {
   const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
 
   const handleCheckout = async () => {
-    if (!user) {
-      navigate("/login");
-      return;
-    }
-
     const payload = {
-      userId: user.id,
+      userId: user ? user.id : null,
       itemProducts: cart.map(item => ({
         id: item.id,
         quantity: item.quantity
