@@ -1,130 +1,116 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useCart } from "../../features/cart/context/CartContext";
 import { useAuth } from "../../context/AuthContext";
-import { Card } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
+
+import OrderItems from "../../features/checkout/components/OrderItems";
+import CustomerForm from "../../features/checkout/components/CustomerForm";
+import OrderSummary from "../../features/checkout/components/OrderSummary";
 
 export default function Checkout() {
   const { cart, removeFromCart } = useCart();
   const { user } = useAuth();
   const navigate = useNavigate();
 
-  // Calculate total
-  const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+  const [customer, setCustomer] = useState({
+    email: user?.email || "",
+    firstName: user?.firstName || "",
+    lastName: user?.lastName || "",
+    addressLine1: "",
+    addressLine2: "",
+    city: "",
+    provinceState: "",
+    postalCode: "",
+    country: "Canada"
+  });
 
-  const handleCheckout = async () => {
-    const payload = {
-      userId: user ? user.id : null,
-      itemProducts: cart.map(item => ({
-        id: item.id,
-        quantity: item.quantity
-      }))
-    };
+  const [loading, setLoading] = useState(false);
 
-    const response = await fetch("/api/shop/checkout", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(payload)
-    });
+  const total = cart.reduce(
+    (sum, item) => sum + item.price * item.quantity,
+    0
+  );
 
-    const data = await response.json();
+  const handleChange = (e) => {
+    const { name, value } = e.target;
 
-    console.log(data);
+    setCustomer((prev) => ({
+      ...prev,
+      [name]: value
+    }));
   };
 
+  const handleCheckout = async () => {
+    setLoading(true);
+
+    try {
+      const payload = {
+        userId: user ? user.id : null,
+        ...customer,
+        itemProducts: cart.map((item) => ({
+          productId: item.id,
+          quantity: item.quantity
+        }))
+      };
+
+      const response = await fetch("/api/shop/checkout", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(payload)
+      });
+
+      const data = await response.json();
+
+      console.log(data);
+
+      // next step:
+      // setClientSecret(data.clientSecret)
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  if (cart.length === 0) {
+    return (
+      <div className="max-w-4xl mx-auto py-20 text-center space-y-4">
+        <h1 className="page-title">Checkout</h1>
+        <p className="text-xl font-semibold">Your cart is empty</p>
+        <p className="text-muted-foreground">
+          Add items before proceeding to checkout.
+        </p>
+      </div>
+    );
+  }
+
   return (
-    <div className="max-w-5xl mx-auto space-y-8">
+    <div className="max-w-6xl mx-auto space-y-8">
       <h1 className="page-title">Checkout</h1>
 
-      {cart.length === 0 ? (
-        <div className="text-center py-20 space-y-4">
-          <p className="text-xl font-semibold text-foreground">
-            Your cart is empty
-          </p>
-          <p className="text-sm text-muted-foreground">
-            Add items before proceeding to checkout.
-          </p>
+      <div className="grid lg:grid-cols-3 gap-8">
+        <div className="lg:col-span-2 space-y-8">
+          <OrderItems
+            items={cart}
+            removeFromCart={removeFromCart}
+          />
+
+          <CustomerForm
+            customer={customer}
+            onChange={handleChange}
+          />
         </div>
-      ) : (
-        <div className="grid md:grid-cols-3 gap-8">
-          
-          {/* LEFT: Items */}
-          <div className="md:col-span-2 space-y-4">
-            <h2 className="section-title">Order Items</h2>
 
-            {cart.map((item) => (
-              <Card key={item.id} className="p-4 flex justify-between items-center rounded-xl">
-                <div>
-                  <h3 className="font-medium text-foreground">
-                    {item.quantity} × {item.name}
-                  </h3>
-                  <p className="text-sm text-muted-foreground">
-                    ${item.price.toFixed(2)} each
-                  </p>
-                </div>
-
-                <div className="flex items-center gap-4">
-                  <p className="font-semibold text-foreground">
-                    ${(item.price * item.quantity).toFixed(2)}
-                  </p>
-
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    className="text-muted-foreground hover:text-destructive"
-                    onClick={() => removeFromCart(item.id)}
-                  >
-                    ✕
-                  </Button>
-                </div>
-              </Card>
-            ))}
-          </div>
-
-          {/* RIGHT: Summary */}
-          <div className="space-y-4">
-            <Card className="p-6 rounded-xl space-y-4">
-              <h2 className="text-lg font-semibold text-foreground">
-                Order Summary
-              </h2>
-
-              <div className="flex justify-between text-sm text-muted-foreground">
-                <span>Items</span>
-                <span>
-                  {cart.reduce((total, item) => total + item.quantity, 0)}
-                </span>
-              </div>
-
-              <div className="flex justify-between items-center">
-                <span className="font-medium text-foreground">Total</span>
-                <span className="text-xl font-bold text-primary">
-                  ${total.toFixed(2)}
-                </span>
-              </div>
-
-              <Separator />
-
-              <Button
-                className="w-full text-lg py-6"
-                onClick={handleCheckout}
-              >
-                Place Order
-              </Button>
-            </Card>
-
-            <Button
-              variant="outline"
-              className="w-full"
-              onClick={() => navigate("/cart")}
-            >
-              Back to Cart
-            </Button>
-          </div>
-        </div>
-      )}
+        <OrderSummary
+          cart={cart}
+          total={total}
+          loading={loading}
+          onCheckout={handleCheckout}
+          onBack={() => navigate("/cart")}
+        />
+      </div>
     </div>
   );
 }

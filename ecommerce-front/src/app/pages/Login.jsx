@@ -8,7 +8,7 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 
 function Login() {
-  const { loginUser } = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const [email, setEmail] = useState("");
@@ -20,7 +20,7 @@ function Login() {
 
     try {
       const token = await login(email, password);
-      loginUser(token);
+      user(token);
       alert("Logged in!");
       navigate("/shop")
     } catch (err) {
