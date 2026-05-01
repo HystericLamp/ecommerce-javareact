@@ -47,7 +47,7 @@ function Navbar() {
             <div className="flex items-center gap-4">
                 <Link to="/cart">
                     <Button variant="outline" size="icon">
-                    <ShoppingCart className="h-5 w-5" />
+                        <ShoppingCart className="h-5 w-5" />
                     </Button>
                 </Link>
 

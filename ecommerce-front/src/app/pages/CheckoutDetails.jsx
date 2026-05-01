@@ -61,12 +61,18 @@ export default function Checkout() {
         body: JSON.stringify(payload)
       });
 
+      if (!response.ok) {
+        throw new Error("Checkout failed");
+      }
+
       const data = await response.json();
 
-      console.log(data);
-
-      // next step:
-      // setClientSecret(data.clientSecret)
+      navigate("/checkoutpayment", {
+        state: {
+          clientSecret: data.clientSecret,
+          draftOrderId: data.draftOrderId
+        }
+      });
     } catch (error) {
       console.error(error);
     } finally {

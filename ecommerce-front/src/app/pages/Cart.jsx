@@ -124,7 +124,7 @@ export default function Cart() {
             <Button
               className="w-full text-lg py-6"
               disabled={cart.length === 0}
-              onClick={() => navigate("/checkout")}
+              onClick={() => navigate("/checkoutdetails")}
             >
               Proceed to Checkout
             </Button>
