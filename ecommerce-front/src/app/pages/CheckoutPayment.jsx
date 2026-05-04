@@ -18,6 +18,7 @@ export default function StripePaymentForm({
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [copied, setCopied] = useState(false);
 
   const handlePayment = async (e) => {
     e.preventDefault();
@@ -39,7 +40,7 @@ export default function StripePaymentForm({
     );
 
     if (result.error) {
-      setError(result.error.message);
+      setError("Payment failed. Please use the test card provided.");
       setLoading(false);
       return;
     }
@@ -56,43 +57,60 @@ export default function StripePaymentForm({
     setLoading(false);
   };
 
+  const handleCopy = async () => {
+    await navigator.clipboard.writeText("4242424242424242");
+    setCopied(true);
+    setTimeout(() => setCopied(false), 1500);
+  };
+
   return (
-    <Card className="p-6 rounded-xl space-y-6">
-      <h2 className="text-lg font-semibold text-foreground">
-        Payment Details
-      </h2>
-      <form
-        onSubmit={handlePayment}
-        className="space-y-6"
-      >
-        <div className="border rounded-md p-4 bg-background">
-          <CardElement
-            options={{
-              style: {
-                base: {
-                  fontSize: "16px"
-                }
-              }
-            }}
-          />
-        </div>
+    <>
+      <div className="text-sm bg-muted p-4 rounded-md space-y-1">
+        <p className="font-medium">Test Card</p>
+        <p>4242 4242 4242 4242</p>
+        <p>Any future expiry, any CVC</p>
 
-        {error && (
-          <p className="text-sm text-red-500">
-            {error}
-          </p>
-        )}
-
-        <Button
-          type="submit"
-          className="w-full text-lg py-6"
-          disabled={!stripe || loading}
-        >
-          {loading
-            ? "Processing Payment..."
-            : "Pay Now"}
+        <Button variant="outline" onClick={handleCopy}>
+          {copied ? "Copied!" : "Copy Test Card"}
         </Button>
-      </form>
-    </Card>
+      </div>
+      <Card className="p-6 rounded-xl space-y-6">
+        <h2 className="text-lg font-semibold text-foreground">
+          Payment Details
+        </h2>
+        <form
+          onSubmit={handlePayment}
+          className="space-y-6"
+        >
+          <div className="border rounded-md p-4 bg-background">
+            <CardElement
+              options={{
+                style: {
+                  base: {
+                    fontSize: "16px"
+                  }
+                }
+              }}
+            />
+          </div>
+
+          {error && (
+            <p className="text-sm text-red-500">
+              {error}
+            </p>
+          )}
+
+          <Button
+            type="submit"
+            className="w-full text-lg py-6"
+            disabled={!stripe || loading}
+          >
+            {loading
+              ? "Processing Payment..."
+              : "Pay Now"}
+          </Button>
+        </form>
+      </Card>
+    </>
   );
 }
