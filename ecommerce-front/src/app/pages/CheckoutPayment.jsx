@@ -61,51 +61,38 @@ export default function StripePaymentForm({
       <h2 className="text-lg font-semibold text-foreground">
         Payment Details
       </h2>
-
-      {success ? (
-        <div className="space-y-2">
-          <p className="text-green-600 font-medium">
-            Payment successful.
-          </p>
-
-          <p className="text-sm text-muted-foreground">
-            Your order is being finalized.
-          </p>
-        </div>
-      ) : (
-        <form
-          onSubmit={handlePayment}
-          className="space-y-6"
-        >
-          <div className="border rounded-md p-4 bg-background">
-            <CardElement
-              options={{
-                style: {
-                  base: {
-                    fontSize: "16px"
-                  }
+      <form
+        onSubmit={handlePayment}
+        className="space-y-6"
+      >
+        <div className="border rounded-md p-4 bg-background">
+          <CardElement
+            options={{
+              style: {
+                base: {
+                  fontSize: "16px"
                 }
-              }}
-            />
-          </div>
+              }
+            }}
+          />
+        </div>
 
-          {error && (
-            <p className="text-sm text-red-500">
-              {error}
-            </p>
-          )}
+        {error && (
+          <p className="text-sm text-red-500">
+            {error}
+          </p>
+        )}
 
-          <Button
-            type="submit"
-            className="w-full text-lg py-6"
-            disabled={!stripe || loading}
-          >
-            {loading
-              ? "Processing Payment..."
-              : "Pay Now"}
-          </Button>
-        </form>
-      )}
+        <Button
+          type="submit"
+          className="w-full text-lg py-6"
+          disabled={!stripe || loading}
+        >
+          {loading
+            ? "Processing Payment..."
+            : "Pay Now"}
+        </Button>
+      </form>
     </Card>
   );
 }
