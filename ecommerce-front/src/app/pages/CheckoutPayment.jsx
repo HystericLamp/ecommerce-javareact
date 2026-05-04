@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   CardElement,
   useStripe,
@@ -13,10 +14,10 @@ export default function StripePaymentForm({
 }) {
   const stripe = useStripe();
   const elements = useElements();
+  const navigate = useNavigate();
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const [success, setSuccess] = useState(false);
 
   const handlePayment = async (e) => {
     e.preventDefault();
@@ -47,7 +48,9 @@ export default function StripePaymentForm({
       result.paymentIntent &&
       result.paymentIntent.status === "succeeded"
     ) {
-      setSuccess(true);
+      navigate("/checkoutsuccess", {
+        state: { draftOrderId }
+      });
     }
 
     setLoading(false);
