@@ -33,7 +33,7 @@ This section captures interpreted requirements and assumptions based on availabl
 ## Checkout
 
 ### Requirements
-- Users can complete checkout using a payment provider
+- Users can successfully complete checkout after valid payment authorization
 - Orders are created before payment confirmation
 - Payment status is tracked
 
