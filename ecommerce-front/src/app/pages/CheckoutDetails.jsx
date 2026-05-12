@@ -41,6 +41,13 @@ export default function Checkout() {
   };
 
   const handleCheckout = async () => {
+    const form = document.querySelector("form");
+
+    if (!form.checkValidity()) {
+      form.reportValidity();
+      return;
+    }
+
     setLoading(true);
 
     try {
@@ -96,27 +103,34 @@ export default function Checkout() {
     <div className="max-w-6xl mx-auto space-y-8">
       <h1 className="page-title">Checkout</h1>
 
-      <div className="grid lg:grid-cols-3 gap-8">
-        <div className="lg:col-span-2 space-y-8">
-          <OrderItems
-            items={cart}
-            removeFromCart={removeFromCart}
-          />
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          handleCheckout();
+        }}
+      >
+        <div className="grid lg:grid-cols-3 gap-8">
+          <div className="lg:col-span-2 space-y-8">
+            <OrderItems
+              items={cart}
+              removeFromCart={removeFromCart}
+            />
 
-          <CustomerForm
-            customer={customer}
-            onChange={handleChange}
+            <CustomerForm
+              customer={customer}
+              onChange={handleChange}
+            />
+          </div>
+
+          <OrderSummary
+            cart={cart}
+            total={total}
+            loading={loading}
+            onCheckout={handleCheckout}
+            onBack={() => navigate("/cart")}
           />
         </div>
-
-        <OrderSummary
-          cart={cart}
-          total={total}
-          loading={loading}
-          onCheckout={handleCheckout}
-          onBack={() => navigate("/cart")}
-        />
-      </div>
+      </form>
     </div>
   );
 }

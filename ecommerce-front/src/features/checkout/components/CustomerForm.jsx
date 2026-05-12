@@ -11,12 +11,17 @@ export default function CustomerForm({
         Customer Details
       </h2>
 
+      <p className="text-sm text-muted-foreground">
+        This is a demo checkout. Please use test or dummy information, no real data is stored.
+      </p>
+
       <div className="grid md:grid-cols-2 gap-4">
         <Input
           name="firstName"
           placeholder="First Name"
           value={customer.firstName}
           onChange={onChange}
+          required
         />
 
         <Input
@@ -32,6 +37,7 @@ export default function CustomerForm({
           value={customer.email}
           onChange={onChange}
           className="md:col-span-2"
+          required
         />
 
         <Input
@@ -40,6 +46,7 @@ export default function CustomerForm({
           value={customer.addressLine1}
           onChange={onChange}
           className="md:col-span-2"
+          required
         />
 
         <Input
