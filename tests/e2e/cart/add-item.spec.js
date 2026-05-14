@@ -31,7 +31,36 @@ test('AC-CART-01 user can add item to cart', async ({ page }) => {
   ).toBeVisible();
 });
 
-test('AC-CART-02 adding same item increments quanitty', async ({ page }) => {
+test('AC-CART-03 Do not add an item with 0 or negative quantity', async ({ page }) => {
+  await page.goto('/shop');
+
+  const productCard = page.locator('.p-4').filter({
+    has: page.getByRole('heading', {
+      name: 'Colombian Supremo',
+    }),
+  });
+
+  // Press "Add"
+  await productCard
+    .getByRole('button', { name: 'Add' })
+    .click();
+
+  await expect(
+    productCard.getByRole('button', { name: '-' })
+  ).toBeVisible();
+
+  // Press "-" button
+  await productCard.getByRole('button', {
+    name: '-',
+  }).click();
+
+  // Check that it can't go to 0 and the "Add" button is back
+  await expect(
+    productCard.getByRole('button', { name: 'Add' })
+  ).toBeVisible();
+});
+
+test('AC-CART-04 Adding existing Item into the Cart should increment quantity', async ({ page }) => {
   await page.goto('/shop');
 
   const productCard = page.locator('.p-4').filter({
@@ -69,34 +98,5 @@ test('AC-CART-02 adding same item increments quanitty', async ({ page }) => {
 
   await expect(
     productCard.getByText(/2 in cart/i)
-  ).toBeVisible();
-});
-
-test('AC-CART-03 Do not add an item with 0 or negative quantity', async ({ page }) => {
-  await page.goto('/shop');
-
-  const productCard = page.locator('.p-4').filter({
-    has: page.getByRole('heading', {
-      name: 'Colombian Supremo',
-    }),
-  });
-
-  // Press "Add"
-  await productCard
-    .getByRole('button', { name: 'Add' })
-    .click();
-
-  await expect(
-    productCard.getByRole('button', { name: '-' })
-  ).toBeVisible();
-
-  // Press "-" button
-  await productCard.getByRole('button', {
-    name: '-',
-  }).click();
-
-  // Check that it can't go to 0 and the "Add" button is back
-  await expect(
-    productCard.getByRole('button', { name: 'Add' })
   ).toBeVisible();
 });
