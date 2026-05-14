@@ -31,7 +31,7 @@ test('AC-CART-01 user can add item to cart', async ({ page }) => {
   ).toBeVisible();
 });
 
-test('AC-CART-03 Do not add an item with 0 or negative quantity', async ({ page }) => {
+test('AC-CART-03 do not add an item with 0 or negative quantity', async ({ page }) => {
   await page.goto('/shop');
 
   const productCard = page.locator('.p-4').filter({
@@ -57,5 +57,46 @@ test('AC-CART-03 Do not add an item with 0 or negative quantity', async ({ page 
   // Check that it can't go to 0 and the "Add" button is back
   await expect(
     productCard.getByRole('button', { name: 'Add' })
+  ).toBeVisible();
+});
+
+test('AC-CART-04 adding existing Item into the Cart should increment quantity', async ({ page }) => {
+  await page.goto('/shop');
+
+  const productCard = page.locator('.p-4').filter({
+    has: page.getByRole('heading', {
+      name: 'Colombian Supremo',
+    }),
+  });
+
+  // Check initial "Add" state
+  await expect(
+    productCard.getByRole('button', { name: 'Add' })
+  ).toBeVisible();
+
+  await productCard
+    .getByRole('button', { name: 'Add' })
+    .click();
+
+  // Check after "add" state
+  await expect(
+    productCard.getByText(/1 in cart/i)
+  ).toBeVisible();
+
+  await expect(
+    productCard.getByRole('button', { name: '+' })
+  ).toBeVisible();
+
+  await expect(
+    productCard.getByRole('button', { name: '-' })
+  ).toBeVisible();
+
+  // Pressing "+" button
+  await productCard.getByRole('button', {
+    name: '+',
+  }).click();
+
+  await expect(
+    productCard.getByText(/2 in cart/i)
   ).toBeVisible();
 });

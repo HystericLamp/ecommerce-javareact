@@ -4,7 +4,7 @@
 | AC-CART-02 | Add item to cart with quantity | P1 | service.CartServiceTest | None | None | DONE |
 | AC-CART-03 | Do not add an item with 0 or negative quantity | P2 | service.CartServiceTest | None | WIP | WIP |
 | AC-CART-04 | Adding existing Item into the Cart should increment quantity | P1 | service.CartServiceTest | None | WIP | WIP |
-| AC-CART-05 | Update quantity of an Item in Cart | P0 | service.CartServiceTest | None | WIP | WIP |
+| AC-CART-05 | Update quantity of an Item in Cart | P0 | service.CartServiceTest | None |  | DONE |
 | AC-CART-06 | Do not update an item quantity with a negative quantity or non-existent item | P2 | service.CartServiceTest | None | WIP | WIP |
 | AC-CART-07 | Remove item from cart | P0 | service.CartServiceTest | None | WIP | WIP |
 | AC-CHECKOUT-01 | Get Summary of Order | P0 | businesslogic.checkout.CheckoutService | businesslogic.checkout.CheckoutServiceTest | DONE |
