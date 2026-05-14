@@ -1,7 +1,7 @@
 | AC ID | Description | Risk | Unit | API/Integration | E2E | Status |
 |------|-------------|------|----------------|-------|--------|
-| AC-CART-01 | Add item to cart | P0 | service.CartServiceTest | None | WIP | WIP |
-| AC-CART-02 | Add item to cart with quantity | P1 | service.CartServiceTest | None | WIP | WIP |
+| AC-CART-01 | Add item to cart | P0 | service.CartServiceTest | None | tests.e2e.cart.add-item | DONE |
+| AC-CART-02 | Add item to cart with quantity | P1 | service.CartServiceTest | None | None | DONE |
 | AC-CART-03 | Do not add an item with 0 or negative quantity | P2 | service.CartServiceTest | None | WIP | WIP |
 | AC-CART-04 | Adding existing Item into the Cart should increment quantity | P1 | service.CartServiceTest | None | WIP | WIP |
 | AC-CART-05 | Update quantity of an Item in Cart | P0 | service.CartServiceTest | None | WIP | WIP |
