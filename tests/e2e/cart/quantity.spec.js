@@ -1,14 +1,14 @@
 import { test, expect } from '@playwright/test';
 
 test('AC-CART-05 update quantity of an Item in Cart', async ({ page }) => {
-    // First add an item to Cart
-    await page.goto('/shop');
+  // First add an item to Cart
+  await page.goto('/shop');
 
-    const productCard = page.locator('.p-4').filter({
-        has: page.getByRole('heading', {
-        name: 'Colombian Supremo',
-        }),
-    });
+  const productCard = page.locator('.p-4').filter({
+      has: page.getByRole('heading', {
+      name: 'Colombian Supremo',
+      }),
+  });
 
   await productCard
     .getByRole('button', { name: 'Add' })
