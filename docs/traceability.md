@@ -14,7 +14,6 @@
 | AC-CHECKOUT-05 | Retry Payment | P0 | None | None | WIP | WIP |
 | AC-PAYMENT-INTEGRATION-01 | Process Successful Payment | P1 | None | infrastructure.payment.tests.StripePaymentProcessorIntegrationTest | None | DONE |
 | AC-PAYMENT-INTEGRATION-02 | Refund Payment | P1 | None | infrastructure.payment.tests.StripePaymentProcessorIntegrationTest | None | DONE |
-| AC-PRODUCT-MENU-01 | Get all product information | P0 | com.ecommerce.bcruz.service.ProductService | service.tests.ProductServiceTest.java & service.tests.ProductControllerTest.java | DONE |
 | AC-USER-01 | Register new Member | P0 |  |  | WIP |
 | AC-USER-02 | Login as an Existing User | P0 |  |  | WIP |
 | AC-PRODUCT-MENU-01 | Get All Product Information | P0 | service.tests.ProductServiceTest | controller.tests.ProductControllerTest | WIP | WIP |
