@@ -1,28 +1,26 @@
 package com.ecommerce.bcruz.infrastructure.payment.tests;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
 import com.ecommerce.bcruz.BcruzApplication;
 import com.ecommerce.bcruz.infrastructure.service.StripeService;
 import com.stripe.model.PaymentIntent;
+import com.stripe.model.Refund;
 import com.stripe.param.PaymentIntentConfirmParams;
+import com.stripe.param.RefundCreateParams;
 
 import io.github.cdimascio.dotenv.Dotenv;
 
 @SpringBootTest(classes=BcruzApplication.class)
-@EnableAutoConfiguration(exclude = {
-    org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration.class,
-    org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration.class
-})
 @ActiveProfiles("test")
 public class StripePaymentProcessorIntegrationTest
 {
@@ -83,5 +81,23 @@ public class StripePaymentProcessorIntegrationTest
 		
 		assertEquals("succeeded", confirmed.getStatus());
 		
+		
+		// Create refund and assert
+		String chargeId = confirmed.getLatestCharge();
+	    assertNotNull(chargeId);
+
+	    RefundCreateParams refundParams = RefundCreateParams.builder()
+	            .setCharge(chargeId)
+	            .build();
+
+	    Refund refund = Refund.create(refundParams);
+
+	    assertNotNull(refund);
+	    assertEquals("succeeded", refund.getStatus());
+	    assertEquals(1000L, refund.getAmount());
+
+	    // Optional additional validations
+	    assertEquals(chargeId, refund.getCharge());
+	    assertFalse(refund.getFailureReason() != null);
 	}
 }

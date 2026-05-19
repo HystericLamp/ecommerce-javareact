@@ -29,21 +29,32 @@ public class StripeService
 		Stripe.apiKey = stripeConfig.getSecretKey();
 	}
 	
-	public PaymentIntent createPaymentIntent(long amount, String currency, Map<String, String> metadata) throws StripeException
+	public PaymentIntent createPaymentIntent(
+										        long amount,
+										        String currency,
+										        Map<String, String> metadata
+											) throws StripeException 
 	{
-		PaymentIntentCreateParams params = PaymentIntentCreateParams.builder()
-											.setAmount(amount)
-											.setCurrency(currency)
-											.putAllMetadata(metadata)
-											.setAutomaticPaymentMethods(
-													PaymentIntentCreateParams.AutomaticPaymentMethods
-														.builder()
-														.setEnabled(true)
-														.setAllowRedirects(AllowRedirects.NEVER)
-														.build()
-											)
-											.build();
-		return PaymentIntent.create(params);
+	    PaymentIntentCreateParams.Builder builder =
+	            PaymentIntentCreateParams.builder()
+	                    .setAmount(amount)
+	                    .setCurrency(currency)
+	                    .setAutomaticPaymentMethods(
+	                            PaymentIntentCreateParams.AutomaticPaymentMethods
+	                                    .builder()
+	                                    .setEnabled(true)
+	                                    .setAllowRedirects(AllowRedirects.NEVER)
+	                                    .build()
+	                    );
+
+	    if (metadata != null && !metadata.isEmpty()) 
+	    {
+	        builder.putAllMetadata(metadata);
+	    }
+
+	    PaymentIntentCreateParams params = builder.build();
+
+	    return PaymentIntent.create(params);
 	}
 	
 	public PaymentIntent retrievePaymentIntent(String paymentIntentID) throws StripeException
