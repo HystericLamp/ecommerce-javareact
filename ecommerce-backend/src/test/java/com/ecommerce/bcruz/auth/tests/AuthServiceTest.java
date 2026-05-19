@@ -8,6 +8,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -19,7 +20,7 @@ import com.ecommerce.bcruz.repositories.UserRepository;
 import com.ecommerce.bcruz.service.AuthService;
 
 @SpringBootTest
-public class AuthTest
+public class AuthServiceTest
 {
 	@Autowired
 	private UserRepository userRepository;
@@ -55,6 +56,7 @@ public class AuthTest
 	}
 	
 	@Test
+	@DisplayName("AC-USER-02: Login as an Existing User")
 	void testLogin() 
 	{
 	    AuthResponse response = authService.login("member1@shop.com", "password1");

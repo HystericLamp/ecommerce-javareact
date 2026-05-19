@@ -1,5 +1,6 @@
 package com.ecommerce.bcruz.controller.tests;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,6 +67,7 @@ public class UserControllerTest
 	}
 	
 	@Test
+	@DisplayName("AC-USER-01: Register new Member")
 	void user_registerNewuser() throws Exception
 	{
 		User user = new User("Abbigail", "test@email.com", "testPassw0rd");

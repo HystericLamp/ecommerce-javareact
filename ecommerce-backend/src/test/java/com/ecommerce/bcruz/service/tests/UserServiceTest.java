@@ -7,6 +7,7 @@ import static org.mockito.Mockito.*;
 import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -29,6 +30,7 @@ public class UserServiceTest
 	}
 	
 	@Test
+	@DisplayName("AC-USER-01: Register new Member")
 	void user_addUser()
 	{
 		String newName = "Peter";
