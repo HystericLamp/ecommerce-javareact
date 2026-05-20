@@ -1,4 +1,4 @@
-package com.ecommerce.bcruz.auth.tests;
+package com.ecommerce.bcruz.service.tests;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;

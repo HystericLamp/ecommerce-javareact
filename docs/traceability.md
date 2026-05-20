@@ -15,5 +15,5 @@
 | AC-PAYMENT-INTEGRATION-01 | Process Successful Payment | P1 | None | infrastructure.payment.tests.StripePaymentProcessorIntegrationTest | None | DONE |
 | AC-PAYMENT-INTEGRATION-02 | Refund Payment | P1 | None | infrastructure.payment.tests.StripePaymentProcessorIntegrationTest | None | DONE |
 | AC-USER-01 | Register new Member | P0 | service.tests.UserServiceTest | controller.tests.UserControllerTest | WIP | WIP |
-| AC-USER-02 | Login as an Existing User | P0 | auth.tests.AuthServiceTest | WIP | WIP | WIP |
+| AC-USER-02 | Login as an Existing User | P0 | auth.tests.AuthServiceTest | controller.tests.AuthControllerTest | WIP | WIP |
 | AC-PRODUCT-MENU-01 | Get All Product Information | P0 | service.tests.ProductServiceTest | controller.tests.ProductControllerTest | WIP | WIP |
