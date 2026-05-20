@@ -27,7 +27,7 @@ function Navbar() {
                             isActive ? "font-semibold text-primary" : "text-muted-foreground"
                         }
                         >
-                        Home
+                            Home
                         </NavLink>
                     </li>
                     <li>
@@ -37,7 +37,7 @@ function Navbar() {
                             isActive ? "font-semibold text-primary" : "text-muted-foreground"
                         }
                         >
-                        Shop
+                            Shop
                         </NavLink>
                     </li>
                 </ul>
@@ -53,10 +53,10 @@ function Navbar() {
 
                 {auth ? (
                     <>
-                    <span className="text-sm">{auth.email}</span>
-                    <Button variant="outline" onClick={logoutUser}>
-                        Logout
-                    </Button>
+                        <span className="text-sm">{auth.email}</span>
+                        <Button variant="outline" onClick={logoutUser}>
+                            Logout
+                        </Button>
                     </>
                 ) : (
                     <Link to="/login">

@@ -171,6 +171,6 @@ I want to create my own shopping account
 So that I can build my own personalized shopping experience  
 
 **Acceptance Criteria**:  
-**Given** The user clicks "register"  
+**Given** The user, at login, clicks "Sign up"  
 **When** user fills their user credentials  
 **Then** new user is created with a welcome message  

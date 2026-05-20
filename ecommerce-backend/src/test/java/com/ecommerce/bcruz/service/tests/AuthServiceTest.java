@@ -66,6 +66,12 @@ public class AuthServiceTest
 	}
 	
 	@Test
+	void loginAsNewUser()
+	{
+		
+	}
+	
+	@Test
 	void testLoginInvalidPassword()
 	{
 	    assertThrows(RuntimeException.class, () -> {

@@ -52,6 +52,7 @@ export default function Register() {
         const data = await response.json();
         console.log("User created:", data);
 
+        alert("New Member created!");
         navigate("/login");
     } catch (err) {
         console.error(err);

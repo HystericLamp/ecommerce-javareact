@@ -1,14 +1,14 @@
 import { useNavigate } from "react-router-dom";
 import { useState, useContext } from "react";
 import { login } from "../../api/auth";
-import { AuthContext } from "../../context/AuthContext";
+import { useAuth } from "../../context/AuthContext";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 
 function Login() {
-  const { user } = useContext(AuthContext);
+  const { loginUser } = useAuth();
   const navigate = useNavigate();
 
   const [email, setEmail] = useState("");
@@ -20,10 +20,11 @@ function Login() {
 
     try {
       const token = await login(email, password);
-      user(token);
+      loginUser(token);
       alert("Logged in!");
-      navigate("/shop")
+      navigate("/shop");
     } catch (err) {
+      console.log(err);
       alert("Invalid credentials");
     }
   };
