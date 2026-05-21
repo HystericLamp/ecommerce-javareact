@@ -14,6 +14,7 @@ const envFile = `.env.${envName}`;
 dotenv.config({ path: path.resolve(process.cwd(), envFile) });
 
 const baseURL = process.env.BASE_URL;
+const apiBaseURL = process.env.API_BASE_URL;
 
 // For testing & debugging
 console.log('Loading env file:', envFile);
@@ -37,6 +38,7 @@ export default defineConfig({
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     baseURL,
+    apiBaseURL,
     headless: true,
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */

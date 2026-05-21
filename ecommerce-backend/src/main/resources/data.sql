@@ -4,11 +4,6 @@ DELETE FROM products;
 DELETE FROM categories;
 DELETE FROM users;
 
-INSERT INTO users (name, email, password)
-VALUES 
-('Member1', 'member1@shop.com', '$2a$10$9Z.ib4DQLsPZHD1FT.ruE.RvHSwN0HveoVru9S2hodCgsb75HeeLW'),
-('Member2', 'member2@shop.com', '$2a$10$9/qqgkCcALFKrlV/.8UA6e/KmW2LZHK8Y2eVgzQcdjYebkiIcyVyu');
-
 INSERT INTO categories (id, name) VALUES
 (1, "Coffee"),
 (2, "Brew Gear"),

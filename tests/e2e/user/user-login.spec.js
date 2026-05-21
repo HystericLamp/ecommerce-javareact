@@ -1,7 +1,21 @@
 import { test, expect } from '@playwright/test';
+
 test.describe.serial('User flow', () => {
-  const email = `doe-${Date.now()}@email.com`;
+  const email = `doe-${Date.now()}-${Math.random()}@email.com`;
   const password = 'Lachesis123';
+
+  const apiBaseURL = process.env.API_BASE_URL;
+
+  test.afterAll(async ({ request }) => {
+    await request.delete(
+      `${apiBaseURL}/api/users/deleteUser/byEmail`,
+      {
+        params: {
+          email: email,
+        },
+      }
+    );
+  });
 
   test('AC-USER-01 register new member', async ({ page }) => {
     // Go to register a new user

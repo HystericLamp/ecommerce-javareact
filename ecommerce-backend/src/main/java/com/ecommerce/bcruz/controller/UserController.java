@@ -48,9 +48,15 @@ public class UserController
 		return userService.updateUser(id, user);
 	}
 	
-	@DeleteMapping("/deleteUser/{id}")
-	public void deleteUser(@PathVariable Long id)
+	@DeleteMapping("/deleteUser/byId/{id}")
+	public void deleteUserById(@PathVariable Long id)
 	{
 		userService.deleteUserById(id);
+	}
+	
+	@DeleteMapping("/deleteUser/byEmail/{email}")
+	public void deleteUserByEmail(@PathVariable String email)
+	{
+		userService.deleteUserByEmail(email);
 	}
 }
