@@ -1,0 +1,38 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # ---------- Node (frontend) ----------
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install frontend dependencies
+        working-directory: ecommerce-front
+        run: npm ci
+
+      - name: Build frontend
+        working-directory: ecommerce-front
+        run: npm run build
+
+      # ---------- Java (backend) ----------
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+
+      - name: Build backend
+        working-directory: ecommerce-backend
+        run: ./mvnw clean test
