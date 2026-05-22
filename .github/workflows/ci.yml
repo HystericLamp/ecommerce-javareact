@@ -49,3 +49,10 @@ jobs:
       - name: Build backend
         working-directory: ecommerce-backend
         run: ./mvnw clean test -e -X
+
+      - name: Upload test reports
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-reports
+          path: ecommerce-backend/target/surefire-reports
