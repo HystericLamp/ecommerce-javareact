@@ -8,6 +8,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
@@ -27,19 +28,8 @@ public class StripePaymentProcessorIntegrationTest
 	@Autowired
 	private StripeService stripeService;
 	
-	// Must have classes and files that interact wth Stripe API in the folder with the application class
-	// Create a .env and application-test.yml
-	@BeforeAll
-	static void loadEnv()
-	{
-		Dotenv dotenv = Dotenv.configure()
-						.directory(".")
-						.ignoreIfMissing()
-						.load();
-		
-		System.setProperty("STRIPE_SECRET_KEY", dotenv.get("STRIPE_SECRET_KEY"));
-		System.setProperty("STRIPE_PUBLISHABLE_KEY", dotenv.get("STRIPE_PUBLISHABLE_KEY"));
-	}
+	@Value("${stripe.secretKey}")
+	private String stripeSecretKey;
 	
 	@Test
 	@DisplayName("AC-PAYMENT-INTEGRATION-01: Process Successful Payment")

@@ -3,16 +3,15 @@ package com.ecommerce.bcruz.service.tests;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.util.Optional;
-
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.ecommerce.bcruz.dto.AuthResponse;
 import com.ecommerce.bcruz.models.User;
@@ -20,6 +19,7 @@ import com.ecommerce.bcruz.repositories.UserRepository;
 import com.ecommerce.bcruz.service.AuthService;
 
 @SpringBootTest
+@Transactional
 public class AuthServiceTest
 {
 	@Autowired
@@ -33,49 +33,33 @@ public class AuthServiceTest
 	@BeforeEach
 	void setUp()
 	{
+		// password123
+		User testUser = new User("testMember", "member@shop.com", "$2a$10$UZlIhhQyPmHU9p9MIrkLeeK..3vgjGNg/oLOojzkknWdzu9AISwum");
+		userRepository.save(testUser);
 		authService = new AuthService(userRepository, passwordEncoder);
 	}
 	
-	@Test
-	void testPasswordMatchRawValues()
+	@AfterEach
+	void tearDown()
 	{
-		String rawPasswordMember1 = "password1";
-        String rawPasswordMember2 = "password2";
-        
-        Optional<User> member1Opt = userRepository.findByEmail("member1@shop.com");
-        Optional<User> member2Opt = userRepository.findByEmail("member2@shop.com");
-
-        assertTrue(member1Opt.isPresent(), "Member1 should exist");
-        assertTrue(member2Opt.isPresent(), "Member2 should exist");
-
-        User member1 = member1Opt.get();
-        User member2 = member2Opt.get();
-        
-        assertTrue(passwordEncoder.matches(rawPasswordMember1, member1.getPassword()), "Member1 password should match");
-        assertTrue(passwordEncoder.matches(rawPasswordMember2, member2.getPassword()), "Member2 password should match");
+		userRepository.deleteByEmail("member@shop.com");
 	}
 	
 	@Test
 	@DisplayName("AC-USER-02: Login as an Existing User")
 	void testLogin() 
 	{
-	    AuthResponse response = authService.login("member1@shop.com", "password1");
+	    AuthResponse response = authService.login("member@shop.com", "password123");
 
 	    assertNotNull(response);
-	    assertEquals("member1@shop.com", response.getEmail());
-	}
-	
-	@Test
-	void loginAsNewUser()
-	{
-		
+	    assertEquals("member@shop.com", response.getEmail());
 	}
 	
 	@Test
 	void testLoginInvalidPassword()
 	{
 	    assertThrows(RuntimeException.class, () -> {
-	        authService.login("member1@shop.com", "wrongpassword");
+	        authService.login("member@shop.com", "wrongpassword");
 	    });
 	}
 }

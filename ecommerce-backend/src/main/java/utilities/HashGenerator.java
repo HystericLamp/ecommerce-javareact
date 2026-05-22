@@ -8,7 +8,7 @@ public class HashGenerator {
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
         // List of raw passwords to encode
-        String[] rawPasswords = {"password1", "password2"};
+        String[] rawPasswords = {"password123"};
 
         for (String raw : rawPasswords) 
         {

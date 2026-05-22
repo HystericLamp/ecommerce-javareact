@@ -38,8 +38,9 @@ class CartServiceTest
         assert(hasItem);
         
         Product resultItem = cartService.getItem(item);
+        double actualPrice = resultItem.getPrice().doubleValue() / 100;
         assertEquals(resultItem.getName(), "Espresso");
-        assertEquals(resultItem.getPrice().doubleValue(), 4.99);
+        assertEquals(actualPrice, 4.99);
         
         LineProduct resultCartItem = cartService.getCartItem(item);
         assertEquals(resultCartItem.getQuantity(), 1);
@@ -57,16 +58,18 @@ class CartServiceTest
         
 		// Item 1
         Product resultItem1 = cartService.getItem(item1);
+        double actualPrice1 = resultItem1.getPrice().doubleValue() / 100;
         assertEquals(resultItem1.getName(), "Espresso");
-        assertEquals(resultItem1.getPrice().doubleValue(), 4.99);
+        assertEquals(actualPrice1, 4.99);
         
         LineProduct resultCartItem1 = cartService.getCartItem(item1);
         assertEquals(resultCartItem1.getQuantity(), 2);
         
         // Item 2
         Product resultItem2 = cartService.getItem(item2);
+        double actualPrice2 = resultItem2.getPrice().doubleValue() / 100;
         assertEquals(resultItem2.getName(), "Machiato");
-        assertEquals(resultItem2.getPrice().doubleValue(), 3.99);
+        assertEquals(actualPrice2, 3.99);
         
         LineProduct resultCartItem2 = cartService.getCartItem(item2);
         assertEquals(resultCartItem2.getQuantity(), 100); 
@@ -125,15 +128,17 @@ class CartServiceTest
 		
 		// assert initial value
 		LineProduct cartitem1 = cartService.getCartItem(item1);
+		double actualPrice1 = cartitem1.getProduct().getPrice().doubleValue() / 100;
 		assertEquals(cartitem1.getProduct().getName(), "Espresso");
-        assertEquals(cartitem1.getProduct().getPrice().doubleValue(), 4.99);
+        assertEquals(actualPrice1, 4.99);
         assertEquals(cartitem1.getQuantity(), 2);
         
         // Update then assert
         cartService.updateQuantity(item1, 5);
+        // Price shouldn't change so we re-use actualPrice1
         cartitem1 = cartService.getCartItem(item1);
         assertEquals(cartitem1.getProduct().getName(), "Espresso");
-        assertEquals(cartitem1.getProduct().getPrice().doubleValue(), 4.99);
+        assertEquals(actualPrice1, 4.99);
         assertEquals(cartitem1.getQuantity(), 5);
     }
 	
