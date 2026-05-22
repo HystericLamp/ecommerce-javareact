@@ -69,7 +69,7 @@ public class UserServiceTest
 		
 		when(userRepository.save(any(User.class))).thenAnswer(invocation -> {
 			User u = invocation.getArgument(0);
-			u.setEmail("Better@email.com");
+			u.setEmail("better@email.com");
 			return u;
 		});
 		
@@ -77,7 +77,7 @@ public class UserServiceTest
 		
 		assertEquals(3L, updatedUser.getId());
         assertEquals("Peter", updatedUser.getName());
-        assertEquals("Better@email.com", updatedUser.getEmail());
+        assertEquals("better@email.com", updatedUser.getEmail());
         
         verify(userRepository, times(1)).findById(3L);
         verify(userRepository, times(1)).save(updatedUser);
