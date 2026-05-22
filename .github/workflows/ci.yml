@@ -8,6 +8,15 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
+    env:
+      SPRING_PROFILES_ACTIVE: test
+      CI: true
+
+      # temporary placeholders
+      STRIPE_SECRET_KEY: test_key
+      JWT_SECRET: ci-test-jwt-secret-123456789
+      DB_URL: jdbc:sqlite:test.db
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
