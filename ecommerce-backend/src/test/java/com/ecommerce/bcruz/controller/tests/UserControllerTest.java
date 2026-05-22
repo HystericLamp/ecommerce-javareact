@@ -109,7 +109,7 @@ public class UserControllerTest
 	{
 		Long userId = 1L;
 		
-		mockMvc.perform(MockMvcRequestBuilders.delete("/api/users/deleteUser/{id}", userId))
+		mockMvc.perform(MockMvcRequestBuilders.delete("/api/users/deleteUser/byId/{id}", userId))
 				.andExpect(status().isOk());
 		
 		Mockito.verify(userService).deleteUserById(userId);

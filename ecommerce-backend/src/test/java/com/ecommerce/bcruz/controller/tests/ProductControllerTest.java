@@ -22,7 +22,7 @@ import com.ecommerce.bcruz.models.Product;
 import com.ecommerce.bcruz.service.ProductService;
 
 @WebMvcTest(ProductController.class)
-@AutoConfigureMockMvc
+@AutoConfigureMockMvc(addFilters = false)
 public class ProductControllerTest
 {
 	@Autowired
