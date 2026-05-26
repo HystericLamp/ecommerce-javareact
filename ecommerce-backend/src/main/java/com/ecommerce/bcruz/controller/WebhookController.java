@@ -21,7 +21,7 @@ public class WebhookController
 {
 	private final WebhookService webhookService;
 	
-	@Value("${stripe.webhook.secret}")
+	@Value("${stripe.webhook-secret}")
 	private String endpointSecret;
 	
 	public WebhookController(WebhookService webhookService)
