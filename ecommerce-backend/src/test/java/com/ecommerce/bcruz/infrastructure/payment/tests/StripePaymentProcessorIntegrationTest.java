@@ -28,7 +28,7 @@ public class StripePaymentProcessorIntegrationTest
 	@Autowired
 	private StripeService stripeService;
 	
-	@Value("${stripe.secretKey}")
+	@Value("${stripe.secret-key}")
 	private String stripeSecretKey;
 	
 	@Test
