@@ -15,6 +15,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.test.context.ActiveProfiles;
 
 import com.ecommerce.bcruz.models.DraftOrder;
 import com.ecommerce.bcruz.models.DraftOrderItem;
@@ -25,6 +26,7 @@ import com.ecommerce.bcruz.service.WebhookService;
 import com.stripe.model.PaymentIntent;
 
 @ExtendWith(MockitoExtension.class)
+@ActiveProfiles("test")
 public class WebhookServiceTest
 {
 	@Mock
