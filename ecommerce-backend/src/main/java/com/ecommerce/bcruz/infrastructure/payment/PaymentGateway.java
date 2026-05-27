@@ -8,8 +8,6 @@ import com.stripe.model.Refund;
 public interface PaymentGateway
 {
 	PaymentIntent createPaymentIntent(long amount, String currency, Map<String, String> metadata);
-	
 	PaymentIntent retrievePaymentIntent(String paymentIntentId);
-	
 	Refund refundPayment(String paymentIntentId, long amount);
 }

@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import com.ecommerce.bcruz.dto.CartItem;
 import com.ecommerce.bcruz.dto.CheckoutRequest;
 import com.ecommerce.bcruz.dto.PaymentResult;
-import com.ecommerce.bcruz.infrastructure.payment.PaymentProcessor;
+import com.ecommerce.bcruz.infrastructure.payment.PaymentGateway;
 import com.ecommerce.bcruz.models.DraftOrder;
 import com.ecommerce.bcruz.models.DraftOrderItem;
 import com.ecommerce.bcruz.models.DraftOrderStatus;
@@ -26,86 +26,96 @@ import com.stripe.model.PaymentIntent;
 @Service
 public class CheckoutService
 {
-	private final ProductRepository productRepository;
-	private final DraftOrderRepository draftOrderRepository;
-	private final PaymentProcessor paymentProcessor;
-	
-	public CheckoutService(ProductRepository productRepository, 
-						   DraftOrderRepository draftOrderRepository,
-						   PaymentProcessor paymentProcessor)
-	{
-		this.productRepository = productRepository;
-		this.draftOrderRepository = draftOrderRepository;
-		this.paymentProcessor = paymentProcessor;
-	}
-	
-	/**
-	 * Create Draft Order
-	 * @param request
-	 * @param userId
-	 * @return
-	 */
-	public DraftOrder createDraftOrder(CheckoutRequest request, Long userId)
-	{
-	    List<DraftOrderItem> items = new ArrayList<>();
-	    long total = 0;
+    private final ProductRepository productRepository;
+    private final DraftOrderRepository draftOrderRepository;
+    private final PaymentGateway paymentGateway;
 
-	    for (CartItem cartItem : request.getItemProducts()) {
+    public CheckoutService(
+            ProductRepository productRepository,
+            DraftOrderRepository draftOrderRepository,
+            PaymentGateway paymentGateway)
+    {
+        this.productRepository = productRepository;
+        this.draftOrderRepository = draftOrderRepository;
+        this.paymentGateway = paymentGateway;
+    }
 
-	        Product product = productRepository.findById(cartItem.getProductId())
-	                .orElseThrow(() -> new RuntimeException("Product not found"));
+    /**
+     * Create Draft Order
+     */
+    public DraftOrder createDraftOrder(
+            CheckoutRequest request,
+            Long userId)
+    {
+        List<DraftOrderItem> items = new ArrayList<>();
+        long total = 0;
 
-	        long price = product.getPrice();
+        for (CartItem cartItem : request.getItemProducts())
+        {
+            Product product = productRepository.findById(
+                    cartItem.getProductId())
+                    .orElseThrow(() ->
+                            new RuntimeException("Product not found"));
 
-	        DraftOrderItem item = new DraftOrderItem();
-	        item.setProductId(product.getId());
-	        item.setProductName(product.getName());
-	        item.setPriceAtCheckout(price);
-	        item.setQuantity(cartItem.getQuantity());
+            long price = product.getPrice();
 
-	        items.add(item);
+            DraftOrderItem item = new DraftOrderItem();
 
-	        total += price * cartItem.getQuantity();
-	    }
+            item.setProductId(product.getId());
+            item.setProductName(product.getName());
+            item.setPriceAtCheckout(price);
+            item.setQuantity(cartItem.getQuantity());
 
-	    DraftOrder draftOrder = new DraftOrder();
+            items.add(item);
 
-	    if (userId != null) {
-	        draftOrder.setUserId(userId);
-	    }
+            total += price * cartItem.getQuantity();
+        }
 
-	    draftOrder.setTotalAmountInCents(total);
-	    draftOrder.setCurrency("usd");
-	    draftOrder.setStatus(DraftOrderStatus.PENDING);
+        DraftOrder draftOrder = new DraftOrder();
 
-	    draftOrder.setItems(items);
-	    items.forEach(i -> i.setDraftOrder(draftOrder));
+        if (userId != null)
+        {
+            draftOrder.setUserId(userId);
+        }
 
-	    return draftOrderRepository.save(draftOrder);
-	}
-	
-	/**
-	 * Draft Order and Payment
-	 * @param request
-	 * @param userId
-	 * @return
-	 */
-	public PaymentResult createDraftOrderAndPayment(CheckoutRequest request, Long userId)
-	{
-	    DraftOrder draftOrder = createDraftOrder(request, userId);
+        draftOrder.setTotalAmountInCents(total);
+        draftOrder.setCurrency("usd");
+        draftOrder.setStatus(DraftOrderStatus.PENDING);
 
-	    PaymentIntent intent = paymentProcessor.createPayment(
-	            draftOrder.getTotalAmountInCents(),
-	            draftOrder.getCurrency(),
-	            Map.of("draftOrderId", draftOrder.getId().toString())
-	    );
+        draftOrder.setItems(items);
 
-	    draftOrder.setPaymentIntentId(intent.getId());
-	    draftOrderRepository.save(draftOrder);
+        items.forEach(i -> i.setDraftOrder(draftOrder));
 
-	    return new PaymentResult(
-	            draftOrder.getId(),
-	            intent.getClientSecret()
-	    );
-	}
+        return draftOrderRepository.save(draftOrder);
+    }
+
+    /**
+     * Create Draft Order + Payment Intent
+     */
+    public PaymentResult createDraftOrderAndPayment(
+            CheckoutRequest request,
+            Long userId)
+    {
+        DraftOrder draftOrder =
+                createDraftOrder(request, userId);
+
+        PaymentIntent intent =
+                paymentGateway.createPaymentIntent(
+                        draftOrder.getTotalAmountInCents(),
+                        draftOrder.getCurrency(),
+                        Map.of(
+                                "draftOrderId",
+                                draftOrder.getId().toString()
+                        )
+                );
+
+        draftOrder.setPaymentIntentId(intent.getId());
+
+        draftOrderRepository.save(draftOrder);
+
+        return new PaymentResult(
+                draftOrder.getId(),
+                intent.getClientSecret()
+        );
+    }
 }

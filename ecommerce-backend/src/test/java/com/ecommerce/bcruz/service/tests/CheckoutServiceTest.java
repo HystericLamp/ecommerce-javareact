@@ -22,8 +22,7 @@ import org.junit.jupiter.api.Test;
 import com.ecommerce.bcruz.dto.CartItem;
 import com.ecommerce.bcruz.dto.CheckoutRequest;
 import com.ecommerce.bcruz.dto.PaymentResult;
-import com.ecommerce.bcruz.infrastructure.payment.PaymentProcessor;
-import com.ecommerce.bcruz.infrastructure.payment.StripePaymentProcessor;
+import com.ecommerce.bcruz.infrastructure.payment.PaymentGateway;
 import com.ecommerce.bcruz.models.DraftOrder;
 import com.ecommerce.bcruz.models.DraftOrderStatus;
 import com.ecommerce.bcruz.models.Product;
@@ -36,7 +35,7 @@ public class CheckoutServiceTest
 {
 	private ProductRepository productRepository;
 	private DraftOrderRepository draftOrderRepository;
-	private PaymentProcessor paymentProcessor;
+	private PaymentGateway paymentGateway;
 	private CheckoutService checkoutService;
 	
 	// Helper
@@ -61,8 +60,8 @@ public class CheckoutServiceTest
 	{
 		productRepository = mock(ProductRepository.class);
 		draftOrderRepository = mock(DraftOrderRepository.class);
-		paymentProcessor = mock(StripePaymentProcessor.class);
-		checkoutService = new CheckoutService(productRepository, draftOrderRepository, paymentProcessor);
+		paymentGateway = mock(PaymentGateway.class);
+		checkoutService = new CheckoutService(productRepository, draftOrderRepository, paymentGateway);
 	}
 	
 	@Test
@@ -128,7 +127,7 @@ public class CheckoutServiceTest
         CheckoutService spyService = spy(checkoutService);
         doReturn(draftOrder).when(spyService).createDraftOrder(request, userId);
 
-        when(paymentProcessor.createPayment(
+        when(paymentGateway.createPaymentIntent(
                 draftOrder.getTotalAmountInCents(),
                 draftOrder.getCurrency(),
                 Map.of("draftOrderId", draftOrder.getId().toString())
@@ -144,7 +143,7 @@ public class CheckoutServiceTest
 
         // Verify interactions
         verify(draftOrderRepository).save(draftOrder);
-        verify(paymentProcessor).createPayment(
+        verify(paymentGateway).createPaymentIntent(
                 draftOrder.getTotalAmountInCents(),
                 draftOrder.getCurrency(),
                 Map.of("draftOrderId", draftOrder.getId().toString())
