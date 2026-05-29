@@ -2,6 +2,7 @@ package com.ecommerce.bcruz.infrastructure.payment;
 
 import java.util.Map;
 
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 import com.stripe.exception.StripeException;
@@ -10,6 +11,8 @@ import com.stripe.model.Refund;
 import com.stripe.param.PaymentIntentCreateParams;
 import com.stripe.param.RefundCreateParams;
 
+@Profile("!test")
+@Service
 public class StripePaymentGateway implements PaymentGateway
 {
 
@@ -65,5 +68,4 @@ public class StripePaymentGateway implements PaymentGateway
 			throw new RuntimeException("Stripe refund failed", e);
 		}
 	}
-	
 }
