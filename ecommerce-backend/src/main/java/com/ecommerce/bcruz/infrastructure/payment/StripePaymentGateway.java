@@ -10,7 +10,6 @@ import com.stripe.model.Refund;
 import com.stripe.param.PaymentIntentCreateParams;
 import com.stripe.param.RefundCreateParams;
 
-@Service
 public class StripePaymentGateway implements PaymentGateway
 {
 
