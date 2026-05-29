@@ -2,12 +2,15 @@ package com.ecommerce.bcruz.infrastructure.payment;
 
 import java.util.Map;
 
+import org.springframework.stereotype.Service;
+
 import com.stripe.exception.StripeException;
 import com.stripe.model.PaymentIntent;
 import com.stripe.model.Refund;
 import com.stripe.param.PaymentIntentCreateParams;
 import com.stripe.param.RefundCreateParams;
 
+@Service
 public class StripePaymentGateway implements PaymentGateway
 {
 
