@@ -5,8 +5,9 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.Profile;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import com.stripe.model.PaymentIntent;
 import com.stripe.model.Refund;
@@ -45,8 +46,9 @@ import com.stripe.model.Refund;
  * 
  */
 
-@Component
-@Profile("test")
+@Service
+@Primary
+@Profile({"test", "dev"})
 public class FakePaymentGateway implements PaymentGateway
 {
 	private final Map<String, PaymentIntent> paymentStore = new ConcurrentHashMap<>();

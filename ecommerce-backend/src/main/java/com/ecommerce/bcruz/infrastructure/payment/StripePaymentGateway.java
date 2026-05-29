@@ -11,8 +11,9 @@ import com.stripe.model.Refund;
 import com.stripe.param.PaymentIntentCreateParams;
 import com.stripe.param.RefundCreateParams;
 
-@Profile("!test")
+
 @Service
+@Profile("prod")
 public class StripePaymentGateway implements PaymentGateway
 {
 
