@@ -5,6 +5,7 @@ import { useCart } from "../../features/cart/context/CartContext";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
+import { QuantityInput } from "@/components/QuantityInput";
 import { Trash2 } from "lucide-react";
 
 export default function Cart() {
@@ -75,7 +76,12 @@ export default function Cart() {
                       -
                     </Button>
 
-                    <span className="px-3 font-medium">{item.quantity}</span>
+                    <QuantityInput
+                      quantity={item.quantity}
+                      onChange={(newQuantity) =>
+                        updateQuantity(item.id, newQuantity)
+                      }
+                    />
 
                     <Button
                       variant="outline"
@@ -140,6 +146,5 @@ export default function Cart() {
         </>
       )}
     </div>
-    
   );
 }

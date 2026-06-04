@@ -1,9 +1,11 @@
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { QuantityInput } from "@/components/QuantityInput";
 
-export default function OrderItems ({
+export default function OrderItems({
   items,
-  removeFromCart
+  removeFromCart,
+  updateQuantity
 }) {
   return (
     <div className="space-y-4">
@@ -16,7 +18,7 @@ export default function OrderItems ({
         >
           <div>
             <h3 className="font-medium text-foreground">
-              {item.quantity} × {item.name}
+              {item.name}
             </h3>
 
             <p className="text-sm text-muted-foreground">
@@ -25,6 +27,39 @@ export default function OrderItems ({
           </div>
 
           <div className="flex items-center gap-4">
+            <div className="flex items-center gap-2">
+              <Button
+                aria-label={`Decrease quantity of ${item.name}`}
+                type="button"
+                variant="outline"
+                size="icon"
+                onClick={() =>
+                  updateQuantity(item.id, Math.max(1, item.quantity - 1))
+                }
+              >
+                −
+              </Button>
+
+              <QuantityInput
+                quantity={item.quantity}
+                onChange={(newQuantity) =>
+                  updateQuantity(item.id, newQuantity)
+                }
+              />
+
+              <Button
+                aria-label={`Increase quantity of ${item.name}`}
+                type="button"
+                variant="outline"
+                size="icon"
+                onClick={() =>
+                  updateQuantity(item.id, item.quantity + 1)
+                }
+              >
+                +
+              </Button>
+            </div>
+
             <p className="font-semibold text-foreground">
               ${(item.price * item.quantity).toFixed(2)}
             </p>

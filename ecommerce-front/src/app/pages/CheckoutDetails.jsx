@@ -8,7 +8,7 @@ import CustomerForm from "../../features/checkout/components/CustomerForm";
 import OrderSummary from "../../features/checkout/components/OrderSummary";
 
 export default function Checkout() {
-  const { cart, removeFromCart } = useCart();
+  const { cart, removeFromCart, updateQuantity } = useCart();
   const { user } = useAuth();
   const navigate = useNavigate();
 
@@ -114,6 +114,7 @@ export default function Checkout() {
             <OrderItems
               items={cart}
               removeFromCart={removeFromCart}
+              updateQuantity={updateQuantity}
             />
 
             <CustomerForm
