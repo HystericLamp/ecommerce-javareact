@@ -60,3 +60,7 @@ test('AC-CHECKOUT-02 - Update Order', async ({ page }) => {
 
     await expect(latteMugCard).toContainText('$44.00');
 });
+
+test('Update Order not allow 0 or negative quantity', async ({ page }) => {
+
+});

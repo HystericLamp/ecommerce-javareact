@@ -30,6 +30,9 @@ export default function StripePaymentForm({
 
     const card = elements.getElement(CardElement);
 
+    console.log("clientSecret:", clientSecret);
+    console.log("clientSecret type:", typeof clientSecret);
+
     const result = await stripe.confirmCardPayment(
       clientSecret,
       {

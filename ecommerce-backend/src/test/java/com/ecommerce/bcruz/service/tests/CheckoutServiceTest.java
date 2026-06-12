@@ -22,6 +22,7 @@ import org.junit.jupiter.api.Test;
 import com.ecommerce.bcruz.dto.CartItem;
 import com.ecommerce.bcruz.dto.CheckoutRequest;
 import com.ecommerce.bcruz.dto.PaymentResult;
+import com.ecommerce.bcruz.infrastructure.models.PaymentIntentResult;
 import com.ecommerce.bcruz.infrastructure.payment.PaymentGateway;
 import com.ecommerce.bcruz.models.DraftOrder;
 import com.ecommerce.bcruz.models.DraftOrderStatus;
@@ -29,7 +30,6 @@ import com.ecommerce.bcruz.models.Product;
 import com.ecommerce.bcruz.repositories.DraftOrderRepository;
 import com.ecommerce.bcruz.repositories.ProductRepository;
 import com.ecommerce.bcruz.service.CheckoutService;
-import com.stripe.model.PaymentIntent;
 
 public class CheckoutServiceTest
 {
@@ -120,7 +120,7 @@ public class CheckoutServiceTest
         draftOrder.setCurrency("USD");
         draftOrder.setTotalAmountInCents(5000L);
 
-        PaymentIntent intent = new PaymentIntent();
+        PaymentIntentResult intent = new PaymentIntentResult();
         intent.setId("pi_12345");
         intent.setClientSecret("secret_abc");
 

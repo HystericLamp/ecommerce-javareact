@@ -9,19 +9,14 @@ import org.springframework.stereotype.Service;
 import com.ecommerce.bcruz.dto.CartItem;
 import com.ecommerce.bcruz.dto.CheckoutRequest;
 import com.ecommerce.bcruz.dto.PaymentResult;
+import com.ecommerce.bcruz.infrastructure.models.PaymentIntentResult;
 import com.ecommerce.bcruz.infrastructure.payment.PaymentGateway;
 import com.ecommerce.bcruz.models.DraftOrder;
 import com.ecommerce.bcruz.models.DraftOrderItem;
 import com.ecommerce.bcruz.models.DraftOrderStatus;
-import com.ecommerce.bcruz.models.LineProduct;
-import com.ecommerce.bcruz.models.Order;
-import com.ecommerce.bcruz.models.OrderItem;
-import com.ecommerce.bcruz.models.OrderStatus;
 import com.ecommerce.bcruz.models.Product;
 import com.ecommerce.bcruz.repositories.DraftOrderRepository;
-import com.ecommerce.bcruz.repositories.OrderRepository;
 import com.ecommerce.bcruz.repositories.ProductRepository;
-import com.stripe.model.PaymentIntent;
 
 @Service
 public class CheckoutService
@@ -92,22 +87,19 @@ public class CheckoutService
     /**
      * Create Draft Order + Payment Intent
      */
-    public PaymentResult createDraftOrderAndPayment(
-            CheckoutRequest request,
-            Long userId)
+    public PaymentResult createDraftOrderAndPayment(CheckoutRequest request, Long userId)
     {
-        DraftOrder draftOrder =
-                createDraftOrder(request, userId);
+        DraftOrder draftOrder = createDraftOrder(request, userId);
 
-        PaymentIntent intent =
-                paymentGateway.createPaymentIntent(
-                        draftOrder.getTotalAmountInCents(),
-                        draftOrder.getCurrency(),
-                        Map.of(
-                                "draftOrderId",
-                                draftOrder.getId().toString()
-                        )
-                );
+        PaymentIntentResult intent =
+	        paymentGateway.createPaymentIntent(
+	            draftOrder.getTotalAmountInCents(),
+	            draftOrder.getCurrency(),
+	            Map.of(
+	                "draftOrderId",
+	                draftOrder.getId().toString()
+	            )
+	        );
 
         draftOrder.setPaymentIntentId(intent.getId());
 

@@ -13,9 +13,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
 import com.ecommerce.bcruz.BcruzApplication;
+import com.ecommerce.bcruz.infrastructure.models.PaymentIntentResult;
+import com.ecommerce.bcruz.infrastructure.models.RefundResult;
 import com.ecommerce.bcruz.infrastructure.payment.PaymentGateway;
-import com.stripe.model.PaymentIntent;
-import com.stripe.model.Refund;
 
 @SpringBootTest(classes=BcruzApplication.class)
 @ActiveProfiles("test")
@@ -34,7 +34,7 @@ public class PaymentGatewayIntegrationTest
         Map<String, String> metadata = new HashMap<>();
         metadata.put("orderId", "123");
         
-        PaymentIntent created =
+        PaymentIntentResult created =
             paymentGateway.createPaymentIntent(
 				amount,
 				currency,
@@ -47,7 +47,7 @@ public class PaymentGatewayIntegrationTest
         assertEquals(amount, created.getAmount());
         assertEquals(currency, created.getCurrency());
         
-        PaymentIntent retrieved = paymentGateway.retrievePaymentIntent(created.getId());
+        PaymentIntentResult retrieved = paymentGateway.retrievePaymentIntent(created.getId());
         
         assertNotNull(retrieved);
 
@@ -62,17 +62,17 @@ public class PaymentGatewayIntegrationTest
 	@DisplayName("AC-PAYMENT-INTEGRATION-02: Refund Payment")
 	void Integration_RefundPayment() throws Exception
 	{
-        PaymentIntent paymentIntent =
+        PaymentIntentResult paymentIntent =
             paymentGateway.createPaymentIntent(
-                    1000L,
-                    "usd",
-                    null
+	            1000L,
+	            "usd",
+	            null
             );
 
-        Refund refund =
+        RefundResult refund =
             paymentGateway.refundPayment(
-                    paymentIntent.getId(),
-                    1000L
+	            paymentIntent.getId(),
+	            1000L
             );
 
         assertNotNull(refund);
@@ -81,7 +81,7 @@ public class PaymentGatewayIntegrationTest
 
         assertEquals(
             paymentIntent.getId(),
-            refund.getPaymentIntent()
+            refund.getPaymentIntentId()
         );
 	}
 }
