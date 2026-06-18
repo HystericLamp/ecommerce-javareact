@@ -47,21 +47,62 @@ test('AC-CHECKOUT-03 - Process Payment', async ({ page }) => {
 
     await expect(continueButton).toBeEnabled();
     await continueButton.click();
+
+    // Should be on CheckoutPayment page
+    // Input Payment details and continue
+    const cardFrame = page.frameLocator('iframe[title*="Secure card payment input"]');
+
+    await cardFrame.getByPlaceholder('Card number').fill('4242424242424242');
+    await cardFrame.getByPlaceholder('MM / YY').fill('1234');
+    await cardFrame.getByPlaceholder('CVC').fill('123');
+    await cardFrame.getByPlaceholder('ZIP').fill('12345');
+
+    await page.getByRole('button', { name: 'Complete Purchase' }).click();
+
+    // Assert
+    await expect(page).toHaveURL('/checkoutsuccess');
+
+    await expect(
+        page.getByRole('heading', { name: 'Payment Successful' })
+    ).toBeVisible();
+
+    await expect(
+        page.getByRole('button', { name: 'Continue Shopping' })
+    ).toBeVisible();
+
+    await expect(
+        page.getByRole('button', { name: 'View Orders' })
+    ).toBeVisible();
 });
 
-test('Enter Payment without filling in Customer Details', async ({ page }) => {
+test('Enter Payment without filling in Customer Details not allow', async ({ page }) => {
     // Goto Cart then Checkout
     await page.goto('/cart');
     await page.getByRole('button', { name: 'Proceed to Checkout' }).click();
 
     // Ignore Customer inputs
-    // Proceed to Payment and confirm details
+    // Check for error message
+    const continueButton = page.getByRole('button', {
+        name: 'Continue to Payment'
+    });
+
+    await expect(continueButton).toBeEnabled();
+    await continueButton.click();
+
+    const nameInput = page.getByPlaceholder("First Name");
+    const isMissing = await nameInput.evaluate(
+        (el) => el.validity.valueMissing
+    );
+    expect(isMissing).toBe(true);
+    
+    await expect(page).toHaveURL(/\/checkoutdetails$/);
+    await expect(page).not.toHaveURL(/checkoutpayment/);
 });
 
 test('AC-CHECKOUT-04 - Failed Payment', async ({ page }) => {
-
+    expect(true);
 });
 
 test('AC-CHECKOUT-05 - Retry Payment', async ({ page }) => {
-
+    expect(true);
 });

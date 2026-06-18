@@ -1,9 +1,11 @@
+import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 
 export default function CustomerForm({
   customer,
-  onChange
+  onChange,
+  onFillDemo
 }) {
   return (
     <Card className="p-6 rounded-xl space-y-6">
@@ -14,6 +16,14 @@ export default function CustomerForm({
       <p className="text-sm text-muted-foreground">
         This is a demo checkout. Please use test or dummy information, no real data is stored.
       </p>
+
+      <Button
+        type="button"
+        variant="outline"
+        onClick={onFillDemo}
+      >
+        Use Demo Information
+      </Button>
 
       <div className="grid md:grid-cols-2 gap-4">
         <Input
@@ -46,7 +56,6 @@ export default function CustomerForm({
           value={customer.addressLine1}
           onChange={onChange}
           className="md:col-span-2"
-          required
         />
 
         <Input

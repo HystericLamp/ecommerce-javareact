@@ -99,6 +99,20 @@ export default function Checkout() {
     );
   }
 
+  const fillDemoCustomer = () => {
+    setCustomer({
+      email: "demo@example.com",
+      firstName: "Demo",
+      lastName: "Customer",
+      addressLine1: "123 Demo Street",
+      addressLine2: "",
+      city: "City",
+      provinceState: "PS",
+      postalCode: "T1T1T1",
+      country: "Country"
+    });
+  };
+
   return (
     <div className="max-w-6xl mx-auto space-y-8">
       <h1 className="page-title">Checkout</h1>
@@ -120,6 +134,7 @@ export default function Checkout() {
             <CustomerForm
               customer={customer}
               onChange={handleChange}
+              onFillDemo={fillDemoCustomer}
             />
           </div>
 

@@ -18,16 +18,15 @@ export default function CheckoutSuccess() {
   return (
     <div className="max-w-3xl mx-auto py-20 px-4">
       <Card className="p-8 rounded-2xl shadow-sm text-center space-y-6">
-        
-        {/* Success Icon */}
-        <div className="text-5xl">
-          ✅
-        </div>
-
         {/* Title */}
         <h1 className="text-3xl font-bold text-foreground">
           Payment Successful
         </h1>
+
+        {/* Success Icon */}
+        <div className="text-5xl">
+          ✅
+        </div>
 
         {/* Message */}
         <p className="text-muted-foreground text-sm">
