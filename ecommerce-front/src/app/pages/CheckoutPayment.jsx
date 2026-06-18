@@ -1,64 +1,43 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import {
-  CardElement,
-  useStripe,
-  useElements
-} from "@stripe/react-stripe-js";
+import { useLocation } from "react-router-dom";
+
+import StripePaymentForm from "@/features/checkout/paymentProviders/StripePaymentForm";
 
 import { Card } from "@/components/ui/card";
+import { CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 
-export default function StripePaymentForm({
-  clientSecret
-}) {
-  const stripe = useStripe();
-  const elements = useElements();
+export default function CheckoutPayment({}) {
   const navigate = useNavigate();
+  const location = useLocation();
 
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
-  const [copied, setCopied] = useState(false);
+  const {
+    clientSecret,
+    draftOrderId,
+  } = location.state || {};
 
-  const handlePayment = async (e) => {
-    e.preventDefault();
+  if (!clientSecret) {
+    return (
+      <Card className="max-w-2xl mx-auto p-8">
+        <h2 className="text-xl font-semibold mb-2">
+          Payment Session Missing
+        </h2>
 
-    if (!stripe || !elements) return;
+        <p className="text-muted-foreground mb-4">
+          Your payment session could not be found.
+        </p>
 
-    setLoading(true);
-    setError("");
-
-    const card = elements.getElement(CardElement);
-
-    console.log("clientSecret:", clientSecret);
-    console.log("clientSecret type:", typeof clientSecret);
-
-    const result = await stripe.confirmCardPayment(
-      clientSecret,
-      {
-        payment_method: {
-          card
-        }
-      }
+        <Button
+          onClick={() => navigate("/checkout")}
+        >
+          Return to Checkout
+        </Button>
+      </Card>
     );
+  }
 
-    if (result.error) {
-      setError("Payment failed. Please use the test card provided.");
-      setLoading(false);
-      return;
-    }
-
-    if (
-      result.paymentIntent &&
-      result.paymentIntent.status === "succeeded"
-    ) {
-      navigate("/checkoutsuccess", {
-        state: { draftOrderId }
-      });
-    }
-
-    setLoading(false);
-  };
+  const [copied, setCopied] = useState(false);
 
   const handleCopy = async () => {
     await navigator.clipboard.writeText("4242424242424242");
@@ -67,53 +46,70 @@ export default function StripePaymentForm({
   };
 
   return (
-    <>
-      <div className="text-sm bg-muted p-4 rounded-md space-y-1">
-        <p className="font-medium">Test Card</p>
-        <p>4242 4242 4242 4242</p>
-        <p>Any future expiry, any CVC</p>
+    <div className="mx-auto max-w-2xl space-y-6">
+      <Card className="mb-6 bg-muted/50">
+        <CardContent className="p-4">
+          <div className="flex items-start justify-between">
+            <div>
+              <p className="font-semibold">
+                Stripe Test Card
+              </p>
 
-        <Button variant="outline" onClick={handleCopy}>
-          {copied ? "Copied!" : "Copy Test Card"}
-        </Button>
-      </div>
-      <Card className="p-6 rounded-xl space-y-6">
-        <h2 className="text-lg font-semibold text-foreground">
-          Payment Details
-        </h2>
-        <form
-          onSubmit={handlePayment}
-          className="space-y-6"
-        >
-          <div className="border rounded-md p-4 bg-background">
-            <CardElement
-              options={{
-                style: {
-                  base: {
-                    fontSize: "16px"
-                  }
-                }
-              }}
-            />
+              <p className="font-mono mt-2">
+                4242 4242 4242 4242
+              </p>
+
+              <p className="text-sm text-muted-foreground mt-1">
+                Any future expiry • Any CVC
+              </p>
+            </div>
+
+            <Button
+              variant="outline"
+              onClick={handleCopy}
+            >
+              {copied
+                ? "Copied!"
+                : "Copy"}
+            </Button>
           </div>
-
-          {error && (
-            <p className="text-sm text-red-500">
-              {error}
-            </p>
-          )}
-
-          <Button
-            type="submit"
-            className="w-full text-lg py-6"
-            disabled={!stripe || loading}
-          >
-            {loading
-              ? "Processing Payment..."
-              : "Pay Now"}
-          </Button>
-        </form>
+        </CardContent>
       </Card>
-    </>
+      <Card
+        className="
+          mx-auto
+          max-w-2xl
+          p-8
+          border
+          shadow-xl
+          bg-linear-to-b
+          from-background
+          to-muted/30
+        "
+      >
+        <div className="flex items-center justify-between mb-8">
+          <div>
+            <h2 className="text-3xl font-bold">
+              Payment Details
+            </h2>
+
+            <p className="text-muted-foreground mt-1">
+              Checkout powered by Stripe
+            </p>
+          </div>
+        </div>
+      
+        <StripePaymentForm
+          clientSecret={clientSecret}
+          onSuccess={() => 
+            navigate("/checkoutsuccess", {
+              state: {
+                draftOrderId,
+              },
+            })
+          }
+        />
+      </Card>
+    </div>
   );
 }

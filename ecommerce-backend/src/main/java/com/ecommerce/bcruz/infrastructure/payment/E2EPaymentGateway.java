@@ -21,6 +21,11 @@ import com.ecommerce.bcruz.infrastructure.models.RefundResult;
 public class E2EPaymentGateway implements PaymentGateway
 {
 	private final Map<String, PaymentIntentResult> payments = new ConcurrentHashMap<>();
+
+	public E2EPaymentGateway() 
+	{
+	    System.out.println("Using E2EPaymentGateway");
+	}
 	
 	@Override
 	public PaymentIntentResult createPaymentIntent(long amount, String currency, Map<String, String> metadata)

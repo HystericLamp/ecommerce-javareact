@@ -10,8 +10,7 @@ export default function OrderSummary({
   onBack
 }) {
   const itemCount = cart.reduce(
-    (sum, item) => sum + item.quantity,
-    0
+    (sum, item) => sum + item.quantity, 0
   );
 
   return (
