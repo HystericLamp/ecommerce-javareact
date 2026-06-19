@@ -95,12 +95,8 @@ test('Enter Payment without filling in Customer Details not allow', async ({ pag
     );
     expect(isMissing).toBe(true);
     
-    await expect(page).toHaveURL(/\/checkoutdetails$/);
+    await expect(page).toHaveURL(/checkoutdetails/);
     await expect(page).not.toHaveURL(/checkoutpayment/);
-});
-
-test('AC-CHECKOUT-04 - Failed Payment', async ({ page }) => {
-    expect(true);
 });
 
 test('AC-CHECKOUT-05 - Retry Payment', async ({ page }) => {

@@ -117,7 +117,10 @@ export default function StripePaymentForm ({
             </div>
 
             {error && (
-                <div className="rounded-md border border-red-200 bg-red-50 p-3">
+                <div
+                    data-testid="payment-error" 
+                    className="rounded-md border border-red-200 bg-red-50 p-3"
+                >
                     <p className="text-red-500 text-sm">
                         {error}
                     </p>
