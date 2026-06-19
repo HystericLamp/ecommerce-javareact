@@ -107,10 +107,12 @@ I want to be notified when payment fails
 So that I can take corrective action  
 
 **Acceptance Criteria**:  
-**Given** a valid order  
-**When** payment is declined due to an error    
-**Then** payment fails  
-**And** the cart remains unchanged  
+**Given** customer is on payment page
+**When** payment processor returns failure    
+**Then** payment is not completed   
+**And** customer remains on payment page   
+**And** error message is displayed   
+**And** cart contents remain intact   
 
 ---
 
@@ -121,9 +123,10 @@ So that I try again at purchasing items I already selected
 
 **Acceptance Criteria**:  
 **Given** a payment attempt has failed  
-**When** the user retries payment  
-**Then** another payment attempt is made  
-**And** the order is not confirmed unless payment succeeds
+**When** the user retries payment with valid payment details  
+**Then** successful payment attempt is made  
+**And** order is created   
+**And** customer reaches success page   
 
 ---
 
