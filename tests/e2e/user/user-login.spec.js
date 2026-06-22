@@ -65,4 +65,27 @@ test.describe.serial('User flow', () => {
 
     await expect(page.getByText(email)).toBeVisible();
   });
+
+  test('logout test', async ({ page }) => {
+    await page.goto('/login');
+
+    await page.getByLabel('Email').fill(email);
+    await page.getByLabel('Password').fill(password);
+
+    const dialogPromise = page.waitForEvent('dialog');
+
+    await page
+      .locator('form')
+      .getByRole('button', { name: 'Login' })
+      .click();
+
+    const dialog = await dialogPromise;
+    await dialog.accept();
+
+    await page.getByRole('button', { name: 'Logout' }).click();
+
+    await expect(
+      page.getByRole('button', { name: 'Login' })
+    ).toBeVisible();
+  });
 });
