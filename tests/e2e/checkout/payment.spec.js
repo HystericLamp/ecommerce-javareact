@@ -73,6 +73,13 @@ test('AC-CHECKOUT-03 - Process Payment', async ({ page }) => {
     await expect(
         page.getByRole('button', { name: 'View Orders' })
     ).toBeVisible();
+
+    // Assert Cart is empty after successful payment
+    await page.goto('/cart');
+
+    await expect(
+        page.getByText('Your cart is empty')
+    ).toBeVisible();
 });
 
 test('Enter Payment without filling in Customer Details not allow', async ({ page }) => {
@@ -97,8 +104,4 @@ test('Enter Payment without filling in Customer Details not allow', async ({ pag
     
     await expect(page).toHaveURL(/checkoutdetails/);
     await expect(page).not.toHaveURL(/checkoutpayment/);
-});
-
-test('AC-CHECKOUT-05 - Retry Payment', async ({ page }) => {
-    expect(true);
 });
