@@ -1,6 +1,5 @@
 package com.ecommerce.bcruz.config;
 
-import jakarta.validation.constraints.NotBlank;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
@@ -10,13 +9,8 @@ import org.springframework.stereotype.Component;
 @Validated
 public class StripeConfig {
 
-    @NotBlank
     private String secretKey;
-
-    @NotBlank
     private String publishableKey;
-    
-    @NotBlank
     private String webhookSecret;
 
     public String getSecretKey() { return secretKey; }
