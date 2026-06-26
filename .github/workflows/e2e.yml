@@ -21,21 +21,40 @@ jobs:
         with:
           node-version: 20
 
-      - run: npm ci
-        working-directory: ecommerce-front
+      - name: Install E2E Dependencies
+        working-directory: tests
+        run: npm ci
 
-      - name: Install Playwright
+      - name: Install Playwright Browsers
+        working-directory: tests
         run: npx playwright install --with-deps
-        working-directory: ecommerce-front
 
+      - name: Wait for Backend
+        timeout-minutes: 10
+        run: |
+          until curl -f https://ecommerce-javareact.onrender.com/actuator/health
+          do
+            echo "Waiting for backend..."
+            sleep 15
+          done
+
+      - name: wait for Frontend
+        timeout-minutes: 10
+        run: |
+          until curl -f https://lampecommerce.netlify.app
+          do
+            echo "Waiting for frontend..."
+            sleep 15
+          done
+        
       - name: Run E2E tests
-        working-directory: ecommerce-front
+        working-directory: tests
         env:
           BASE_URL: https://lampecommerce.netlify.app
         run: npm run test:e2e
 
       - name: Upload report
-        if: failure()
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: playwright-report

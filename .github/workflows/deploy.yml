@@ -14,5 +14,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Deploy application
-        run: ./deploy.sh
+      - name: Deploy to Render
+        run: curl -X POST "${{ secrets.RENDER_DEPLOY_HOOK }}"
+
+      - name: Deploy to Netlify
+        run: curl -X POST "${{ secrets.NETLIFY_BUILD_HOOK }}"
