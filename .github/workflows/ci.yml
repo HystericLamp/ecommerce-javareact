@@ -12,9 +12,6 @@ jobs:
       SPRING_PROFILES_ACTIVE: test
       CI: true
 
-      # temporary placeholders
-      STRIPE_SECRET_KEY: test_key
-      JWT_SECRET: ci-test-jwt-secret-123456789
       DB_URL: jdbc:sqlite:test.db
 
     steps:
@@ -48,11 +45,4 @@ jobs:
 
       - name: Build backend
         working-directory: ecommerce-backend
-        run: ./mvnw clean test -e -X
-
-      - name: Upload test reports
-        if: failure()
-        uses: actions/upload-artifact@v4
-        with:
-          name: test-reports
-          path: ecommerce-backend/target/surefire-reports
+        run: ./mvnw clean test
