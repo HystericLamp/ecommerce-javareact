@@ -7,7 +7,7 @@ test.beforeEach(async ({ page }) => {
   });
 });
 
-test('AC-CART-01 user can add item to cart', async ({ page }) => {
+test('AC-CART-01 user can add item to cart @smoke', async ({ page }) => {
   await page.goto('/shop');
 
   const productCard = page.locator('.p-4').filter({

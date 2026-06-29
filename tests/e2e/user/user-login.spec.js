@@ -17,7 +17,7 @@ test.describe.serial('User flow', () => {
     );
   });
 
-  test('AC-USER-01 register new member', async ({ page }) => {
+  test('AC-USER-01 register new member @smoke', async ({ page }) => {
     // Go to register a new user
     await page.goto('/login');
     await page.getByText('Sign up').click();
@@ -45,7 +45,7 @@ test.describe.serial('User flow', () => {
     await dialog.accept();
   });
 
-  test('AC-USER-02 login as an existing user', async ({ page }) => {
+  test('AC-USER-02 login as an existing user @smoke', async ({ page }) => {
     await page.goto('/login');
     
     await page.getByLabel('Email').fill(email);

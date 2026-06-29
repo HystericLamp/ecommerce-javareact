@@ -47,11 +47,11 @@ jobs:
             sleep 15
           done
         
-      - name: Run E2E tests
+      - name: Run smoke tests
         working-directory: tests
         env:
           BASE_URL: https://lampecommerce.netlify.app
-        run: npm run test:e2e
+        run: npm run test:smoke
 
       - name: Upload report
         if: always()

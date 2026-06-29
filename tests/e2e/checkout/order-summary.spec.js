@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 
-test('AC-CHECKOUT-01 - Get Summary of Order', async ({ page }) => {
+test('AC-CHECKOUT-01 - Get Summary of Order @smoke', async ({ page }) => {
     // Add items to cart
     await page.goto('/shop');
 

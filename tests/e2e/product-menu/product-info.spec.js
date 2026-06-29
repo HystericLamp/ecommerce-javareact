@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 
-test('AC-PRODUCT-MENU-01 - Get All Product Information', async ({ page }) => {
+test('AC-PRODUCT-MENU-01 - Get All Product Information @smoke', async ({ page }) => {
     await page.goto('/shop');
 
     // Main page heading
