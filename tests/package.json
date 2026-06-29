@@ -4,6 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "test:dev": "cross-env ENV=dev playwright test",
+    "test:prod": "cross-env ENV=prod playwright test",
     "test:e2e": "playwright test",
     "test:smoke": "playwright test --project=smoke"
   },
@@ -13,7 +15,8 @@
   "type": "commonjs",
   "devDependencies": {
     "@playwright/test": "^1.60.0",
-    "@types/node": "^25.7.0"
+    "@types/node": "^25.7.0",
+    "cross-env": "^10.1.0"
   },
   "dependencies": {
     "dotenv": "^17.4.2"

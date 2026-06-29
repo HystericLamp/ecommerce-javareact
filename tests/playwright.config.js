@@ -6,19 +6,16 @@ import { defineConfig, devices } from '@playwright/test';
  * https://github.com/motdotla/dotenv
  */
 import dotenv from 'dotenv';
-import path from 'path';
 
 // dotenv
-const envName = process.env.NODE_ENV || 'dev';
-const envFile = `.env.${envName}`;
-dotenv.config({ path: path.resolve(process.cwd(), envFile) });
+dotenv.config({
+  path: process.env.ENV === 'prod'
+    ? '.env.prod'
+    : '.env.dev',
+});
 
 const baseURL = process.env.BASE_URL;
 const apiBaseURL = process.env.API_BASE_URL;
-
-// For testing & debugging
-console.log('Loading env file:', envFile);
-console.log('Resolved path:', path.resolve(process.cwd(), envFile));
 
 /**
  * @see https://playwright.dev/docs/test-configuration
