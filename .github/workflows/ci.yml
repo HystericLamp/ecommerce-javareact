@@ -63,6 +63,12 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Deploy to Render
+        run: curl -X POST "${{ secrets.RENDER_DEPLOY_HOOK }}"
+
+      - name: Install Netlify CLI
+        run: npm install -g netlify-cli
+
       - name: Debug Netlify
         env:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
@@ -74,12 +80,6 @@ jobs:
           echo "Site ID length: ${#NETLIFY_SITE_ID}"
 
           netlify status
-
-      - name: Deploy to Render
-        run: curl -X POST "${{ secrets.RENDER_DEPLOY_HOOK }}"
-
-      - name: Install Netlify CLI
-        run: npm install -g netlify-cli
 
       - name: Deploy to Netlify
         env:
