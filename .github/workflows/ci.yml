@@ -65,13 +65,13 @@ jobs:
     steps:
       - name: Debug secrets
         env:
-          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+          NETLIFY_PROJECT_ID: ${{ secrets.NETLIFY_PROJECT_ID }}
         run: |
-          if [ -z "$NETLIFY_SITE_ID" ]; then
-            echo "NETLIFY_SITE_ID is EMPTY"
+          if [ -z "$NETLIFY_PROJECT_ID" ]; then
+            echo "NETLIFY_PROJECT_ID is EMPTY"
           else
-            echo "NETLIFY_SITE_ID is set"
-            echo "Length: ${#NETLIFY_SITE_ID}"
+            echo "NETLIFY_PROJECT_ID is set"
+            echo "Length: ${#NETLIFY_PROJECT_ID}"
           fi
 
       - name: Deploy to Render
@@ -83,12 +83,12 @@ jobs:
       - name: Debug Netlify
         env:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
-          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_PROJECT_ID }}
         run: |
           echo "CLI version:"
           netlify --version
 
-          echo "Site ID length: ${#NETLIFY_SITE_ID}"
+          echo "Site ID length: ${#NETLIFY_PROJECT_ID}"
 
           netlify status
 
