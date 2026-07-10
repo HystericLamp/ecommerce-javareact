@@ -32,6 +32,12 @@ jobs:
         working-directory: ecommerce-front
         run: npm run build
 
+      - name: Upload frontend artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: frontend-dist
+          path: ecommerce-front/dist
+
       # ---------- Java (backend) ----------
       - name: Setup Java
         uses: actions/setup-java@v4

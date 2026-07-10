@@ -21,6 +21,10 @@ jobs:
         run: npm install -g netlify-cli
 
       - name: Deploy to Netlify
+        working-directory: ecommerce-front
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_PROJECT_ID: ${{ secrets.NETLIFY_PROJECT_ID }}
         run: |
           netlify deploy \
             --dir=dist \
@@ -28,9 +32,6 @@ jobs:
             --site=$NETLIFY_PROJECT_ID \
             --auth=$NETLIFY_AUTH_TOKEN \
             --json > deploy.json
-        env:
-          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
-          NETLIFY_PROJECT_ID: ${{ secrets.NETLIFY_PROJECT_ID }}
 
       - name: Save deploy URL
         run: cat deploy.json | jq -r .deploy_url > deploy-url.txt
