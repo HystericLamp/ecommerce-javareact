@@ -63,6 +63,17 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Verify Netlify variables
+        env:
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_PROJECT_ID }}
+        run: |
+          if [ -z "$NETLIFY_SITE_ID" ]; then
+            echo "NETLIFY_SITE_ID is empty"
+            exit 1
+          else
+            echo "NETLIFY_SITE_ID is present"
+          fi
+
       - name: Deploy to Render
         run: curl -X POST "${{ secrets.RENDER_DEPLOY_HOOK }}"
 
