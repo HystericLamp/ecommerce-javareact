@@ -63,16 +63,17 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Verify Netlify variables
+      - name: Debug Netlify
         env:
-          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_PROJECT_ID }}
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
         run: |
-          if [ -z "$NETLIFY_SITE_ID" ]; then
-            echo "NETLIFY_SITE_ID is empty"
-            exit 1
-          else
-            echo "NETLIFY_SITE_ID is present"
-          fi
+          echo "CLI version:"
+          netlify --version
+
+          echo "Site ID length: ${#NETLIFY_SITE_ID}"
+
+          netlify status
 
       - name: Deploy to Render
         run: curl -X POST "${{ secrets.RENDER_DEPLOY_HOOK }}"
