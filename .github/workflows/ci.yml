@@ -1,4 +1,4 @@
-name: CI
+name: CI & Deploy
 
 on:
   push:
@@ -52,3 +52,41 @@ jobs:
       - name: Build backend
         working-directory: ecommerce-backend
         run: ./mvnw clean test
+
+  deploy:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+
+    needs: build
+    
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Deploy to Render
+        run: curl -X POST "${{ secrets.RENDER_DEPLOY_HOOK }}"
+
+      - name: Install Netlify CLI
+        run: npm install -g netlify-cli
+
+      - name: Deploy to Netlify
+        working-directory: ecommerce-front
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_PROJECT_ID: ${{ secrets.NETLIFY_PROJECT_ID }}
+        run: |
+          netlify deploy \
+            --dir=dist \
+            --prod-if-unlocked \
+            --site=$NETLIFY_PROJECT_ID \
+            --auth=$NETLIFY_AUTH_TOKEN \
+            --json > deploy.json
+
+      - name: Save deploy URL
+        run: cat deploy.json | jq -r .deploy_url > deploy-url.txt
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: deploy-url
+          path: deploy-url.txt
