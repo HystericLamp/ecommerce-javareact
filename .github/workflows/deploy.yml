@@ -22,7 +22,7 @@ jobs:
         run: |
           netlify deploy \
             --dir=dist \
-            --prod \
+            --prod-if-unlocked \
             --site=$NETLIFY_PROJECT_ID \
             --auth=$NETLIFY_AUTH_TOKEN \
             --json > deploy.json
