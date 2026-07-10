@@ -63,6 +63,17 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Debug secrets
+        env:
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+        run: |
+          if [ -z "$NETLIFY_SITE_ID" ]; then
+            echo "NETLIFY_SITE_ID is EMPTY"
+          else
+            echo "NETLIFY_SITE_ID is set"
+            echo "Length: ${#NETLIFY_SITE_ID}"
+          fi
+
       - name: Deploy to Render
         run: curl -X POST "${{ secrets.RENDER_DEPLOY_HOOK }}"
 
