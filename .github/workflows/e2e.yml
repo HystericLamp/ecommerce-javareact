@@ -9,7 +9,6 @@ on:
 jobs:
   e2e:
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
-
     runs-on: ubuntu-latest
 
     steps:
@@ -30,7 +29,6 @@ jobs:
         run: npx playwright install --with-deps
 
       - name: Wait for Backend
-        timeout-minutes: 10
         run: |
           until curl -f https://ecommerce-javareact.onrender.com/actuator/health
           do
@@ -38,19 +36,26 @@ jobs:
             sleep 15
           done
 
-      - name: wait for Frontend
-        timeout-minutes: 10
+      - name: Download deploy URL
+        uses: actions/download-artifact@v4
+        with:
+          name: deploy-url
+
+      - name: Set BASE_URL
+        run: echo "BASE_URL=$(cat deploy-url.txt)" >> $GITHUB_ENV
+
+      - name: Wait for Frontend
         run: |
-          until curl -f https://lampecommerce.netlify.app
+          until curl -f $BASE_URL
           do
             echo "Waiting for frontend..."
-            sleep 15
+            sleep 10
           done
-        
+
       - name: Run smoke tests
         working-directory: tests
         env:
-          BASE_URL: https://lampecommerce.netlify.app
+          BASE_URL: ${{ env.BASE_URL }}
         run: npm run test:smoke
 
       - name: Upload report

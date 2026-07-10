@@ -16,4 +16,4 @@
 | AC-PAYMENT-INTEGRATION-02 | Refund Payment | P1 | None | infrastructure.payment.tests.StripePaymentProcessorIntegrationTest | None | DONE |
 | AC-USER-01 | Register new Member | P0 | service.tests.UserServiceTest | controller.tests.UserControllerTest | tests.e2e.user.user-login | Done |
 | AC-USER-02 | Login as an Existing User | P0 | auth.tests.AuthServiceTest | controller.tests.AuthControllerTest | tests.e2e.user.user-login | Done |
-| AC-PRODUCT-MENU-01 | Get All Product Information | P0 | service.tests.ProductServiceTest | controller.tests.ProductControllerTest | tests.e2e.product-menu.product-info.spec.js | Done |
+| AC-PRODUCT-MENU-01 | Get All Product Information | P0 | service.tests.ProductServiceTest | controller.tests.ProductControllerTest | tests.e2e.shop.product-info.spec.js | Done |

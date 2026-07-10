@@ -8,7 +8,10 @@ export default function CustomerForm({
   onFillDemo
 }) {
   return (
-    <Card className="p-6 rounded-xl space-y-6">
+    <Card
+      data-testid="customer-form-root"
+      className="p-6 rounded-xl space-y-6"
+    >
       <h2 className="text-lg font-semibold">
         Customer Details
       </h2>
@@ -27,6 +30,7 @@ export default function CustomerForm({
 
       <div className="grid md:grid-cols-2 gap-4">
         <Input
+          data-testid="form-firstname"
           name="firstName"
           placeholder="First Name"
           value={customer.firstName}
@@ -35,6 +39,7 @@ export default function CustomerForm({
         />
 
         <Input
+          data-testid="form-lastname"
           name="lastName"
           placeholder="Last Name"
           value={customer.lastName}
@@ -42,6 +47,7 @@ export default function CustomerForm({
         />
 
         <Input
+          data-testid="form-email"
           name="email"
           placeholder="Email Address"
           value={customer.email}
@@ -51,6 +57,7 @@ export default function CustomerForm({
         />
 
         <Input
+          data-testid="form-address1"
           name="addressLine1"
           placeholder="Address Line 1"
           value={customer.addressLine1}
@@ -59,6 +66,7 @@ export default function CustomerForm({
         />
 
         <Input
+          data-testid="form-address2"
           name="addressLine2"
           placeholder="Address Line 2"
           value={customer.addressLine2}
@@ -67,6 +75,7 @@ export default function CustomerForm({
         />
 
         <Input
+          data-testid="form-city"
           name="city"
           placeholder="City"
           value={customer.city}
@@ -74,6 +83,7 @@ export default function CustomerForm({
         />
 
         <Input
+          data-testid="form-province"
           name="provinceState"
           placeholder="Province / State"
           value={customer.provinceState}
@@ -81,6 +91,7 @@ export default function CustomerForm({
         />
 
         <Input
+          data-testid="form-postalcode"
           name="postalCode"
           placeholder="Postal Code"
           value={customer.postalCode}
@@ -88,6 +99,7 @@ export default function CustomerForm({
         />
 
         <Input
+          data-testid="form-country"
           name="country"
           placeholder="Country"
           value={customer.country}

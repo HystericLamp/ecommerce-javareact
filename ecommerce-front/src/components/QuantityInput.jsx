@@ -1,7 +1,11 @@
 import { useEffect, useState } from "react";
 import { Input } from "@/components/ui/input";
 
-export function QuantityInput({ quantity, onChange }) {
+export function QuantityInput({ 
+  quantity, 
+  onChange, 
+  ...props 
+}) {
   const [value, setValue] = useState(quantity.toString());
 
   useEffect(() => {
@@ -21,6 +25,7 @@ export function QuantityInput({ quantity, onChange }) {
 
   return (
     <Input
+      {...props}
       type="number"
       min={1}
       value={value}

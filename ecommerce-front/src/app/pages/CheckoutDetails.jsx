@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useCart } from "../../features/cart/context/CartContext";
 import { useAuth } from "../../context/AuthContext";
@@ -11,6 +11,7 @@ export default function Checkout() {
   const { cart, removeFromCart, updateQuantity } = useCart();
   const { user } = useAuth();
   const navigate = useNavigate();
+  const submitting = useRef(false);
 
   const [customer, setCustomer] = useState({
     email: user?.email || "",
@@ -40,8 +41,14 @@ export default function Checkout() {
     }));
   };
 
-  const handleCheckout = async () => {
-    const form = document.querySelector("form");
+  const handleCheckout = async (e) => {
+    e.preventDefault();
+
+    if (submitting.current) return;
+
+    submitting.current = true;
+
+    const form = e.currentTarget;
 
     if (!form.checkValidity()) {
       form.reportValidity();
@@ -118,10 +125,7 @@ export default function Checkout() {
       <h1 className="page-title">Checkout</h1>
 
       <form
-        onSubmit={(e) => {
-          e.preventDefault();
-          handleCheckout();
-        }}
+        onSubmit={handleCheckout}
       >
         <div className="grid lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2 space-y-8">

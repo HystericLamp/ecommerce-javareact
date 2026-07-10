@@ -78,31 +78,33 @@ export default function StripePaymentForm ({
                     Card Information
                 </label>
 
-                <div className="
-                    rounded-xl
-                    border
-                    bg-background
-                    px-4
-                    py-5
-                    shadow-sm
-                    transition-all
-                    focus-within:ring-2
-                    focus-within:ring-primary
-                ">
+                <div
+                    data-testid="stripe-payment-form-card-div"
+                    className="
+                        rounded-xl
+                        border
+                        bg-background
+                        px-4
+                        py-5
+                        shadow-sm
+                        transition-all
+                        focus-within:ring-2
+                        focus-within:ring-primary"
+                >
                     <CardElement
-                    options={{
-                        style: {
-                        base: {
-                            fontSize: "18px",
-                            color: "#111827",
-                            fontFamily:
-                            "Inter, system-ui, sans-serif",
-                            "::placeholder": {
-                            color: "#9ca3af",
+                        options={{
+                            style: {
+                            base: {
+                                fontSize: "18px",
+                                color: "#111827",
+                                fontFamily:
+                                "Inter, system-ui, sans-serif",
+                                "::placeholder": {
+                                color: "#9ca3af",
+                                },
                             },
-                        },
-                        },
-                    }}
+                            },
+                        }}
                     />
                 </div>
             </div>
@@ -128,6 +130,7 @@ export default function StripePaymentForm ({
             )}
 
             <Button
+                data-testid="payment-submit"
                 type="submit"
                 className="
                     w-full

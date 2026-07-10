@@ -10,11 +10,18 @@ function Navbar() {
 
   return (
     <header className="border-b bg-background sticky top-0 z-50">
-        <div className="container mx-auto flex h-16 items-center justify-between px-4">
+        <div
+            data-testid="navbar-root"
+            className="container mx-auto flex h-16 items-center justify-between px-4"
+        >
             
             {/* Logo */}
-            <Link to="/" className="text-xl font-bold">
-            MyStore
+            <Link 
+                to="/" 
+                data-testid="default-link" 
+                className="text-xl font-bold"
+            >
+                MyStore
             </Link>
 
             {/* Nav Links */}
@@ -22,20 +29,22 @@ function Navbar() {
                 <ul className="flex items-center gap-6">
                     <li>
                         <NavLink
-                        to="/"
-                        className={({ isActive }) =>
-                            isActive ? "font-semibold text-primary" : "text-muted-foreground"
-                        }
+                            to="/"
+                            data-testid="home-link"
+                            className={({ isActive }) =>
+                                isActive ? "font-semibold text-primary" : "text-muted-foreground"
+                            }
                         >
                             Home
                         </NavLink>
                     </li>
                     <li>
                         <NavLink
-                        to="/shop"
-                        className={({ isActive }) =>
-                            isActive ? "font-semibold text-primary" : "text-muted-foreground"
-                        }
+                            to="/shop"
+                            data-testid="shop-link"
+                            className={({ isActive }) =>
+                                isActive ? "font-semibold text-primary" : "text-muted-foreground"
+                            }
                         >
                             Shop
                         </NavLink>
@@ -46,21 +55,34 @@ function Navbar() {
             {/* Right side */}
             <div className="flex items-center gap-4">
                 <Link to="/cart">
-                    <Button variant="outline" size="icon">
+                    <Button
+                        data-testid="cart-btn"
+                        variant="outline" 
+                        size="icon"
+                    >
                         <ShoppingCart className="h-5 w-5" />
                     </Button>
                 </Link>
 
                 {auth ? (
                     <>
-                        <span className="text-sm">{auth.email}</span>
-                        <Button variant="outline" onClick={logoutUser}>
+                        <span
+                            data-testid="authenticated-email"
+                            className="text-sm"
+                        >
+                            {auth.email}
+                        </span>
+                        <Button
+                            data-testid="logout-btn"
+                            variant="outline" 
+                            onClick={logoutUser}
+                        >
                             Logout
                         </Button>
                     </>
                 ) : (
                     <Link to="/login">
-                    <Button>Login</Button>
+                        <Button data-testid="login-goto-btn">Login</Button>
                     </Link>
                 )}
             </div>

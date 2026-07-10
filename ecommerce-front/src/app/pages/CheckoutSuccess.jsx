@@ -19,7 +19,10 @@ export default function CheckoutSuccess() {
     <div className="max-w-3xl mx-auto py-20 px-4">
       <Card className="p-8 rounded-2xl shadow-sm text-center space-y-6">
         {/* Title */}
-        <h1 className="text-3xl font-bold text-foreground">
+        <h1
+          data-testid="payment-success-header"
+          className="text-3xl font-bold text-foreground"
+        >
           Payment Successful
         </h1>
 
@@ -41,6 +44,7 @@ export default function CheckoutSuccess() {
         {/* Actions */}
         <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
           <Button
+            data-testid="continue-shopping-btn"
             onClick={() => navigate("/")}
             className="w-full sm:w-auto"
           >
@@ -48,6 +52,7 @@ export default function CheckoutSuccess() {
           </Button>
 
           <Button
+            data-testid="view-orders-btn"
             variant="outline"
             onClick={() => navigate("/orders")}
             className="w-full sm:w-auto"

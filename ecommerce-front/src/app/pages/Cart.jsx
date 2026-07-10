@@ -24,7 +24,10 @@ export default function Cart() {
           <div className="text-5xl">🛒</div>
 
           <div className="space-y-2">
-            <p className="text-xl font-semibold text-foreground">
+            <p
+              data-testid="empty-cart-txt"
+              className="text-xl font-semibold text-foreground"
+            >
               Your cart is empty
             </p>
             <p className="text-sm text-muted-foreground">
@@ -47,15 +50,24 @@ export default function Cart() {
             
             {/* Cart Items */}
             {cart.map((item) => (
-              <Card key={item.id} className="flex items-center p-4 rounded-2xl shadow-sm">
-                <img
+              <Card 
+                key={item.id}
+                data-testid={`cart-item-${item.id}`}
+                className="flex items-center p-4 rounded-2xl shadow-sm"
+              >
+                {/* <img
                   src={item.image}
                   alt={item.name}
                   className="w-20 h-20 object-cover rounded-xl mr-4"
-                />
+                /> */}
 
                 <CardContent className="flex-1 p-0">
-                  <h3 className="font-medium text-lg text-foreground">{item.name}</h3>
+                  <h3
+                    data-testid={`name-${item.id}`}
+                    className="font-medium text-lg text-foreground"
+                  >
+                    {item.name}
+                  </h3>
                   <p className="text-muted-foreground">
                     ${item.price.toFixed(2)}
                   </p>
@@ -63,6 +75,7 @@ export default function Cart() {
                   {/* Quantity Controls */}
                   <div className="flex items-center gap-2 mt-3">
                     <Button
+                      data-testid={`decrease-${item.id}`}
                       variant="outline"
                       size="sm"
                       onClick={() => {
@@ -77,6 +90,7 @@ export default function Cart() {
                     </Button>
 
                     <QuantityInput
+                      data-testid={`quantity-${item.id}`}
                       quantity={item.quantity}
                       onChange={(newQuantity) =>
                         updateQuantity(item.id, newQuantity)
@@ -84,6 +98,7 @@ export default function Cart() {
                     />
 
                     <Button
+                      data-testid={`increase-${item.id}`}
                       variant="outline"
                       size="sm"
                       onClick={() => updateQuantity(item.id, item.quantity + 1)}
@@ -95,11 +110,15 @@ export default function Cart() {
 
                 {/* Price + Remove */}
                 <div className="text-right flex flex-col items-end gap-3">
-                  <p className="font-semibold text-foreground">
+                  <p
+                    data-testid={`item-total-${item.id}`} 
+                    className="font-semibold text-foreground"
+                  >
                     ${(item.price * item.quantity).toFixed(2)}
                   </p>
 
                   <Button
+                    data-testid={`remove-${item.id}`}
                     variant="ghost"
                     size="icon"
                     className="text-muted-foreground hover:text-destructive"
@@ -122,12 +141,16 @@ export default function Cart() {
             </div>
             <div className="flex justify-between items-center">
               <h2 className="text-xl font-semibold text-foreground">Total</h2>
-              <p className="text-xl font-bold text-primary">
+              <p 
+                data-testid="cart-total" 
+                className="text-xl font-bold text-primary"
+              >
                 ${total.toFixed(2)}
               </p>
             </div>
 
             <Button
+              data-testid="checkout-btn"
               className="w-full text-lg py-6"
               disabled={cart.length === 0}
               onClick={() => navigate("/checkoutdetails")}
@@ -136,6 +159,7 @@ export default function Cart() {
             </Button>
 
             <Button
+              data-testid="continue-shopping-btn"
               variant="outline"
               className="w-full"
               onClick={() => navigate("/shop")}

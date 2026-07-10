@@ -1,102 +1,58 @@
 import { test, expect } from '@playwright/test';
+import { CartPage } from '../../pages/CartPage';
+import { ShopPage } from '../../pages/ShopPage';
 
 test.beforeEach(async ({ page }) => {
-  await page.addInitScript(() => {
+  await page.goto('/');
+  await page.evaluate(() => {
     localStorage.clear();
     sessionStorage.clear();
   });
 });
 
 test('AC-CART-01 user can add item to cart @smoke', async ({ page }) => {
-  await page.goto('/shop');
+  const shop = new ShopPage(page);
+  await shop.goto();
+  const product = shop.product(2);
+  await product.addToCart();
 
-  const productCard = page.locator('.p-4').filter({
-    has: page.getByRole('heading', {
-      name: 'Colombian Supremo',
-    }),
-  });
-
-  await productCard
-    .getByRole('button', { name: 'Add' })
-    .click();
-
-  await expect(
-    productCard.getByText(/1 in cart/i)
-  ).toBeVisible();
-
-  await page.locator('a[href="/cart"]').click();
-
-  await expect(
-    page.getByText(/colombian supremo/i)
-  ).toBeVisible();
+  const cart = new CartPage(page);
+  await cart.goto();
+  
+  const cartItem = cart.item(2);
+  await expect(cartItem.name).toHaveText('Colombian Supremo');
+  await expect(cartItem.quantity).toHaveValue('1');
 });
 
-test('AC-CART-03 do not add an item with 0 or negative quantity', async ({ page }) => {
-  await page.goto('/shop');
-
-  const productCard = page.locator('.p-4').filter({
-    has: page.getByRole('heading', {
-      name: 'Colombian Supremo',
-    }),
-  });
-
-  // Press "Add"
-  await productCard
-    .getByRole('button', { name: 'Add' })
-    .click();
-
-  await expect(
-    productCard.getByRole('button', { name: '-' })
-  ).toBeVisible();
+test('AC-CART-03 decreasing quantity from 1 removes the item', async ({ page }) => {
+  // Add Item from Shop page
+  const shop = new ShopPage(page);
+  await shop.goto();
+  const product = shop.product(2);
+  await product.addToCart();
 
   // Press "-" button
-  await productCard.getByRole('button', {
-    name: '-',
-  }).click();
+  await product.decrease();
 
   // Check that it can't go to 0 and the "Add" button is back
-  await expect(
-    productCard.getByRole('button', { name: 'Add' })
-  ).toBeVisible();
+  await expect(product.addBtn).toBeVisible();
 });
 
 test('AC-CART-04 adding existing Item into the Cart should increment quantity', async ({ page }) => {
-  await page.goto('/shop');
-
-  const productCard = page.locator('.p-4').filter({
-    has: page.getByRole('heading', {
-      name: 'Colombian Supremo',
-    }),
-  });
+  const shop = new ShopPage(page);
+  await shop.goto();
+  const product = shop.product(1);
 
   // Check initial "Add" state
-  await expect(
-    productCard.getByRole('button', { name: 'Add' })
-  ).toBeVisible();
-
-  await productCard
-    .getByRole('button', { name: 'Add' })
-    .click();
+  await expect(product.addBtn).toBeVisible();
+  await product.addToCart();
 
   // Check after "add" state
-  await expect(
-    productCard.getByText(/1 in cart/i)
-  ).toBeVisible();
-
-  await expect(
-    productCard.getByRole('button', { name: '+' })
-  ).toBeVisible();
-
-  await expect(
-    productCard.getByRole('button', { name: '-' })
-  ).toBeVisible();
+  await expect(product.quantity).toHaveText(/1\s+in cart/);
+  await expect(product.increaseBtn).toBeVisible();
+  await expect(product.decreaseBtn).toBeVisible();
 
   // Pressing "+" button
-  await productCard.getByRole('button', {
-    name: '+',
-  }).click();
-
-  await expect(
-    productCard.getByText(/2 in cart/i)
-  ).toBeVisible();
+  await product.increase();
+  await expect(product.quantity).toHaveText(/2\s+in cart/);;
 });

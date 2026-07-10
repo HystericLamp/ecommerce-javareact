@@ -1,102 +1,93 @@
 import { test, expect } from '@playwright/test';
+import { CartPage } from '../../pages/CartPage';
+import { ShopPage } from '../../pages/ShopPage';
+import { CheckoutSuccessPage } from '../../pages/CheckoutSuccessPage';
+import { CheckoutDetailsPage } from '../../pages/CheckoutDetailsPage';
+import { CheckoutPaymentPage } from '../../pages/CheckoutPaymentPage';
 
-test.beforeEach(async ({ page }) => {
+test.beforeEach(async ({ page, context }) => {
+    // Clear state
+    await context.clearCookies();
+
+    await page.goto('/');
+
+    await page.evaluate(() => {
+        localStorage.clear();
+        sessionStorage.clear();
+    });
+
     // Add items to Cart
-    await page.goto('/shop');
+    const shop = new ShopPage(page);
+    await shop.goto();
 
-    const item1 = page.locator('.p-4').filter({
-        has: page.getByRole('heading', {
-        name: 'Colombian Supremo',
-        }),
-    });
-
-    await item1
-        .getByRole('button', { name: 'Add' })
-        .click();
-
-    const item2 = page.locator('.p-4').filter({
-        has: page.getByRole('heading', {
-        name: 'Stoneware Latte Mug',
-        }),
-    });
-
-    await item2
-        .getByRole('button', { name: 'Add' })
-        .click();
+    await shop.product(2).addToCart();
+    await shop.product(11).addToCart();
 });
 
 test('AC-CHECKOUT-03 - Process Payment', async ({ page }) => {
     // Goto Cart then Checkout
-    await page.goto('/cart');
-    await page.getByRole('button', { name: 'Proceed to Checkout' }).click();
+    const cart = new CartPage(page);
+    await cart.goto();
+    await cart.checkout();
 
     // Fill in Customer details
-    await page.locator('input[name="firstName"]').fill('First');
-    await page.locator('input[name="lastName"]').fill('Last');
-    await page.locator('input[name="email"]').fill('customer@example.com');
-    await page.locator('input[name="addressLine1"]').fill('123 Main St');
-    await page.locator('input[name="city"]').fill('City');
-    await page.locator('input[name="provinceState"]').fill('State');
-    await page.locator('input[name="postalCode"]').fill('T2P 1J9');
-    await page.locator('input[name="country"]').fill('Country');
+    const checkout = new CheckoutDetailsPage(page);
+    const customerForm = checkout.customerForm();
+    await customerForm.setFirstname("First");
+    await customerForm.setLastname("Last");
+    await customerForm.setEmail("customer@example.com");
+    await customerForm.setAddress1("123 Main St");
+    await customerForm.setCity("City");
+    await customerForm.setProvince("Province");
+    await customerForm.setPostalcode("T2P 1J9");
+    await customerForm.setCountry("Country");
 
     // Proceed to Payment and confirm details
-    const continueButton = page.getByRole('button', {
-        name: 'Continue to Payment'
-    });
-
-    await expect(continueButton).toBeEnabled();
-    await continueButton.click();
+    const orderSummary = checkout.orderSummary();
+    await orderSummary.acceptOrder();
 
     // Should be on CheckoutPayment page
     // Input Payment details and continue
-    const cardFrame = page.frameLocator('iframe[title*="Secure card payment input"]');
+    const checkoutPayment = new CheckoutPaymentPage(page);
+    const stripePaymentForm = checkoutPayment.stripePaymentForm();
 
-    await cardFrame.getByPlaceholder('Card number').fill('4242424242424242');
-    await cardFrame.getByPlaceholder('MM / YY').fill('1234');
-    await cardFrame.getByPlaceholder('CVC').fill('123');
-    await cardFrame.getByPlaceholder('ZIP').fill('12345');
+    await stripePaymentForm.fillCard({
+        number: '4242424242424242',
+        expiry: '1234',
+        cvc: '123',
+        zip: '12345',
+    });
 
-    await page.getByRole('button', { name: 'Complete Purchase' }).click();
+    await stripePaymentForm.submitPayment();
 
     // Assert
-    await expect(page).toHaveURL('/checkoutsuccess');
+    await expect(page).toHaveURL(/checkoutsuccess/);
+    const checkoutSuccess = new CheckoutSuccessPage(page);
 
-    await expect(
-        page.getByRole('heading', { name: 'Payment Successful' })
-    ).toBeVisible();
-
-    await expect(
-        page.getByRole('button', { name: 'Continue Shopping' })
-    ).toBeVisible();
-
-    await expect(
-        page.getByRole('button', { name: 'View Orders' })
-    ).toBeVisible();
+    await checkoutSuccess.expectPaymentSuccessMsg();
+    await expect(checkoutSuccess.continueShoppingBtn).toBeVisible();
+    await expect(checkoutSuccess.viewOrdersBtn).toBeVisible();
 
     // Assert Cart is empty after successful payment
-    await page.goto('/cart');
-
-    await expect(
-        page.getByText('Your cart is empty')
-    ).toBeVisible();
+    await cart.goto();
+    await cart.expectEmptyCartMsg();
 });
 
 test('Enter Payment without filling in Customer Details not allow', async ({ page }) => {
     // Goto Cart then Checkout
-    await page.goto('/cart');
-    await page.getByRole('button', { name: 'Proceed to Checkout' }).click();
+    const cart = new CartPage(page);
+    await cart.goto();
+    await cart.checkout();
 
     // Ignore Customer inputs
     // Check for error message
-    const continueButton = page.getByRole('button', {
-        name: 'Continue to Payment'
-    });
+    await expect(page).toHaveURL(/cart/);
+    const checkout = new CheckoutDetailsPage(page);
+    const orderSummary = checkout.orderSummary();
+    await orderSummary.acceptOrder();
 
-    await expect(continueButton).toBeEnabled();
-    await continueButton.click();
-
-    const nameInput = page.getByPlaceholder("First Name");
+    const customerForm = checkout.customerForm();
+    const nameInput = customerForm.firstnameInput;
     const isMissing = await nameInput.evaluate(
         (el) => el.validity.valueMissing
     );

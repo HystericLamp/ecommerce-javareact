@@ -81,6 +81,7 @@ export default function Register() {
           <div className="space-y-2">
             <Label htmlFor="name">Name</Label>
             <Input
+              data-testid="name-input"
               id="name"
               onChange={(e) => handleChange("name", e.target.value)}
               required
@@ -91,6 +92,7 @@ export default function Register() {
           <div className="space-y-2">
             <Label htmlFor="email">Email</Label>
             <Input
+              data-testid="email-input"
               id="email"
               type="email"
               onChange={(e) => handleChange("email", e.target.value)}
@@ -102,6 +104,7 @@ export default function Register() {
           <div className="space-y-2">
             <Label htmlFor="password">Password</Label>
             <Input
+              data-testid="password-input"
               id="password"
               type="password"
               onChange={(e) => handleChange("password", e.target.value)}
@@ -113,6 +116,7 @@ export default function Register() {
           <div className="space-y-2">
             <Label htmlFor="confirmPassword">Confirm Password</Label>
             <Input
+              data-testid="confirm-password-input"
               id="confirmPassword"
               type="password"
               onChange={(e) =>
@@ -128,7 +132,10 @@ export default function Register() {
           )}
 
           {/* Submit */}
-          <Button type="submit" className="w-full">
+          <Button
+            data-testid="submit-btn" 
+            type="submit" className="w-full"
+          >
             Create Account
           </Button>
         </form>

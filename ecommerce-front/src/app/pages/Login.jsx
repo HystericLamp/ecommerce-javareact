@@ -54,6 +54,7 @@ function Login() {
           <div className="space-y-2">
             <Label htmlFor="email">Email</Label>
             <Input
+              data-testid="login-email-input"
               id="email"
               type="email"
               placeholder="you@example.com"
@@ -66,6 +67,7 @@ function Login() {
           <div className="space-y-2">
             <Label htmlFor="password">Password</Label>
             <Input
+              data-testid="login-password-input"
               id="password"
               type="password"
               placeholder="Password"
@@ -74,7 +76,10 @@ function Login() {
             />
           </div>
 
-          <Button type="submit" className="w-full">
+          <Button
+            data-testid="login-btn"
+            type="submit" className="w-full"
+          >
             Login
           </Button>
         </form>
@@ -83,6 +88,7 @@ function Login() {
         <p className="text-sm text-center text-muted-foreground">
           Don’t have an account?{" "}
           <span
+            data-testid="sign-up-link"
             className="text-primary cursor-pointer hover:underline"
             onClick={() => navigate("/register")}
           >

@@ -29,6 +29,7 @@ export default function CheckoutPayment({}) {
         </p>
 
         <Button
+          data-testid="return-to-checkout"
           onClick={() => navigate("/checkout")}
         >
           Return to Checkout

@@ -1,4 +1,7 @@
 import { test, expect } from '@playwright/test';
+import { LoginPage } from '../../pages/LoginPage';
+import { RegisterPage } from '../../pages/RegisterPage';
+import { NavbarComponent } from '../../pages/components/NavbarComponent';
 
 test.describe.serial('User flow', () => {
   const email = `doe-${Date.now()}-${Math.random()}@email.com`;
@@ -7,6 +10,7 @@ test.describe.serial('User flow', () => {
   const apiBaseURL = process.env.API_BASE_URL;
 
   test.afterAll(async ({ request }) => {
+    // Delete new users created
     await request.delete(
       `${apiBaseURL}/api/users/deleteUser/byEmail`,
       {
@@ -19,25 +23,21 @@ test.describe.serial('User flow', () => {
 
   test('AC-USER-01 register new member @smoke', async ({ page }) => {
     // Go to register a new user
-    await page.goto('/login');
-    await page.getByText('Sign up').click();
+    const login = new LoginPage(page);
+    await login.goto();
+    await login.signupGoto();
 
     // Input new user details
-    await page.getByLabel('Name').fill('John Doe');
-    await page.getByLabel('Email').fill(email);
-
-    await page
-      .getByLabel('Password', { exact: true })
-      .fill(password);
-
-    await page
-      .getByLabel('Confirm Password')
-      .fill(password);
+    const register = new RegisterPage(page);
+    await register.setName("John Doe");
+    await register.setEmail(email);
+    await register.setPassword(password);
+    await register.setConfirmPassword(password);
 
     // Submit
     const dialogPromise = page.waitForEvent('dialog');
 
-    await page.getByRole('button', { name: 'Create Account' }).click();
+    await register.confirmSubmit();
 
     const dialog = await dialogPromise;
 
@@ -46,46 +46,44 @@ test.describe.serial('User flow', () => {
   });
 
   test('AC-USER-02 login as an existing user @smoke', async ({ page }) => {
-    await page.goto('/login');
+    const loginPage = new LoginPage(page);
+    await loginPage.goto();
     
-    await page.getByLabel('Email').fill(email);
-    await page.getByLabel('Password').fill(password);
+    await loginPage.setEmail(email);
+    await loginPage.setPassword(password);
 
     const dialogPromise = page.waitForEvent('dialog');
 
-    await page
-      .locator('form')
-      .getByRole('button', { name: 'Login' })
-      .click();
+    await loginPage.login();
 
     const dialog = await dialogPromise;
 
     expect(dialog.message()).toBe('Logged in!');
     await dialog.accept();
 
-    await expect(page.getByText(email)).toBeVisible();
+    const navbar = new NavbarComponent(page);
+    await navbar.expectAuthEmail();
   });
 
   test('logout test', async ({ page }) => {
-    await page.goto('/login');
+    const loginPage = new LoginPage(page);
+    await loginPage.goto();
 
-    await page.getByLabel('Email').fill(email);
-    await page.getByLabel('Password').fill(password);
+    await loginPage.setEmail(email);
+    await loginPage.setPassword(password);
 
     const dialogPromise = page.waitForEvent('dialog');
 
-    await page
-      .locator('form')
-      .getByRole('button', { name: 'Login' })
-      .click();
+    await loginPage.login();
 
     const dialog = await dialogPromise;
     await dialog.accept();
 
-    await page.getByRole('button', { name: 'Logout' }).click();
+    const navbar = new NavbarComponent(page);
+    await navbar.logout();
 
-    await expect(
-      page.getByRole('button', { name: 'Login' })
-    ).toBeVisible();
+    await expect(navbar.loginGotoBtn).toBeVisible();
+    await expect(navbar.logoutBtn).not.toBeVisible();
+    await expect(navbar.loggedInEmail).not.toBeVisible();
   });
 });

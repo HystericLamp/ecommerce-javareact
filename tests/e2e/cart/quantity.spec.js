@@ -1,59 +1,46 @@
 import { test, expect } from '@playwright/test';
+import { CartPage } from '../../pages/CartPage';
+import { ShopPage } from '../../pages/ShopPage';
 
 test('AC-CART-05 update quantity of an Item in Cart', async ({ page }) => {
   // First add an item to Cart
-  await page.goto('/shop');
-
-  const productCard = page.locator('.p-4').filter({
-      has: page.getByRole('heading', {
-      name: 'Colombian Supremo',
-      }),
-  });
-
-  await productCard
-    .getByRole('button', { name: 'Add' })
-    .click();
+  const shop = new ShopPage(page);
+  await shop.goto();
+  await shop.product(2).addToCart();
 
   // Go to Cart and update quantity of an item
-  await page.goto('/cart');
+  const cart = new CartPage(page);
+  await cart.goto();
 
-  await expect(page.getByText('Your Cart')).toBeVisible();
+  // Initial
+  const cartItem = cart.item(2);
+  await expect(cartItem.name).toHaveText('Colombian Supremo');
+  await expect(cartItem.quantity).toHaveValue('1');
 
-  const item = page.locator('.flex.items-center.p-4').first();
-  await expect(item).toBeVisible();
+  // Increasing
+  await cartItem.increase();
+  await expect(cartItem.quantity).toHaveValue('2');
 
-  await item.getByRole('button', { name: '+' }).click();
-  await expect(item.locator('span.font-medium')).toHaveText('2');
-
-  await page.getByRole('button', { name: '+' }).click();
-  await expect(item.locator('span.font-medium')).toHaveText('3');
+  await cartItem.increase();
+  await expect(cartItem.quantity).toHaveValue('3');
 });
 
-test('AC-CART-06 do not update an item quantity with a negative quantity or non-existent item', async ({ page }) => {
-  // First add an item to Cart
-    await page.goto('/shop');
+test('AC-CART-06 do not update an item quantity below 1 (item removed)', async ({ page }) => {
+  // Go to Shop and add an Item
+  const shop = new ShopPage(page);
+  await shop.goto();
+  await shop.product(1).addToCart();
 
-    const productCard = page.locator('.p-4').filter({
-        has: page.getByRole('heading', {
-        name: 'Colombian Supremo',
-        }),
-    });
+  const cart = new CartPage(page);
+  await cart.goto();
 
-  await productCard
-    .getByRole('button', { name: 'Add' })
-    .click();
+  // Initial assertions
+  const cartItem = cart.item(1);
 
-  // decrease quantity till 0 and below
-  await page.goto('/cart');
+  await expect(cartItem.name).toHaveText('Ethiopian Sunrise');
+  await expect(cartItem.quantity).toHaveValue('1');
 
-  // Check initial state
-  await expect(page.getByText('Your Cart')).toBeVisible();
-  const item = page.locator('.flex.items-center.p-4').first();
-  await expect(item).toBeVisible();
-  await expect(item.locator('span.font-medium')).toHaveText('1');
-  await expect(page.getByText('Colombian Supremo')).toBeVisible();
-
-  // assert
-  await item.getByRole('button', { name: '-' }).click();
-  await expect(page.getByText('Colombian Supremo')).not.toBeVisible();
+  // Assert item is removed
+  await cartItem.decrease();
+  await expect(cartItem.root).toHaveCount(0);
 });

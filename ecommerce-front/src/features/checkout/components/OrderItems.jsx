@@ -14,6 +14,7 @@ export default function OrderItems({
       {items.map((item) => (
         <Card
           key={item.id}
+          data-testid={`order-item-${item.id}`}
           className="p-4 flex justify-between items-center rounded-xl"
         >
           <div>
@@ -30,6 +31,7 @@ export default function OrderItems({
             <div className="flex items-center gap-2">
               <Button
                 aria-label={`Decrease quantity of ${item.name}`}
+                data-testid={`decrease-${item.id}`}
                 type="button"
                 variant="outline"
                 size="icon"
@@ -41,6 +43,7 @@ export default function OrderItems({
               </Button>
 
               <QuantityInput
+                data-testid={`quantity-${item.id}`}
                 quantity={item.quantity}
                 onChange={(newQuantity) =>
                   updateQuantity(item.id, newQuantity)
@@ -49,6 +52,7 @@ export default function OrderItems({
 
               <Button
                 aria-label={`Increase quantity of ${item.name}`}
+                data-testid={`increase-${item.id}`}
                 type="button"
                 variant="outline"
                 size="icon"
@@ -60,11 +64,15 @@ export default function OrderItems({
               </Button>
             </div>
 
-            <p className="font-semibold text-foreground">
+            <p 
+              data-testid={`order-item-cost-${item.id}`}
+              className="font-semibold text-foreground"
+            >
               ${(item.price * item.quantity).toFixed(2)}
             </p>
 
             <Button
+              data-testid={`remove-${item.id}`}
               variant="ghost"
               size="icon"
               onClick={() => removeFromCart(item.id)}

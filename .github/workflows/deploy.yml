@@ -9,13 +9,29 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
 
-    environment: staging
-
     steps:
       - uses: actions/checkout@v4
 
       - name: Deploy to Render
         run: curl -X POST "${{ secrets.RENDER_DEPLOY_HOOK }}"
 
+      - name: Install Netlify CLI
+        run: npm install -g netlify-cli
+
       - name: Deploy to Netlify
-        run: curl -X POST "${{ secrets.NETLIFY_BUILD_HOOK }}"
+        run: |
+          netlify deploy \
+            --dir=dist \
+            --prod \
+            --site=$NETLIFY_PROJECT_ID \
+            --auth=$NETLIFY_AUTH_TOKEN \
+            --json > deploy.json
+
+      - name: Save deploy URL
+        run: cat deploy.json | jq -r .deploy_url > deploy-url.txt
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: deploy-url
+          path: deploy-url.txt

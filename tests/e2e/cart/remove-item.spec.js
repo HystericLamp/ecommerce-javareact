@@ -1,35 +1,23 @@
 import { test, expect } from '@playwright/test';
+import { CartPage } from '../../pages/CartPage';
+import { ShopPage } from '../../pages/ShopPage';
 
 test('AC-CART-07 remove item from cart', async ({ page }) => {
   // First add an item to Cart
-  await page.goto('/shop');
-
-  const productCard = page.locator('.p-4').filter({
-      has: page.getByRole('heading', {
-      name: 'Colombian Supremo',
-      }),
-  });
-
-  await productCard
-    .getByRole('button', { name: 'Add' })
-    .click();
+  const shop = new ShopPage(page);
+  await shop.goto();
+  await shop.product(2).addToCart();
 
   // Check initial state in cart
-  await page.goto('/cart');
-
-  await expect(page.getByText('Your Cart')).toBeVisible();
+  const cart = new CartPage(page);
+  await cart.goto();
+  const cartItem = cart.item(2);
   
-  const item = page.locator('.flex.items-center.p-4').filter({
-    hasText: 'Colombian Supremo',
-  });
-
-  await expect(item).toBeVisible();
-  await expect(item.locator('span.font-medium')).toHaveText('1');
-  await expect(page.getByText('Colombian Supremo')).toBeVisible();
+  await expect(cartItem.name).toHaveText('Colombian Supremo');
+  await expect(cartItem.quantity).toHaveValue('1');
 
   // Press remove/trashcan button and assert
-  await item.locator('button').last().click();
+  await cartItem.remove();
   
-  await expect(item).not.toBeVisible();
-  await expect(page.getByText('Colombian Supremo')).not.toBeVisible();
+  await expect(cartItem.name).not.toBeVisible();
 });

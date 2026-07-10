@@ -14,7 +14,10 @@ export default function OrderSummary({
   );
 
   return (
-    <div className="space-y-4">
+    <div
+      data-testid="order-summary-root"
+      className="space-y-4"
+    >
       <Card className="p-6 rounded-xl space-y-4 sticky top-6">
         <h2 className="text-lg font-semibold">
           Order Summary
@@ -22,13 +25,16 @@ export default function OrderSummary({
 
         <div className="flex justify-between text-sm text-muted-foreground">
           <span>Items</span>
-          <span>{itemCount}</span>
+          <span data-testid="item-count">{itemCount}</span>
         </div>
 
         <div className="flex justify-between items-center">
           <span className="font-medium">Total</span>
 
-          <span className="text-xl font-bold text-primary">
+          <span
+            data-testid="order-total" 
+            className="text-xl font-bold text-primary"
+          >
             ${total.toFixed(2)}
           </span>
         </div>
@@ -36,8 +42,9 @@ export default function OrderSummary({
         <Separator />
 
         <Button
+          data-testid="checkout-submit"
+          type="submit"
           className="w-full text-lg py-6"
-          onClick={onCheckout}
           disabled={loading}
         >
           {loading
@@ -47,6 +54,8 @@ export default function OrderSummary({
       </Card>
 
       <Button
+        data-testid="checkout-back-to-cart"
+        type="button"
         variant="outline"
         className="w-full"
         onClick={onBack}

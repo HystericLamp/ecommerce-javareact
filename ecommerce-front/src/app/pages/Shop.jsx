@@ -1,7 +1,7 @@
 import React from "react"; 
 import { useState, useEffect } from "react";
 import { API, API_URL } from "../../config/api";
-import { ProductCard } from "@/components/ProductCard";
+import { ProductCard } from "@/features/shop/components/ProductCard";
 
 import { useCart } from "@/features/cart/context/CartContext";
 
@@ -45,7 +45,12 @@ export default function Shop() {
 
       {Object.entries(groupedProducts).map(([category, items]) => (
         <div key={category} className="mb-12">
-          <h2 className="section-title">{category}</h2>
+          <h2 
+            data-testid={`category-head-${category}`}
+            className="section-title"
+          >
+            {category}
+          </h2>
 
           <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
             {items.map((product) => (

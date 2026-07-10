@@ -1,83 +1,84 @@
 import { test, expect } from '@playwright/test';
+import { CartPage } from '../../pages/CartPage';
+import { ShopPage } from '../../pages/ShopPage';
+import { CheckoutSuccessPage } from '../../pages/CheckoutSuccessPage';
+import { CheckoutDetailsPage } from '../../pages/CheckoutDetailsPage';
+import { CheckoutPaymentPage } from '../../pages/CheckoutPaymentPage';
 
-test.beforeEach(async ({ page }) => {
+test.beforeEach(async ({ page, context }) => {
+    // Clear state
+    await context.clearCookies();
+
+    await page.goto('/');
+
+    await page.evaluate(() => {
+        localStorage.clear();
+        sessionStorage.clear();
+    });
+
     // Add items to Cart
-    await page.goto('/shop');
+    const shop = new ShopPage(page);
+    await shop.goto();
 
-    const item1 = page.locator('.p-4').filter({
-        has: page.getByRole('heading', {
-        name: 'Colombian Supremo',
-        }),
-    });
-
-    await item1
-        .getByRole('button', { name: 'Add' })
-        .click();
-
-    const item2 = page.locator('.p-4').filter({
-        has: page.getByRole('heading', {
-        name: 'Stoneware Latte Mug',
-        }),
-    });
-
-    await item2
-        .getByRole('button', { name: 'Add' })
-        .click();
+    await shop.product(2).addToCart();
+    await shop.product(11).addToCart();
 });
 
 test('AC-CHECKOUT-05 - Retry Payment', async ({ page }) => {
     // First make Payment fail
-    await page.goto('/cart');
-    await page.getByRole('button', { name: 'Proceed to Checkout' }).click();
+    const cart = new CartPage(page);
+    await cart.goto();
+    await cart.checkout();
 
-    const fillDemoButton = page.getByRole('button', {
-        name: 'Use Demo Information'
+    const checkout = new CheckoutDetailsPage(page);
+    const customerForm = checkout.customerForm();
+    await customerForm.setFirstname("First");
+    await customerForm.setLastname("Last");
+    await customerForm.setEmail("customer@example.com");
+    await customerForm.setAddress1("123 Main St");
+    await customerForm.setCity("City");
+    await customerForm.setProvince("Province");
+    await customerForm.setPostalcode("T2P 1J9");
+    await customerForm.setCountry("Country");
+
+    const orderSummary = checkout.orderSummary();
+    await orderSummary.acceptOrder();
+
+    const checkoutPayment = new CheckoutPaymentPage(page);
+    const stripePaymentForm = checkoutPayment.stripePaymentForm();
+
+    await stripePaymentForm.fillCard({
+        number: '4000000000009995',
+        expiry: '1234',
+        cvc: '123',
+        zip: '12345',
     });
 
-    await fillDemoButton.click();
-
-    const continueButton = page.getByRole('button', {
-        name: 'Continue to Payment'
-    });
-
-    await expect(continueButton).toBeEnabled();
-    await continueButton.click();
-
-    const cardFrame = page.frameLocator('iframe[title*="Secure card payment input"]');
-
-    await cardFrame.getByPlaceholder('Card number').fill('4000000000009995');
-    await cardFrame.getByPlaceholder('MM / YY').fill('1234');
-    await cardFrame.getByPlaceholder('CVC').fill('123');
-    await cardFrame.getByPlaceholder('ZIP').fill('12345');
-
-    await page.getByRole('button', { name: 'Complete Purchase' }).click();
+    await stripePaymentForm.submitPayment();
 
     await expect(
         page.getByTestId('payment-error')
     ).toContainText('Your card has insufficient funds. Try a different card.');
 
-    await expect(page).toHaveURL(/checkoutpayment/);
+    await page.waitForURL(/checkoutpayment/, {
+        timeout: 15000,
+    });
 
     // Retry payment is successful
-    await cardFrame.getByPlaceholder('Card number').fill('4242424242424242');
-    await cardFrame.getByPlaceholder('MM / YY').fill('1234');
-    await cardFrame.getByPlaceholder('CVC').fill('123');
-    await cardFrame.getByPlaceholder('ZIP').fill('12345');
+    await stripePaymentForm.fillCard({
+        number: '4242424242424242',
+        expiry: '1234',
+        cvc: '123',
+        zip: '12345',
+    });
 
-    await page.getByRole('button', { name: 'Complete Purchase' }).click();
+    await stripePaymentForm.submitPayment();
     
     // Assert success
     await expect(page).toHaveURL('/checkoutsuccess');
+    const checkoutSuccess = new CheckoutSuccessPage(page);
 
-    await expect(
-        page.getByRole('heading', { name: 'Payment Successful' })
-    ).toBeVisible();
-
-    await expect(
-        page.getByRole('button', { name: 'Continue Shopping' })
-    ).toBeVisible();
-
-    await expect(
-        page.getByRole('button', { name: 'View Orders' })
-    ).toBeVisible();
+    await checkoutSuccess.expectPaymentSuccessMsg();
+    await expect(checkoutSuccess.continueShoppingBtn).toBeVisible();
+    await expect(checkoutSuccess.viewOrdersBtn).toBeVisible();
 });
