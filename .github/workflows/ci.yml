@@ -2,6 +2,8 @@ name: CI & Deploy
 
 on:
   push:
+    branches:
+      - main
   pull_request:
 
 jobs:
@@ -61,7 +63,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: frontend-dist
+          path: dist
 
       - name: Deploy to Render
         run: curl -X POST "${{ secrets.RENDER_DEPLOY_HOOK }}"
@@ -70,7 +75,6 @@ jobs:
         run: npm install -g netlify-cli
 
       - name: Deploy to Netlify
-        working-directory: ecommerce-front
         env:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
           NETLIFY_PROJECT_ID: ${{ secrets.NETLIFY_PROJECT_ID }}
