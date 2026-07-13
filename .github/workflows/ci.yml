@@ -95,7 +95,8 @@ jobs:
           netlify deploy \
             --dir=dist \
             --prod \
-            --no-build
+            --no-build \
+            --json > deploy.json
 
       - name: Save deploy URL
         run: cat deploy.json | jq -r .deploy_url > deploy-url.txt
