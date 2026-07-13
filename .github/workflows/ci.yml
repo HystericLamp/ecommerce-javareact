@@ -88,7 +88,7 @@ jobs:
           echo "CLI version:"
           netlify --version
 
-          echo "Site ID length: ${#NETLIFY_PROJECT_ID}"
+          netlify api getSite --data "{\"site_id\":\"$NETLIFY_PROJECT_ID\"}"
           netlify sites:list
 
       - uses: actions/download-artifact@v4
