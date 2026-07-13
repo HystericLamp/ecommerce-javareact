@@ -40,6 +40,10 @@ jobs:
             sleep 15
           done
 
+      - name: Debug backend
+        run: |
+          curl -v https://ecommerce-javareact.onrender.com/actuator/health
+
       - name: Download deploy URL
         uses: actions/download-artifact@v4
         with:
