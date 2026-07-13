@@ -113,6 +113,12 @@ jobs:
           name: frontend-dist
           path: dist
 
+      - name: Inspect downloaded artifact
+        run: |
+          pwd
+          find . -maxdepth 3 -type d | sort
+          find . -maxdepth 3 -type f | head -100
+
       - name: Deploy to Netlify
         env:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
