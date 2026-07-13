@@ -45,6 +45,7 @@ jobs:
         with:
           name: deploy-url
           run-id: ${{ github.event.workflow_run.id }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Set BASE_URL
         run: echo "BASE_URL=$(cat deploy-url.txt)" >> $GITHUB_ENV
