@@ -80,31 +80,22 @@ jobs:
       - name: Install Netlify CLI
         run: npm install -g netlify-cli@latest
 
-      - name: Show IDs
-        env:
-          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
-          NETLIFY_PROJECT_ID: ${{ secrets.NETLIFY_PROJECT_ID }}
-        run: |
-          netlify api getSite --data "{\"site_id\":\"$NETLIFY_PROJECT_ID\"}" \
-            | jq '.id, .site_id, .name'
-
       - uses: actions/download-artifact@v4
         with:
           name: frontend-dist
           path: dist
 
-      - name: Link site
+      - name: Deploy to Netlify
         env:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
           NETLIFY_PROJECT_ID: ${{ secrets.NETLIFY_PROJECT_ID }}
         run: |
           netlify link --id "$NETLIFY_PROJECT_ID"
 
-      - name: Deploy
-        env:
-          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
-        run: |
-          netlify deploy --dir=dist --prod
+          netlify deploy \
+            --dir=dist \
+            --prod \
+            --no-build
 
       - name: Save deploy URL
         run: cat deploy.json | jq -r .deploy_url > deploy-url.txt
