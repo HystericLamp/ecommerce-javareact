@@ -83,14 +83,18 @@ jobs:
       - name: Debug Netlify
         env:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
-          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_PROJECT_ID }}
+          NETLIFY_PROJECT_ID: ${{ secrets.NETLIFY_PROJECT_ID }}
         run: |
           echo "CLI version:"
           netlify --version
 
           echo "Site ID length: ${#NETLIFY_PROJECT_ID}"
+          netlify sites:list
 
-          netlify status
+      - uses: actions/download-artifact@v4
+        with:
+          name: frontend-dist
+          path: dist
 
       - name: Deploy to Netlify
         env:
