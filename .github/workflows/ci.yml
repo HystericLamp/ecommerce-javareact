@@ -78,7 +78,7 @@ jobs:
         run: curl -X POST "${{ secrets.RENDER_DEPLOY_HOOK }}"
 
       - name: Install Netlify CLI
-        run: npm install -g netlify-cli
+        run: npm install -g netlify-cli@latest
 
       - name: Debug Netlify
         env:
