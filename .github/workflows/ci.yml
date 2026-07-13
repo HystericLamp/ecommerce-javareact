@@ -91,6 +91,23 @@ jobs:
           netlify api getSite --data "{\"site_id\":\"$NETLIFY_PROJECT_ID\"}"
           netlify sites:list
 
+      - name: Verify deploy inputs
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_PROJECT_ID: ${{ secrets.NETLIFY_PROJECT_ID }}
+        run: |
+          echo "PWD: $(pwd)"
+          echo "Directory contents:"
+          ls -la
+
+          echo "dist exists?"
+          ls -la dist || true
+
+          echo "Site ID length: ${#NETLIFY_PROJECT_ID}"
+
+          netlify api getSite --data "{\"site_id\":\"$NETLIFY_PROJECT_ID\"}" >/dev/null && \
+            echo "Site lookup OK"
+
       - uses: actions/download-artifact@v4
         with:
           name: frontend-dist
@@ -105,8 +122,7 @@ jobs:
             --dir=dist \
             --prod \
             --site "$NETLIFY_PROJECT_ID" \
-            --auth "$NETLIFY_AUTH_TOKEN" \
-            --json > deploy.json
+            --auth "$NETLIFY_AUTH_TOKEN" 
 
       - name: Save deploy URL
         run: cat deploy.json | jq -r .deploy_url > deploy-url.txt
