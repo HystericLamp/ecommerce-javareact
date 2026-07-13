@@ -80,55 +80,31 @@ jobs:
       - name: Install Netlify CLI
         run: npm install -g netlify-cli@latest
 
-      - name: Debug Netlify
+      - name: Show IDs
         env:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
           NETLIFY_PROJECT_ID: ${{ secrets.NETLIFY_PROJECT_ID }}
         run: |
-          echo "CLI version:"
-          netlify --version
-
-          netlify api getSite --data "{\"site_id\":\"$NETLIFY_PROJECT_ID\"}"
-          netlify sites:list
-
-      - name: Verify deploy inputs
-        env:
-          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
-          NETLIFY_PROJECT_ID: ${{ secrets.NETLIFY_PROJECT_ID }}
-        run: |
-          echo "PWD: $(pwd)"
-          echo "Directory contents:"
-          ls -la
-
-          echo "dist exists?"
-          ls -la dist || true
-
-          echo "Site ID length: ${#NETLIFY_PROJECT_ID}"
-
-          netlify api getSite --data "{\"site_id\":\"$NETLIFY_PROJECT_ID\"}" >/dev/null && \
-            echo "Site lookup OK"
+          netlify api getSite --data "{\"site_id\":\"$NETLIFY_PROJECT_ID\"}" \
+            | jq '.id, .site_id, .name'
 
       - uses: actions/download-artifact@v4
         with:
           name: frontend-dist
           path: dist
 
-      - name: Inspect downloaded artifact
-        run: |
-          pwd
-          find . -maxdepth 3 -type d | sort
-          find . -maxdepth 3 -type f | head -100
-
-      - name: Deploy to Netlify
+      - name: Link site
         env:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
           NETLIFY_PROJECT_ID: ${{ secrets.NETLIFY_PROJECT_ID }}
         run: |
-          netlify deploy \
-            --dir=dist \
-            --prod \
-            --site "$NETLIFY_PROJECT_ID" \
-            --auth "$NETLIFY_AUTH_TOKEN" 
+          netlify link --id "$NETLIFY_PROJECT_ID"
+
+      - name: Deploy
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+        run: |
+          netlify deploy --dir=dist --prod
 
       - name: Save deploy URL
         run: cat deploy.json | jq -r .deploy_url > deploy-url.txt
