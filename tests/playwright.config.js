@@ -40,8 +40,9 @@ export default defineConfig({
     apiBaseURL,
     headless: true,
 
-    screenshot: 'only-on-failure',
     trace: 'retain-on-failure',
+    screenshot: 'only-on-failure',
+    video: 'retain-on-failure',
   },
 
   /* Configure projects for major browsers */

@@ -7,28 +7,6 @@ test('"/home" page should exist @smoke', async ({ page, baseURL }) => {
   expect(response.ok()).toBeTruthy();
 
   await expect(page).toHaveURL(/\/home/);
-
-  page.on('console', msg => {
-    console.log(`BROWSER ${msg.type()}: ${msg.text()}`);
-  });
-
-  page.on('requestfailed', request => {
-    console.log(
-      'REQUEST FAILED:',
-      request.url(),
-      request.failure()?.errorText
-    );
-  });
-
-  page.on('response', response => {
-    if (response.status() >= 400) {
-      console.log(
-        'BAD RESPONSE:',
-        response.status(),
-        response.url()
-      );
-    }
-  });
 });
 
 test('"/cart" page should exist', async ({ page, baseURL }) => {
