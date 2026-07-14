@@ -24,7 +24,7 @@ test.beforeEach(async ({ page, context }) => {
     await shop.product(11).addToCart();
 });
 
-test('AC-CHECKOUT-03 - Process Payment', async ({ page }) => {
+test('AC-CHECKOUT-03 - Process Payment @smoke', async ({ page }) => {
     // Goto Cart then Checkout
     const cart = new CartPage(page);
     await cart.goto();

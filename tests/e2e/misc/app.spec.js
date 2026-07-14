@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 
-test('"/home" page should exist @smoke', async ({ page, baseURL }) => {
+test('"/home" page should exist', async ({ page, baseURL }) => {
   const response = await page.goto('/home', { waitUntil: 'domcontentloaded' });
 
   expect(response).not.toBeNull();
