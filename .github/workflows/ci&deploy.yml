@@ -66,17 +66,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Debug secrets
-        env:
-          NETLIFY_PROJECT_ID: ${{ secrets.NETLIFY_PROJECT_ID }}
-        run: |
-          if [ -z "$NETLIFY_PROJECT_ID" ]; then
-            echo "NETLIFY_PROJECT_ID is EMPTY"
-          else
-            echo "NETLIFY_PROJECT_ID is set"
-            echo "Length: ${#NETLIFY_PROJECT_ID}"
-          fi
-
       - name: Deploy to Render
         run: curl -X POST "${{ secrets.RENDER_DEPLOY_HOOK }}"
 
@@ -87,6 +76,19 @@ jobs:
         with:
           name: frontend-dist
           path: dist
+
+      - name: Verify frontend env
+        working-directory: ecommerce-front
+        env:
+          VITE_STRIPE_PUBLIC_KEY: ${{ secrets.VITE_STRIPE_PUBLIC_KEY }}
+        run: |
+          if [ -z "$VITE_STRIPE_PUBLIC_KEY" ]; then
+            echo "❌ Stripe key is EMPTY"
+            exit 1
+          else
+            echo "✅ Stripe key is present"
+            echo "Length: ${#VITE_STRIPE_PUBLIC_KEY}"
+          fi
 
       - name: Deploy to Netlify
         env:
