@@ -12,6 +12,7 @@ export default function Checkout() {
   const { user } = useAuth();
   const navigate = useNavigate();
   const submitting = useRef(false);
+  const API_URL = import.meta.env.VITE_API_URL;
 
   const [customer, setCustomer] = useState({
     email: user?.email || "",
@@ -67,7 +68,7 @@ export default function Checkout() {
         }))
       };
 
-      const response = await fetch("/api/shop/checkoutpayment", {
+      const response = await fetch(`${API_URL}/api/shop/checkout`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
