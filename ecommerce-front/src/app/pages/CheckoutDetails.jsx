@@ -67,7 +67,7 @@ export default function Checkout() {
         }))
       };
 
-      const response = await fetch("/api/shop/checkout", {
+      const response = await fetch("/api/shop/checkoutpayment", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
