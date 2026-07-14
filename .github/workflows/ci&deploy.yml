@@ -30,6 +30,19 @@ jobs:
         working-directory: ecommerce-front
         run: npm ci
 
+      - name: Verify frontend env
+        working-directory: ecommerce-front
+        env:
+          VITE_STRIPE_PUBLIC_KEY: ${{ secrets.VITE_STRIPE_PUBLIC_KEY }}
+        run: |
+          if [ -z "$VITE_STRIPE_PUBLIC_KEY" ]; then
+            echo "❌ Stripe key is EMPTY"
+            exit 1
+          else
+            echo "✅ Stripe key is present"
+            echo "Length: ${#VITE_STRIPE_PUBLIC_KEY}"
+          fi
+
       - name: Build frontend
         working-directory: ecommerce-front
         env:
@@ -76,19 +89,6 @@ jobs:
         with:
           name: frontend-dist
           path: dist
-
-      - name: Verify frontend env
-        working-directory: ecommerce-front
-        env:
-          VITE_STRIPE_PUBLIC_KEY: ${{ secrets.VITE_STRIPE_PUBLIC_KEY }}
-        run: |
-          if [ -z "$VITE_STRIPE_PUBLIC_KEY" ]; then
-            echo "❌ Stripe key is EMPTY"
-            exit 1
-          else
-            echo "✅ Stripe key is present"
-            echo "Length: ${#VITE_STRIPE_PUBLIC_KEY}"
-          fi
 
       - name: Deploy to Netlify
         env:
