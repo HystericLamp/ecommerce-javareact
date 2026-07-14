@@ -12,11 +12,12 @@ import { CartProvider } from "../src/features/cart/context/CartContext";
 
 const stripeKey = import.meta.env.VITE_STRIPE_PUBLIC_KEY;
 
-if (!stripeKey) {
-  throw new Error("VITE_STRIPE_PUBLIC_KEY is missing");
-}
+console.log("Stripe key:", stripeKey);
+console.log("All env vars:", import.meta.env);
 
-const stripePromise = loadStripe(stripeKey);
+const stripePromise = stripeKey
+  ? loadStripe(stripeKey)
+  : Promise.resolve(null);
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
