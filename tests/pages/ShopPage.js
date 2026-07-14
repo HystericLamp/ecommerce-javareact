@@ -11,7 +11,11 @@ export class ShopPage {
   }
 
   async goto() {
-    await this.page.goto('/shop');
+    await this.page.goto('/shop', {
+      aitUntil: 'domcontentloaded',
+    });
+
+    await this.heading.waitFor();
   }
 
   product(id, name) {
