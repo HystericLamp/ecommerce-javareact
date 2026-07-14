@@ -27,7 +27,7 @@ public class DraftOrderItem
     private Integer quantity;
 
     @ManyToOne
-    @JoinColumn(name = "order_id", nullable = false)
+    @JoinColumn(name = "draft_order_id", nullable = false)
     private DraftOrder draftOrder;
 
 	public Long getProductId() { return productId; }
