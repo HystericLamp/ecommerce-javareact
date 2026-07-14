@@ -10,6 +10,8 @@ import App from './app/App';
 import { AuthProvider } from './context/AuthContext';
 import { CartProvider } from "../src/features/cart/context/CartContext";
 
+console.log("Stripe key:", import.meta.env.VITE_STRIPE_PUBLIC_KEY);
+
 const stripePromise = loadStripe(
   import.meta.env.VITE_STRIPE_PUBLIC_KEY
 );
