@@ -24,7 +24,7 @@ CREATE TABLE IF NOT EXISTS products (
 
 CREATE TABLE IF NOT EXISTS draft_orders (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    user_id INTEGER NOT NULL,
+    user_id INTEGER,
     total INTEGER NOT NULL CHECK (total >= 0),
     currency TEXT NOT NULL,
     status TEXT NOT NULL, -- PENDING, COMPLETED, EXPIRED
