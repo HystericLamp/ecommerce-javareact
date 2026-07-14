@@ -103,6 +103,12 @@ jobs:
           name: frontend-dist
           path: dist
 
+      - name: Verify deployed artifact
+        run: |
+          grep -R "Stripe key" dist/assets || true
+          grep -R "VITE_STRIPE_PUBLIC_KEY" dist/assets || true
+          ls -la dist/assets
+
       - name: Deploy to Netlify
         env:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
