@@ -10,11 +10,13 @@ import App from './app/App';
 import { AuthProvider } from './context/AuthContext';
 import { CartProvider } from "../src/features/cart/context/CartContext";
 
-console.log("Stripe key:", import.meta.env.VITE_STRIPE_PUBLIC_KEY);
+const stripeKey = import.meta.env.VITE_STRIPE_PUBLIC_KEY;
 
-const stripePromise = loadStripe(
-  import.meta.env.VITE_STRIPE_PUBLIC_KEY
-);
+if (!stripeKey) {
+  throw new Error("VITE_STRIPE_PUBLIC_KEY is missing");
+}
+
+const stripePromise = loadStripe(stripeKey);
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
