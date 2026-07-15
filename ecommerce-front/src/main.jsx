@@ -12,9 +12,6 @@ import { CartProvider } from "../src/features/cart/context/CartContext";
 
 const stripeKey = import.meta.env.VITE_STRIPE_PUBLIC_KEY;
 
-console.log("Stripe key:", stripeKey);
-console.log("All env vars:", import.meta.env);
-
 const stripePromise = stripeKey
   ? loadStripe(stripeKey)
   : Promise.resolve(null);
