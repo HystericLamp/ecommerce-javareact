@@ -1,48 +1,90 @@
 # Requirements & Assumptions
 
-This section captures interpreted requirements and assumptions based on available information.
+This document captures the functional requirements, assumptions, and open questions for the ecommerce application.
 
 ---
 
-## Product Browsing
-**Requirement:**
-- Users can view a list of available products
+# Product Browsing
 
-**Assumptions:**
-- Product list is paginated
-- Products have name, price, and image
+## Functional Requirements
 
-**Open Questions:**
+| ID | Requirement |
+|----|-------------|
+| RQ-PROD-001 | Users can view a paginated list of available products. |
+| RQ-PROD-002 | Each product displays a name, price, and image. |
+
+## Assumptions
+
+- Products are displayed in a consistent order.
+- Product images are available for all products.
+
+## Open Questions
+
 - Is search functionality required?
+- Should users be able to sort products?
 
 ---
 
-## Cart
-**Requirement:**
-- Users can add and remove products from the cart
+# Shopping Cart
 
-**Assumptions:**
-- Cart persists during the browser session
-- Quantity can be updated from the cart page
+## Functional Requirements
 
-**Open Questions:**
-- Is there a maximum quantity per product?
+| ID | Requirement |
+|----|-------------|
+| RQ-CART-001 | Users can add a product to the shopping cart. |
+| RQ-CART-002 | Users can remove a product from the shopping cart. |
+| RQ-CART-003 | Users can update the quantity of products in the cart. |
+| RQ-CART-004 | Cart contents persist for the duration of the browser session. |
+
+## Assumptions
+
+- Product quantity cannot be less than one.
+- Updating the quantity immediately updates the cart total.
+
+## Open Questions
+
+- Is there a maximum quantity allowed per product?
+- Should cart contents persist after the user logs out?
 
 ---
 
-## Checkout
+# Authentication
 
-### Requirements
-- Users can successfully complete checkout after valid payment authorization
-- Orders are created before payment confirmation
-- Payment status is tracked
+## Functional Requirements
 
-### Assumptions
-- Guest checkout is allowed
-- Single payment provider
-- Single currency
+| ID | Requirement |
+|----|-------------|
+| RQ-AUTH-001 | Registered users can sign in using valid credentials. |
+| RQ-AUTH-002 | Signed-in users can sign out of the application. |
 
-### Decisions
-- Failed payments can be retried
-- Each retry creates a new payment attempt for the same order
+## Assumptions
 
+- Authentication uses email and password.
+- Invalid credentials display an error message.
+
+## Open Questions
+
+- Are password reset and account registration supported?
+
+---
+
+# Checkout
+
+## Functional Requirements
+
+| ID | Requirement |
+|----|-------------|
+| RQ-CHK-001 | Users can complete checkout after successful payment authorization. |
+| RQ-CHK-002 | An order is created before payment confirmation. |
+| RQ-CHK-003 | Payment status is recorded for each order. |
+| RQ-CHK-004 | Users can retry a failed payment attempt. |
+
+## Assumptions
+
+- Guest checkout is allowed.
+- A single payment provider is supported.
+- Transactions use a single currency.
+
+## Business Decisions
+
+- Each payment retry creates a new payment attempt associated with the same order.
