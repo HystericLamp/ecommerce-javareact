@@ -77,13 +77,6 @@ jobs:
         with:
           name: frontend-dist
           path: dist
-      
-      - name: Debug Netlify access
-        env:
-          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
-        run: |
-          netlify status
-          netlify sites:list
 
       - name: Verify Netlify sites
         env:
