@@ -20,6 +20,14 @@ jobs:
       - working-directory: tests
         run: npx playwright install --with-deps
 
+      - name: Wait for Backend
+        run: |
+          until curl -f https://ecommerce-javareact.onrender.com/actuator/health
+          do
+            echo "Waiting for backend..."
+            sleep 15
+          done
+
       - name: Run regression suite
         working-directory: tests
         env:
