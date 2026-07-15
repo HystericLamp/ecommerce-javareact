@@ -78,12 +78,6 @@ jobs:
           name: frontend-dist
           path: dist
 
-      - name: Verify Netlify sites
-        env:
-          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
-        run: |
-          netlify sites:list
-
       - name: Deploy to Netlify
         env:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
