@@ -64,6 +64,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
       - name: Deploy to Render
         run: curl -X POST "${{ secrets.RENDER_DEPLOY_HOOK }}"
 
@@ -74,6 +77,13 @@ jobs:
         with:
           name: frontend-dist
           path: dist
+      
+      - name: Debug Netlify access
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+        run: |
+          netlify status
+          netlify sites:list
 
       - name: Deploy to Netlify
         env:
