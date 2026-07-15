@@ -21,8 +21,10 @@ jobs:
         run: npx playwright install --with-deps
 
       - name: Wait for Backend
+        env:
+          BACKEND_URL: ${{ vars.BACKEND_URL }}
         run: |
-          until curl -f https://ecommerce-javareact.onrender.com/actuator/health
+          until curl -f "$BACKEND_URL/actuator/health"
           do
             echo "Waiting for backend..."
             sleep 15
@@ -31,7 +33,7 @@ jobs:
       - name: Run regression suite
         working-directory: tests
         env:
-          BASE_URL: https://lampecommerce.netlify.app
+          BASE_URL: ${{ vars.FRONTEND_URL }}
         run: npm run test:e2e
 
       - name: Upload report
