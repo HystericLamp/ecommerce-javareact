@@ -34,7 +34,7 @@ This document captures the functional requirements, assumptions, and open questi
 | RQ-CART-001 | Users can add a product to the shopping cart. |
 | RQ-CART-002 | Users can remove a product from the shopping cart. |
 | RQ-CART-003 | Users can update the quantity of products in the cart. |
-| RQ-CART-004 | Cart contents persist for the duration of the browser session. |
+| RQ-CART-004 | Users cannot have an item quantity at 0 or less |
 
 ## Assumptions
 

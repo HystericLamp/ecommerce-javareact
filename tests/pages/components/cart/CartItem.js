@@ -19,6 +19,11 @@ export class CartItem {
     await this.increaseBtn.click();
   }
 
+  async increaseQuantity(value) {
+    await this.quantity.fill(String(value));
+    await this.quantity.blur();
+  }
+
   async decrease() {
     await this.decreaseBtn.click();
   }
@@ -27,7 +32,11 @@ export class CartItem {
     await this.removeBtn.click();
   }
 
-  async expectTotal(amount) {
-    await expect(this.total).toHaveText(amount);
+  async expectQuantity(quantity) {
+    await expect(this.quantity).toHaveValue(String(quantity));
+  }
+
+  async expectTotal(total) {
+    await expect(this.total).toHaveText(`$${total.toFixed(2)}`);
   }
 }

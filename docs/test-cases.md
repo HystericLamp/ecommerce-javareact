@@ -5,9 +5,9 @@
 | TC-CART-001 | RQ-CART-001 | TS-CART-001 | High     | Yes       |
 | TC-CART-002 | RQ-CART-001 | TS-CART-002 | High     | Yes       |
 | TC-CART-003 | RQ-CART-003 | TS-CART-003 | High     | Yes       |
-| TC-CART-004 | RQ-CART-003 | TS-CART-005 | High     | Yes       |
-| TC-CART-005 | RQ-CART-002 | TS-CART-004 | High     | Yes       |
-| TC-CART-006 | RQ-CART-004 | TS-CART-006 | Medium   | Yes       |
+| TC-CART-004 | RQ-CART-004 | TS-CART-004 | Medium   | Yes       |
+| TC-CART-005 | RQ-CART-003 | TS-CART-006 | High     | Yes       |
+| TC-CART-006 | RQ-CART-002 | TS-CART-005 | High     | Yes       |
 | TC-PROD-001 | RQ-PROD-001 | TS-PROD-001 | High     | Yes       |
 | TC-PROD-002 | RQ-PROD-001 | TS-PROD-002 | Medium   | Yes       |
 | TC-PROD-003 | RQ-PROD-001 | TS-PROD-003 | Medium   | Yes       |
@@ -41,7 +41,7 @@ High
 ### Automation
 - Status: Automated
 - Framework: Playwright
-- Test file: `tests/cart.spec.ts`
+- Test file: `tests/e2e/cart/add-item.spec.ts`
 
 ### Preconditions
 
@@ -78,7 +78,7 @@ High
 ### Automation
 - Status: Automated
 - Framework: Playwright
-- Test file: `tests/cart.spec.ts`
+- Test file: `tests/e2e/cart/add-item.spec.ts`
 
 ### Preconditions
 
@@ -117,7 +117,7 @@ High
 ### Automation
 - Status: Automated
 - Framework: Playwright
-- Test file: `tests/cart.spec.ts`
+- Test file: `tests/e2e/cart/quantity.spec.ts`
 
 ### Preconditions
 
@@ -137,13 +137,13 @@ High
 
 ---
 
-## TC-CART-004 - Cart Total Updates After Quantity Change
+## TC-CART-004 - Decrease Product Quantity to Zero
 
 ### Requirement
-RQ-CART-003
+RQ-CART-004
 
 ### Scenario
-TS-CART-005
+TS-CART-004
 
 ### Priority
 High
@@ -151,10 +151,43 @@ High
 ### Automation
 - Status: Automated
 - Framework: Playwright
-- Test file: `tests/cart.spec.ts`
+- Test file: `tests/e2e/cart/quantity.spec.js`
 
 ### Preconditions
 
+- Cart contains a product with quantity 1.
+
+### Test Steps
+
+| Step | Action |
+|------|--------|
+| 1 | Decrease the product quantity from 1 to 0 (or click the decrement control). |
+
+### Expected Results
+
+| Step | Expected Result |
+|------|-----------------|
+| 1 | Product is removed from the cart, and the cart badge and total are updated accordingly. |
+
+---
+
+## TC-CART-005 - Cart Total Updates After Quantity Change
+
+### Requirement
+RQ-CART-003
+
+### Scenario
+TS-CART-006
+
+### Priority
+High
+
+### Automation
+- Status: Automated
+- Framework: Playwright
+- Test file: `tests/e2e/cart/quantity.spec.js`
+
+### Preconditions
 - Cart contains a product with quantity 1.
 
 ### Test Steps
@@ -171,13 +204,13 @@ High
 
 ---
 
-## TC-CART-005 - Remove Product from Cart
+## TC-CART-006 - Remove Product from Cart
 
 ### Requirement
 RQ-CART-002
 
 ### Scenario
-TS-CART-004
+TS-CART-005
 
 ### Priority
 High
@@ -185,7 +218,7 @@ High
 ### Automation
 - Status: Automated
 - Framework: Playwright
-- Test file: `tests/cart.spec.ts`
+- Test file: `tests/e2e/cart/remove-item.spec.js`
 
 ### Preconditions
 
@@ -202,42 +235,6 @@ High
 | Step | Expected Result |
 |------|-----------------|
 | 1 | Product is removed and the cart badge and total are updated accordingly. |
-
----
-
-## TC-CART-006 - Cart Persists After Page Refresh
-
-### Requirement
-RQ-CART-004
-
-### Scenario
-TS-CART-006
-
-### Priority
-Medium
-
-### Automation
-- Status: Automated
-- Framework: Playwright
-- Test file: `tests/cart.spec.ts`
-
-### Preconditions
-
-- Cart contains one or more products.
-
-### Test Steps
-
-| Step | Action |
-|------|--------|
-| 1 | Refresh the browser page. |
-| 2 | Open the shopping cart. |
-
-### Expected Results
-
-| Step | Expected Result |
-|------|-----------------|
-| 1 | Page reloads successfully. |
-| 2 | Previously added products remain in the cart with the correct quantities and totals. |
 
 ---
 

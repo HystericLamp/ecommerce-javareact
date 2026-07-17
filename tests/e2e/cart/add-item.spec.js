@@ -10,7 +10,7 @@ test.beforeEach(async ({ page }) => {
   });
 });
 
-test('AC-CART-01 user can add item to cart @smoke', async ({ page }) => {
+test('TC-CART-001 Add Product to Cart @smoke', async ({ page }) => {
   const shop = new ShopPage(page);
   await shop.goto();
   const product = shop.product(2);
@@ -24,35 +24,26 @@ test('AC-CART-01 user can add item to cart @smoke', async ({ page }) => {
   await expect(cartItem.quantity).toHaveValue('1');
 });
 
-test('AC-CART-03 decreasing quantity from 1 removes the item', async ({ page }) => {
-  // Add Item from Shop page
+test('TC-CART-002 Add Multiple Products to Cart', async ({ page }) => {
+  // Add items
   const shop = new ShopPage(page);
   await shop.goto();
-  const product = shop.product(2);
-  await product.addToCart();
 
-  // Press "-" button
-  await product.decrease();
+  const product1 = shop.product(1);
+  await product1.addToCart();
 
-  // Check that it can't go to 0 and the "Add" button is back
-  await expect(product.addBtn).toBeVisible();
-});
+  const product2 = shop.product(11);
+  await product2.addToCart();
 
-test('AC-CART-04 adding existing Item into the Cart should increment quantity', async ({ page }) => {
-  const shop = new ShopPage(page);
-  await shop.goto();
-  const product = shop.product(1);
+  // Check cart
+  const cart = new CartPage(page);
+  await cart.goto();
+  
+  const cartItem1 = cart.item(1);
+  await expect(cartItem1.name).toHaveText('Ethiopian Sunrise');
+  await expect(cartItem1.quantity).toHaveValue('1');
 
-  // Check initial "Add" state
-  await expect(product.addBtn).toBeVisible();
-  await product.addToCart();
-
-  // Check after "add" state
-  await expect(product.quantity).toHaveText(/1\s+in cart/);
-  await expect(product.increaseBtn).toBeVisible();
-  await expect(product.decreaseBtn).toBeVisible();
-
-  // Pressing "+" button
-  await product.increase();
-  await expect(product.quantity).toHaveText(/2\s+in cart/);;
+  const cartItem2 = cart.item(11);
+  await expect(cartItem2.name).toHaveText('Stoneware Latte Mug');
+  await expect(cartItem2.quantity).toHaveValue('1');
 });

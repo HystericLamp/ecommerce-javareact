@@ -22,9 +22,9 @@ This document defines the high-level test scenarios derived from the functional 
 | TS-CART-001 | RQ-CART-001 | Verify a user can add a product to the cart. | High |
 | TS-CART-002 | RQ-CART-001 | Verify a user can add multiple products to the cart. | High |
 | TS-CART-003 | RQ-CART-003 | Verify a user can update the quantity of a product. | High |
-| TS-CART-004 | RQ-CART-002 | Verify a user can remove a product from the cart. | High |
-| TS-CART-005 | RQ-CART-003 | Verify cart totals update after quantity changes. | High |
-| TS-CART-006 | RQ-CART-004 | Verify the cart persists after a page refresh. | Medium |
+| TS-CART-004 | RQ-CART-004 | Verify a user cannot have an item quantity of 0 or less. | Medium |
+| TS-CART-005 | RQ-CART-002 | Verify a user can remove a product from the cart. | High |
+| TS-CART-006 | RQ-CART-003 | Verify cart totals update after quantity changes. | High |
 
 ---
 

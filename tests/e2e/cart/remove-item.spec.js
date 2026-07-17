@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test';
 import { CartPage } from '../../pages/CartPage';
 import { ShopPage } from '../../pages/ShopPage';
 
-test('AC-CART-07 remove item from cart', async ({ page }) => {
+test('TC-CART-006 Remove Product from Cart', async ({ page }) => {
   // First add an item to Cart
   const shop = new ShopPage(page);
   await shop.goto();
