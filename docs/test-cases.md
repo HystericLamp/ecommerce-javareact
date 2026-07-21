@@ -9,9 +9,7 @@
 | TC-CART-005 | RQ-CART-003 | TS-CART-006 | High     | Yes       |
 | TC-CART-006 | RQ-CART-002 | TS-CART-005 | High     | Yes       |
 | TC-PROD-001 | RQ-PROD-001 | TS-PROD-001 | High     | Yes       |
-| TC-PROD-002 | RQ-PROD-001 | TS-PROD-002 | Medium   | Yes       |
-| TC-PROD-003 | RQ-PROD-001 | TS-PROD-003 | Medium   | Yes       |
-| TC-PROD-004 | RQ-PROD-002 | TS-PROD-004 | High     | Yes       |
+| TC-PROD-002 | RQ-PROD-002 | TS-PROD-002 | High     | Yes       |
 | TC-AUTH-001 | RQ-AUTH-001 | TS-AUTH-001 | High     | Yes       |
 | TC-AUTH-002 | RQ-AUTH-001 | TS-AUTH-002 | High     | Yes       |
 | TC-AUTH-003 | RQ-AUTH-002 | TS-AUTH-003 | High     | Yes       |
@@ -270,79 +268,11 @@ High
 
 | Step | Expected Result |
 |------|-----------------|
-| 1 | A paginated list of available products is displayed. |
+| 1 | A list of available products is displayed. |
 
 ---
 
-## TC-PROD-002 - Load Products During Slow API Response
-
-### Requirement
-RQ-PROD-001
-
-### Scenario
-TS-PROD-002
-
-### Priority
-Medium
-
-### Automation
-- Status: Automated
-- Framework: Playwright
-- Test file: `tests/cart.spec.ts`
-
-### Preconditions
-
-- API response is artificially delayed.
-
-### Test Steps
-
-| Step | Action |
-|------|--------|
-| 1 | Open the product listing page. |
-
-### Expected Results
-
-| Step | Expected Result |
-|------|-----------------|
-| 1 | Application remains responsive and products appear once the response completes. |
-
----
-
-## TC-PROD-003 - Handle Empty Product List
-
-### Requirement
-RQ-PROD-001
-
-### Scenario
-TS-PROD-003
-
-### Priority
-Medium
-
-### Automation
-- Status: Automated
-- Framework: Playwright
-- Test file: `tests/cart.spec.ts`
-
-### Preconditions
-
-- Product API returns no products.
-
-### Test Steps
-
-| Step | Action |
-|------|--------|
-| 1 | Open the product listing page. |
-
-### Expected Results
-
-| Step | Expected Result |
-|------|-----------------|
-| 1 | An empty state is displayed instead of a product list. |
-
----
-
-## TC-PROD-004 - Verify Product Details
+## TC-PROD-002 - Verify Product Details
 
 ### Requirement
 RQ-PROD-002

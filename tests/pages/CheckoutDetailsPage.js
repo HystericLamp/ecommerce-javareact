@@ -5,10 +5,14 @@ import { OrderSummary } from "./components/checkout-details/OrderSummary";
 export class CheckoutDetailsPage {
     constructor(page) {
         this.page = page;
+
+        this.items = page.getByTestId('checkout-item');
     }
 
-    orderItems(id) {
-        return new OrderItems(this.page, id);
+    orderItems(index) {
+        return new OrderItems(
+            this.items.nth(index)
+        );
     }
 
     customerForm() {

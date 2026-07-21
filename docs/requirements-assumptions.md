@@ -10,8 +10,8 @@ This document captures the functional requirements, assumptions, and open questi
 
 | ID | Requirement |
 |----|-------------|
-| RQ-PROD-001 | Users can view a paginated list of available products. |
-| RQ-PROD-002 | Each product displays a name, price, and image. |
+| RQ-PROD-001 | Users can view a list of available products. |
+| RQ-PROD-002 | Each product displays a name and price. |
 
 ## Assumptions
 

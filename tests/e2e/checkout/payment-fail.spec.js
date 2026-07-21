@@ -20,8 +20,8 @@ test.beforeEach(async ({ page, context }) => {
     const shop = new ShopPage(page);
     await shop.goto();
 
-    await shop.product(2).addToCart();
-    await shop.product(11).addToCart();
+    await shop.product(1).addToCart();
+    await shop.product(10).addToCart();
 });
 
 test('AC-CHECKOUT-04 - Failed Payment', async ({ page }) => {
@@ -67,9 +67,9 @@ test('AC-CHECKOUT-04 - Failed Payment', async ({ page }) => {
     await cart.goto();
 
     await expect(page.getByText('Your Cart')).toBeVisible();
-    const item2 = cart.item(2).name;
-    await expect(item2).toBeVisible();
+    const item1 = cart.item(0).name;
+    await expect(item1).toBeVisible();
 
-    const item11 = cart.item(11).name;
-    await expect(item11).toBeVisible();
+    const item2 = cart.item(1).name;
+    await expect(item2).toBeVisible();
 });

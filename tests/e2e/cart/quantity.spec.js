@@ -6,7 +6,8 @@ test.beforeEach(async ({ page, context }) => {
   // First add an item to Cart
   const shop = new ShopPage(page);
   await shop.goto();
-  await shop.product(1).addToCart();
+
+  await shop.product(0).addToCart();
 });
 
 test('TC-CART-003 update quantity of an Item in Cart', async ({ page }) => {
@@ -15,9 +16,9 @@ test('TC-CART-003 update quantity of an Item in Cart', async ({ page }) => {
   await cart.goto();
 
   // Initial
-  const cartItem = cart.item(1);
+  const cartItem = cart.item(0);
   await expect(cartItem.name).toHaveText('Ethiopian Sunrise');
-  await expect(cartItem.quantity).toHaveValue('1');
+  await cartItem.expectQuantity(1);
 
   // Increasing
   await cartItem.increase();
@@ -26,7 +27,7 @@ test('TC-CART-003 update quantity of an Item in Cart', async ({ page }) => {
   await cartItem.increase();
   await cartItem.expectQuantity(3);
 
-  await cartItem.increaseQuantity(5);
+  await cartItem.setQuantity(5);
   await cartItem.expectQuantity(5);
 });
 
@@ -34,13 +35,13 @@ test('TC-CART-004 Decrease Product Quantity to Zero (shop)', async ({ page }) =>
   // Add Item from Shop page
   const shop = new ShopPage(page);
   await shop.goto();
-  const product = shop.product(1);
+  const product = shop.product(0);
 
   // Press "-" button
   await product.decrease();
 
   // Check that it can't go to 0 and the "Add" button is back
-  await expect(product.addBtn).toBeVisible();
+  await expect(product.addButton).toBeVisible();
 });
 
 test('TC-CART-004 Decrease Product Quantity to Zero (cart)', async ({ page }) => {
@@ -48,10 +49,10 @@ test('TC-CART-004 Decrease Product Quantity to Zero (cart)', async ({ page }) =>
   await cart.goto();
 
   // Initial assertions
-  const cartItem = cart.item(1);
+  const cartItem = cart.item(0);
 
   await expect(cartItem.name).toHaveText('Ethiopian Sunrise');
-  await expect(cartItem.quantity).toHaveValue('1');
+  await cartItem.expectQuantity(1);
 
   // Assert item is removed
   await cartItem.decrease();
@@ -62,14 +63,14 @@ test('TC-CART-005 Cart Total Updates After Quantity Change', async ({ page }) =>
   // Add a second Item
   const shop = new ShopPage(page);
   await shop.goto();
-  await shop.product(2).addToCart();
+  await shop.product(1).addToCart();
 
   const cart = new CartPage(page);
   await cart.goto();
   
   // Initial
-  const cartItem1 = cart.item(1);
-  const cartItem2 = cart.item(2);
+  const cartItem1 = cart.item(0);
+  const cartItem2 = cart.item(1);
   await expect(cartItem1.name).toHaveText('Ethiopian Sunrise');
   await cartItem1.expectTotal(18.00);
   await expect(cartItem2.name).toHaveText('Colombian Supremo');
@@ -82,6 +83,6 @@ test('TC-CART-005 Cart Total Updates After Quantity Change', async ({ page }) =>
   await cartItem2.increase();
   await cartItem2.expectTotal(32.00);
 
-  await cartItem1.increaseQuantity(5);
+  await cartItem1.setQuantity(5);
   await cartItem1.expectTotal(90.00);
 });

@@ -1,17 +1,15 @@
 import { test, expect } from '@playwright/test';
 
 export class OrderItems {
-    constructor(page, id) {
-        this.page = page;
-        this.id = id;
+    constructor(locator) {
+        this.root = locator;
 
-        this.root = page.getByTestId(`order-item-${id}`);
+        this.increaseBtn = locator.getByTestId('increase-button');
+        this.decreaseBtn = locator.getByTestId('decrease-button');
+        this.removeBtn = locator.getByTestId('remove-button');
 
-        this.increaseBtn = this.root.getByTestId(`increase-${id}`);
-        this.decreaseBtn = this.root.getByTestId(`decrease-${id}`);
-        this.removeBtn = this.root.getByTestId(`remove-${id}`);
-        this.quantity = this.root.getByTestId(`quantity-${id}`);
-        this.orderItemTotal = this.root.getByTestId(`order-item-cost-${id}`);
+        this.quantity = locator.getByTestId('checkout-item-quantity');
+        this.orderItemTotal = locator.getByTestId(`checkout-item-cost`);
     }
 
     async increase() {
@@ -26,9 +24,9 @@ export class OrderItems {
         await this.removeBtn.click();
     }
 
-    async setQuantity(value) {
-        await this.quantity.fill(String(value));
-        await this.quantity.press('Enter');
+    async setQuantity(quantity) {
+        await this.quantity.fill(String(quantity));
+        await this.quantity.blur();
     }
 
     async expectQuantity(value) {

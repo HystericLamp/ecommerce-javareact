@@ -6,12 +6,12 @@ test('TC-CART-006 Remove Product from Cart', async ({ page }) => {
   // First add an item to Cart
   const shop = new ShopPage(page);
   await shop.goto();
-  await shop.product(2).addToCart();
+  await shop.product(1).addToCart();
 
   // Check initial state in cart
   const cart = new CartPage(page);
   await cart.goto();
-  const cartItem = cart.item(2);
+  const cartItem = cart.item(0);
   
   await expect(cartItem.name).toHaveText('Colombian Supremo');
   await expect(cartItem.quantity).toHaveValue('1');

@@ -8,8 +8,8 @@ test.beforeEach(async ({ page }) => {
     const shop = new ShopPage(page);
     await shop.goto();
 
-    await shop.product(2).addToCart();
-    await shop.product(11).addToCart();
+    await shop.product(1).addToCart();
+    await shop.product(10).addToCart();
 });
 
 test('AC-CHECKOUT-02 - Update Order', async ({ page }) => {
@@ -22,24 +22,24 @@ test('AC-CHECKOUT-02 - Update Order', async ({ page }) => {
     // Initial quantity state is 1 for each item
     const checkout = new CheckoutDetailsPage(page);
     
-    const checkoutItem2 = checkout.orderItems(2);
-    await checkoutItem2.expectQuantity(1);
-    await checkoutItem2.expectItemTotal("$16.00");
+    const checkoutItem1 = checkout.orderItems(0);
+    await checkoutItem1.expectQuantity(1);
+    await checkoutItem1.expectItemTotal("$16.00");
 
-    const checkoutItem11 = checkout.orderItems(11);
-    await checkoutItem11.expectQuantity(1);
-    await checkoutItem11.expectItemTotal("$22.00");
+    const checkoutItem2 = checkout.orderItems(1);
+    await checkoutItem2.expectQuantity(1);
+    await checkoutItem2.expectItemTotal("$22.00");
 
     // Update items
-    await checkoutItem2.setQuantity(3);
-    await checkoutItem11.setQuantity(2);
+    await checkoutItem1.setQuantity(3);
+    await checkoutItem2.setQuantity(2);
 
     // Assert change
-    await checkoutItem2.expectQuantity(3);
-    await checkoutItem2.expectItemTotal("$48.00");
+    await checkoutItem1.expectQuantity(3);
+    await checkoutItem1.expectItemTotal("$48.00");
 
-    await checkoutItem11.expectQuantity(2);
-    await checkoutItem11.expectItemTotal("$44.00");
+    await checkoutItem2.expectQuantity(2);
+    await checkoutItem2.expectItemTotal("$44.00");
 });
 
 test('Update Order not allow 0 or negative quantity', async ({ page }) => {
@@ -52,22 +52,22 @@ test('Update Order not allow 0 or negative quantity', async ({ page }) => {
     // Initial quantity state is 1 for each item
     const checkout = new CheckoutDetailsPage(page);
     
-    const checkoutItem2 = checkout.orderItems(2);
-    await checkoutItem2.expectQuantity(1);
-    await checkoutItem2.expectItemTotal("$16.00");
+    const checkoutItem1 = checkout.orderItems(0);
+    await checkoutItem1.expectQuantity(1);
+    await checkoutItem1.expectItemTotal("$16.00");
 
-    const checkoutItem11 = checkout.orderItems(11);
-    await checkoutItem11.expectQuantity(1);
-    await checkoutItem11.expectItemTotal("$22.00");
+    const checkoutItem2 = checkout.orderItems(1);
+    await checkoutItem2.expectQuantity(1);
+    await checkoutItem2.expectItemTotal("$22.00");
 
     // Update items
-    await checkoutItem2.decrease();
-    await checkoutItem11.setQuantity(-2);
+    await checkoutItem1.decrease();
+    await checkoutItem2.setQuantity(-2);
 
     // Assert change
-    await checkoutItem2.expectQuantity(1);
-    await checkoutItem2.expectItemTotal("$16.00");
+    await checkoutItem1.expectQuantity(1);
+    await checkoutItem1.expectItemTotal("$16.00");
 
-    await checkoutItem11.expectQuantity(1);
-    await checkoutItem11.expectItemTotal("$22.00");
+    await checkoutItem2.expectQuantity(1);
+    await checkoutItem2.expectItemTotal("$22.00");
 });

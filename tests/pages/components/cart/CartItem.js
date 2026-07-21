@@ -1,35 +1,33 @@
 import { expect } from '@playwright/test';
 
 export class CartItem {
-  constructor(page, id) {
-    this.page = page;
-    this.id = id;
+  constructor(locator) {
+    this.root = locator;
 
-    this.root = page.getByTestId(`cart-item-${id}`);
+    this.name = locator.getByTestId('cart-item-name');
+    this.quantity = locator.getByTestId('cart-item-quantity');
+    this.total = locator.getByTestId('cart-item-total');
 
-    this.name = this.root.getByTestId(`name-${id}`);
-    this.increaseBtn = this.root.getByTestId(`increase-${id}`);
-    this.decreaseBtn = this.root.getByTestId(`decrease-${id}`);
-    this.removeBtn = this.root.getByTestId(`remove-${id}`);
-    this.total = this.root.getByTestId(`item-total-${id}`);
-    this.quantity = this.root.getByTestId(`quantity-${id}`);
+    this.increaseButton = locator.getByTestId('increase-button');
+    this.decreaseButton = locator.getByTestId('decrease-button');
+    this.removeButton = locator.getByTestId('remove-button');
   }
 
   async increase() {
-    await this.increaseBtn.click();
+    await this.increaseButton.click();
   }
 
-  async increaseQuantity(value) {
-    await this.quantity.fill(String(value));
+  async setQuantity(quantity) {
+    await this.quantity.fill(String(quantity));
     await this.quantity.blur();
   }
 
   async decrease() {
-    await this.decreaseBtn.click();
+    await this.decreaseButton.click();
   }
 
   async remove() {
-    await this.removeBtn.click();
+    await this.removeButton.click();
   }
 
   async expectQuantity(quantity) {

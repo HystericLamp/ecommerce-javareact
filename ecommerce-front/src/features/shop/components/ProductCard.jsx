@@ -8,31 +8,40 @@ export function ProductCard({
   updateQuantity,
 }) {
   return (
-    <div data-testid={`product-card-${product.id}`}>
+    <div 
+      data-testid="product-card"
+      data-product-id={product.id}
+    >
       <Card className="rounded-2xl shadow-sm hover:shadow-md transition-all hover:-translate-y-1 bg-white">
         <CardContent className="p-4 flex flex-col h-full">
           
           <h3
-            data-testid={`product-name-${product.id}`}
+            data-testid="product-name"
             className="text-lg font-semibold text-coffee-text"
           >
             {product.name}
           </h3>
 
-          <p className="text-sm text-gray-600 mt-1 line-clamp-3">
+          <p 
+            data-testid="product-description"
+            className="text-sm text-gray-600 mt-1 line-clamp-3"
+          >
             {product.description}
           </p>
 
           <div className="grow" />
 
           <div className="mt-4 flex items-center justify-between">
-            <span className="text-base font-bold text-coffee-price">
+            <span
+              data-testid="product-price" 
+              className="text-base font-bold text-coffee-price"
+            >
               ${(product.price / 100).toFixed(2)}
             </span>
 
             {!cartItem ? (
               <Button
-                data-testid={`add-${product.id}`}
+                data-testid="add-button"
                 size="sm"
                 onClick={() =>
                   addToCart({
@@ -46,13 +55,13 @@ export function ProductCard({
               </Button>
             ) : (
               <div className="flex flex-col items-end gap-1">
-                <span data-testid={`quantity-${product.id}`} className="text-xs">
+                <span data-testid="quantity" className="text-xs">
                   <b>{cartItem.quantity}</b> in cart
                 </span>
 
                 <div className="flex items-center gap-2">
                   <Button
-                    data-testid={`decrease-${product.id}`}
+                    data-testid="decrease-button"
                     size="sm"
                     variant="outline"
                     onClick={() =>
@@ -63,7 +72,7 @@ export function ProductCard({
                   </Button>
 
                   <Button
-                    data-testid={`increase-${product.id}`}
+                    data-testid="increase-button"
                     size="sm"
                     variant="outline"
                     onClick={() =>

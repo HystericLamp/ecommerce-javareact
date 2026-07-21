@@ -52,7 +52,8 @@ export default function Cart() {
             {cart.map((item) => (
               <Card 
                 key={item.id}
-                data-testid={`cart-item-${item.id}`}
+                data-testid="cart-item"
+                data-product-id={item.id}
                 className="flex items-center p-4 rounded-2xl shadow-sm"
               >
                 {/* <img
@@ -63,7 +64,7 @@ export default function Cart() {
 
                 <CardContent className="flex-1 p-0">
                   <h3
-                    data-testid={`name-${item.id}`}
+                    data-testid="cart-item-name"
                     className="font-medium text-lg text-foreground"
                   >
                     {item.name}
@@ -75,7 +76,7 @@ export default function Cart() {
                   {/* Quantity Controls */}
                   <div className="flex items-center gap-2 mt-3">
                     <Button
-                      data-testid={`decrease-${item.id}`}
+                      data-testid="decrease-button"
                       variant="outline"
                       size="sm"
                       onClick={() => {
@@ -90,7 +91,7 @@ export default function Cart() {
                     </Button>
 
                     <QuantityInput
-                      data-testid={`quantity-${item.id}`}
+                      data-testid="cart-item-quantity"
                       quantity={item.quantity}
                       onChange={(newQuantity) =>
                         updateQuantity(item.id, newQuantity)
@@ -98,7 +99,7 @@ export default function Cart() {
                     />
 
                     <Button
-                      data-testid={`increase-${item.id}`}
+                      data-testid="increase-button"
                       variant="outline"
                       size="sm"
                       onClick={() => updateQuantity(item.id, item.quantity + 1)}
@@ -111,14 +112,14 @@ export default function Cart() {
                 {/* Price + Remove */}
                 <div className="text-right flex flex-col items-end gap-3">
                   <p
-                    data-testid={`item-total-${item.id}`} 
+                    data-testid="cart-item-total"
                     className="font-semibold text-foreground"
                   >
                     ${(item.price * item.quantity).toFixed(2)}
                   </p>
 
                   <Button
-                    data-testid={`remove-${item.id}`}
+                    data-testid="remove-button"
                     variant="ghost"
                     size="icon"
                     className="text-muted-foreground hover:text-destructive"

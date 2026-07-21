@@ -5,14 +5,32 @@ export class CartPage {
     constructor(page) {
         this.page = page;
 
+        this.items = page.getByTestId('cart-item');
+
         this.checkoutButton = page.getByTestId('checkout-btn');
         this.continueShoppingButton = page.getByTestId('continue-shopping-btn');
         this.total = page.getByTestId('cart-total');
         this.emptyMessage = page.getByTestId('empty-cart-txt');
     }
 
-    item(id) {
-        return new CartItem(this.page, id);
+    item(index) {
+        return new CartItem(
+            this.items.nth(index)
+        );
+    }
+
+    itemByName(name) {
+        return new CartItem(
+            this.items.filter({
+                has: this.page.getByTestId('cart-item-name').filter({
+                    hasText: name,
+                }),
+            })
+        );
+    }
+
+    async itemCount() {
+        return await this.items.count();
     }
 
     async goto() {

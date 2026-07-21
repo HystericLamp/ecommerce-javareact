@@ -5,21 +5,31 @@ export class ShopPage {
   constructor(page) {
     this.page = page;
 
-    this.heading = page.getByRole('heading', {
-      name: 'Coffee & Brew Gear'
-    });
+    this.products = page.getByTestId('product-card');
   }
 
   async goto() {
-    await this.page.goto('/shop', {
-      aitUntil: 'domcontentloaded',
-    });
-
-    await this.heading.waitFor();
+    await this.page.goto('/shop');
   }
 
-  product(id, name) {
-    return new ProductCard(this.page, id, name);
+  product(index) {
+    return new ProductCard(
+      this.products.nth(index)
+    );
+  }
+
+  productByName(name) {
+    const card = this.products.filter({
+      has: this.page.getByTestId('product-name').filter({
+        hasText: name
+      })
+    });
+
+    return new ProductCard(card);
+  }
+
+  async productCount() {
+    return await this.products.count();
   }
 
   category(name) {

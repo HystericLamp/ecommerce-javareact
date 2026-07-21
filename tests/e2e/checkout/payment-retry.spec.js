@@ -20,8 +20,8 @@ test.beforeEach(async ({ page, context }) => {
     const shop = new ShopPage(page);
     await shop.goto();
 
-    await shop.product(2).addToCart();
-    await shop.product(11).addToCart();
+    await shop.product(1).addToCart();
+    await shop.product(10).addToCart();
 });
 
 test('AC-CHECKOUT-05 - Retry Payment', async ({ page }) => {

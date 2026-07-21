@@ -9,9 +9,7 @@ This document defines the high-level test scenarios derived from the functional 
 | ID | Requirement | Test Scenario | Priority |
 |----|-------------|---------------|----------|
 | TS-PROD-001 | RQ-PROD-001 | Verify the product list is displayed successfully. | High |
-| TS-PROD-002 | RQ-PROD-001 | Verify the product list loads when the API responds slowly. | Medium |
-| TS-PROD-003 | RQ-PROD-001 | Verify the application handles an empty product list. | Medium |
-| TS-PROD-004 | RQ-PROD-002 | Verify each product displays its name and price | High |
+| TS-PROD-002 | RQ-PROD-002 | Verify each product displays its name and price | High |
 
 ---
 

@@ -1,28 +1,42 @@
+import { expect } from '@playwright/test';
+
 export class ProductCard {
-    constructor(page, id, productName) {
-        this.page = page;
-        this.id = id;
+    constructor(locator) {
+        this.card = locator;
 
-        this.name = page.getByRole('heading', {
-            name: productName,
-            level: 3
-        });
+        this.name = locator.getByTestId('product-name');
+        this.price = locator.getByTestId('product-price');
 
-        this.addBtn = page.getByTestId(`add-${id}`);
-        this.increaseBtn = page.getByTestId(`increase-${id}`);
-        this.decreaseBtn = page.getByTestId(`decrease-${id}`);
-        this.quantity = page.getByTestId(`quantity-${id}`);
+        this.addButton = locator.getByTestId('add-button');
+
+        this.quantity = locator.getByTestId('quantity');
+        this.increaseButton = locator.getByTestId('increase-button');
+        this.decreaseButton = locator.getByTestId('decrease-button');
     }
 
     async addToCart() {
-        await this.addBtn.click();
+        await this.addButton.click();
     }
 
     async increase() {
-        await this.increaseBtn.click();
+        await this.increaseButton.click();
     }
 
     async decrease() {
-        await this.decreaseBtn.click();
+        await this.decreaseButton.click();
+    }
+
+    async getName() {
+        return await this.name.textContent();
+    }
+
+    async expectVisible() {
+        await expect(this.card).toBeVisible();
+    }
+
+
+    async expectDetailsVisible() {
+        await expect(this.name).toBeVisible();
+        await expect(this.price).toBeVisible();
     }
 }
