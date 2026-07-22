@@ -15,8 +15,8 @@ export class NavbarComponent {
         this.loginGotoBtn = this.root.getByTestId('login-goto-btn');
     }
 
-    async expectAuthEmail() {
-        await expect(this.loggedInEmail).toBeVisible();
+    async expectAuthEmail(email) {
+        await expect(this.loggedInEmail).toHaveText(String(email));
     }
 
     async clickDefaultLink() {

@@ -252,7 +252,7 @@ High
 ### Automation
 - Status: Automated
 - Framework: Playwright
-- Test file: `tests/cart.spec.ts`
+- Test file: `tests/e2e/shop/product-info.spec.ts`
 
 ### Preconditions
 
@@ -286,7 +286,7 @@ High
 ### Automation
 - Status: Automated
 - Framework: Playwright
-- Test file: `tests/cart.spec.ts`
+- Test file: `tests/e2e/shop/product-info.spec.ts`
 
 ### Preconditions
 
@@ -308,7 +308,7 @@ High
 
 # Authentication
 
-## TC-AUTH-001 - Successful Login
+## TC-AUTH-001 - Successful User Registration
 
 ### Requirement
 RQ-AUTH-001
@@ -322,32 +322,39 @@ High
 ### Automation
 - Status: Automated
 - Framework: Playwright
-- Test file: `tests/cart.spec.ts`
+- Test file: `tests/e2e/user/user-register.spec.ts`
 
 ### Preconditions
 
-- Registered user account exists.
+- User is on the registration page.
+- Email address has not been previously registered.
 
 ### Test Steps
 
 | Step | Action |
 |------|--------|
-| 1 | Enter valid email and password. |
-| 2 | Click **Sign In**. |
+| 1 | Enter a valid first name. |
+| 2 | Enter a valid last name. |
+| 3 | Enter a unique email address. |
+| 4 | Enter a valid password. |
+| 5 | Confirm the password. |
+| 6 | Click **Create Account**. |
 
 ### Expected Results
 
 | Step | Expected Result |
 |------|-----------------|
-| 1 | Credentials are accepted. |
-| 2 | User is successfully signed in. |
+| 1-5 | Form accepts valid input without validation errors. |
+| 6 | New user account is created successfully. |
+| 6 | User is redirected to the appropriate page. |
+| 6 | User is authenticated and their logged-in status is displayed. |
 
 ---
 
-## TC-AUTH-002 - Invalid Login
+## TC-AUTH-002 - Successful Login
 
 ### Requirement
-RQ-AUTH-001
+RQ-AUTH-002
 
 ### Scenario
 TS-AUTH-002
@@ -358,7 +365,7 @@ High
 ### Automation
 - Status: Automated
 - Framework: Playwright
-- Test file: `tests/cart.spec.ts`
+- Test file: `tests/e2e/user/user-login.spec.ts`
 
 ### Preconditions
 
@@ -368,19 +375,19 @@ High
 
 | Step | Action |
 |------|--------|
-| 1 | Enter an invalid email or password. |
-| 2 | Click **Sign In**. |
+| 1 | Enter valid email and password. |
+| 2 | Click **Login**. |
 
 ### Expected Results
 
 | Step | Expected Result |
 |------|-----------------|
-| 1 | Invalid credentials are entered. |
-| 2 | Login is rejected and an error message is displayed. |
+| 1 | Credentials are accepted. |
+| 2 | User is successfully signed in. |
 
 ---
 
-## TC-AUTH-003 - Logout
+## TC-AUTH-003 - Invalid Login
 
 ### Requirement
 RQ-AUTH-002
@@ -394,7 +401,43 @@ High
 ### Automation
 - Status: Automated
 - Framework: Playwright
-- Test file: `tests/cart.spec.ts`
+- Test file: `tests/e2e/user/user-login.spec.ts`
+
+### Preconditions
+
+- Registered user account exists.
+
+### Test Steps
+
+| Step | Action |
+|------|--------|
+| 1 | Enter an invalid email or password. |
+| 2 | Click **Login**. |
+
+### Expected Results
+
+| Step | Expected Result |
+|------|-----------------|
+| 1 | Invalid credentials are entered. |
+| 2 | Login is rejected and an error message is displayed. |
+
+---
+
+## TC-AUTH-004 - Logout
+
+### Requirement
+RQ-AUTH-003
+
+### Scenario
+TS-AUTH-004
+
+### Priority
+High
+
+### Automation
+- Status: Automated
+- Framework: Playwright
+- Test file: `tests/e2e/user/user-logout.spec.ts`
 
 ### Preconditions
 
@@ -404,7 +447,7 @@ High
 
 | Step | Action |
 |------|--------|
-| 1 | Click **Sign Out**. |
+| 1 | Click **Logout**. |
 
 ### Expected Results
 

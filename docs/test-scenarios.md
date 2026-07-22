@@ -30,9 +30,10 @@ This document defines the high-level test scenarios derived from the functional 
 
 | ID | Requirement | Test Scenario | Priority |
 |----|-------------|---------------|----------|
-| TS-AUTH-001 | RQ-AUTH-001 | Verify a registered user can log in with valid credentials. | High |
-| TS-AUTH-002 | RQ-AUTH-001 | Verify login fails with invalid credentials. | High |
-| TS-AUTH-003 | RQ-AUTH-002 | Verify a logged-in user can log out successfully. | High |
+| TS-AUTH-001 | RQ-AUTH-001 | Verify an un-registered user can sign-up and become a registered user with valid credentials. | High |
+| TS-AUTH-002 | RQ-AUTH-002 | Verify a registered user can log in with valid credentials. | High |
+| TS-AUTH-003 | RQ-AUTH-002 | Verify login fails with invalid credentials. | High |
+| TS-AUTH-004 | RQ-AUTH-003 | Verify a logged-in user can log out successfully. | High |
 
 ---
 

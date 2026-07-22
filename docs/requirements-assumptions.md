@@ -54,8 +54,9 @@ This document captures the functional requirements, assumptions, and open questi
 
 | ID | Requirement |
 |----|-------------|
-| RQ-AUTH-001 | Registered users can sign in using valid credentials. |
-| RQ-AUTH-002 | Signed-in users can sign out of the application. |
+| RQ-AUTH-001 | Guests can register as new users. |
+| RQ-AUTH-002 | Registered users can sign in using valid credentials. |
+| RQ-AUTH-003 | Signed-in users can sign out of the application. |
 
 ## Assumptions
 

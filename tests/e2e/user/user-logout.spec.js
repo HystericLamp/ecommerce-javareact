@@ -4,7 +4,7 @@ import { RegisterPage } from '../../pages/RegisterPage';
 import { NavbarComponent } from '../../pages/components/NavbarComponent';
 import { createTestUser, deleteTestUser } from './helpers/testUser';
 
-test.describe.serial('User Login flow', () => {
+test.describe.serial('User Logout flow', () => {
   let user;
 
   const apiBaseURL = process.env.API_BASE_URL;
@@ -17,10 +17,10 @@ test.describe.serial('User Login flow', () => {
     await deleteTestUser(request, apiBaseURL, user.email);
   });
 
-  test('TC-AUTH-002 Successful Login @smoke', async ({ page }) => {
+  test('TC-AUTH-004 Logout @smoke', async ({ page }) => {
     const loginPage = new LoginPage(page);
     await loginPage.goto();
-    
+
     await loginPage.setEmail(user.email);
     await loginPage.setPassword(user.password);
 
@@ -29,30 +29,13 @@ test.describe.serial('User Login flow', () => {
     await loginPage.login();
 
     const dialog = await dialogPromise;
-
-    expect(dialog.message()).toBe('Logged in!');
     await dialog.accept();
 
     const navbar = new NavbarComponent(page);
-    await navbar.expectAuthEmail(user.email);
-  });
+    await navbar.logout();
 
-  test('TC-AUTH-003 Invalid Login @smoke', async ({ page }) => {
-    const loginPage = new LoginPage(page);
-    await loginPage.goto();
-
-    await loginPage.setEmail('fake@email.com');
-    await loginPage.setPassword('fakePassword123');
-
-    const dialogPromise = page.waitForEvent('dialog');
-
-    await loginPage.login();
-
-    const dialog = await dialogPromise;
-
-    expect(dialog.message()).toBe('Invalid credentials');
-    await dialog.accept();
-
-    await expect(page).toHaveURL(/login/);
+    await expect(navbar.loginGotoBtn).toBeVisible();
+    await expect(navbar.logoutBtn).not.toBeVisible();
+    await expect(navbar.loggedInEmail).not.toBeVisible();
   });
 });
