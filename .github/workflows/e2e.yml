@@ -68,6 +68,7 @@ jobs:
         working-directory: tests
         env:
           BASE_URL: ${{ env.BASE_URL }}
+          API_BASE_URL: ${{ vars.BACKEND_URL }}
         run: npm run test:smoke
 
       - name: Upload report
